@@ -1,0 +1,299 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Figure Builders &mdash; GeoAquaCrop Visualizer 2.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=60dbed4a"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Export Functions" href="export.html" />
+    <link rel="prev" title="Helper Functions" href="helpers.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            GeoAquaCrop Visualizer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="helpers.html">Helper Functions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Figure Builders</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#build-output-map">build_output_map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#build-output-ts">build_output_ts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#build-input-map">build_input_map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#build-spam-map">build_spam_map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#build-input-ts">build_input_ts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#add-mean-std-band-internal">_add_mean_std_band <em>(internal)</em></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="export.html">Export Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="callbacks.html">Dash Callbacks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="layout.html">App Layout</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">GeoAquaCrop Visualizer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">API Reference</a></li>
+      <li class="breadcrumb-item active">Figure Builders</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/figures.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="figure-builders">
+<h1>Figure Builders<a class="headerlink" href="#figure-builders" title="Link to this heading"></a></h1>
+<p>These functions construct complete Plotly figures.  They are called from
+callbacks and from the initial <code class="docutils literal notranslate"><span class="pre">app.layout</span></code> definition.</p>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#build-output-map" id="id1">build_output_map</a></p></li>
+<li><p><a class="reference internal" href="#build-output-ts" id="id2">build_output_ts</a></p></li>
+<li><p><a class="reference internal" href="#build-input-map" id="id3">build_input_map</a></p></li>
+<li><p><a class="reference internal" href="#build-spam-map" id="id4">build_spam_map</a></p></li>
+<li><p><a class="reference internal" href="#build-input-ts" id="id5">build_input_ts</a></p></li>
+<li><p><a class="reference internal" href="#add-mean-std-band-internal" id="id6">_add_mean_std_band <em>(internal)</em></a></p></li>
+</ul>
+</nav>
+<section id="build-output-map">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">build_output_map</a><a class="headerlink" href="#build-output-map" title="Link to this heading"></a></h2>
+<p>Build the simulation output choropleth map.</p>
+<p><strong>Signature</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">build_output_map</span><span class="p">(</span>
+    <span class="n">ci</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">season</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">map_var</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">agg_override</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">sel_cell</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">lasso_cells</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">relayout_data</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span>
+</pre></div>
+</div>
+<p><strong>Parameters</strong></p>
+<ul class="simple">
+<li><p><strong>ci</strong> (<em>str</em>) — Crop/irrigation string, e.g. <code class="docutils literal notranslate"><span class="pre">'Maize</span> <span class="pre">|</span> <span class="pre">rainfed'</span></code>.</p></li>
+<li><p><strong>season</strong> (<em>str</em>) — Year string (e.g. <code class="docutils literal notranslate"><span class="pre">'2008'</span></code>) or <code class="docutils literal notranslate"><span class="pre">'all'</span></code>.</p></li>
+<li><p><strong>map_var</strong> (<em>str</em>) — Key from <code class="xref py py-data docutils literal notranslate"><span class="pre">MAP_VARIABLES</span></code>.</p></li>
+<li><p><strong>agg_override</strong> (<em>str</em>) — <code class="docutils literal notranslate"><span class="pre">'mean'</span></code> or <code class="docutils literal notranslate"><span class="pre">'sum'</span></code> (used when
+<code class="docutils literal notranslate"><span class="pre">season='all'</span></code>).</p></li>
+<li><p><strong>sel_cell</strong> (<em>int | None</em>) — Cell ID to highlight in blue.</p></li>
+<li><p><strong>lasso_cells</strong> (<em>list[int] | None</em>) — Cell IDs to highlight in orange.</p></li>
+<li><p><strong>relayout_data</strong> (<em>dict | None</em>) — Mapbox relayout event data to
+preserve zoom and centre.</p></li>
+</ul>
+<p><strong>Returns</strong></p>
+<p>Five-trace Plotly figure:</p>
+<ol class="arabic simple">
+<li><p>Grey background tile (all cells).</p></li>
+<li><p>Coloured choropleth for the selected variable.</p></li>
+<li><p>Blue highlight for the clicked cell.</p></li>
+<li><p>Orange highlight for lasso-selected cells.</p></li>
+<li><p>Invisible scatter layer for lasso-tool support.</p></li>
+</ol>
+</section>
+<section id="build-output-ts">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">build_output_ts</a><a class="headerlink" href="#build-output-ts" title="Link to this heading"></a></h2>
+<p>Build the daily output time series figure.</p>
+<p><strong>Signature</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">build_output_ts</span><span class="p">(</span>
+    <span class="n">cell_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">season_label</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">daily_var</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">ts_period</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">ts_clicks</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span>
+</pre></div>
+</div>
+<p><strong>Parameters</strong></p>
+<ul class="simple">
+<li><p><strong>cell_id</strong> (<em>int | None</em>) — Cell to plot; <code class="docutils literal notranslate"><span class="pre">None</span></code> returns a placeholder.</p></li>
+<li><p><strong>season_label</strong> (<em>str</em>) — Year string or <code class="docutils literal notranslate"><span class="pre">'all'</span></code>.</p></li>
+<li><p><strong>daily_var</strong> (<em>str</em>) — Key from <code class="xref py py-data docutils literal notranslate"><span class="pre">DAILY_VARIABLES</span></code>.</p></li>
+<li><p><strong>ts_period</strong> (<em>str</em>) — <code class="docutils literal notranslate"><span class="pre">'season'</span></code> or <code class="docutils literal notranslate"><span class="pre">'full'</span></code>.</p></li>
+<li><p><strong>ts_clicks</strong> (<em>dict | None</em>) — Click state with keys <code class="docutils literal notranslate"><span class="pre">count</span></code>,
+<code class="docutils literal notranslate"><span class="pre">start</span></code>, <code class="docutils literal notranslate"><span class="pre">end</span></code> for the mean ± std window tool.</p></li>
+</ul>
+<p><strong>Returns</strong></p>
+<p>Line chart with optional pre-season shading and mean ± std band.</p>
+</section>
+<section id="build-input-map">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">build_input_map</a><a class="headerlink" href="#build-input-map" title="Link to this heading"></a></h2>
+<p>Build the climate input choropleth map.</p>
+<p><strong>Signature</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">build_input_map</span><span class="p">(</span>
+    <span class="n">climate_var</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">season_label</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">sel_cell</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">relayout_data</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span>
+</pre></div>
+</div>
+<p><strong>Parameters</strong></p>
+<ul class="simple">
+<li><p><strong>climate_var</strong> (<em>str</em>) — Key from <code class="xref py py-data docutils literal notranslate"><span class="pre">CLIMATE_VARIABLES</span></code>.</p></li>
+<li><p><strong>season_label</strong> (<em>str</em>) — Year string or <code class="docutils literal notranslate"><span class="pre">'all'</span></code>.</p></li>
+<li><p><strong>sel_cell</strong> (<em>int | None</em>) — Cell ID to highlight in blue.</p></li>
+<li><p><strong>relayout_data</strong> (<em>dict | None</em>) — Mapbox relayout data.</p></li>
+</ul>
+<p><strong>Returns</strong></p>
+<p>Three-trace Plotly figure: grey background, climate choropleth, click
+highlight.</p>
+</section>
+<section id="build-spam-map">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">build_spam_map</a><a class="headerlink" href="#build-spam-map" title="Link to this heading"></a></h2>
+<p>Build the SPAM crop physical area choropleth map.</p>
+<p><strong>Signature</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">build_spam_map</span><span class="p">(</span>
+    <span class="n">spam_var</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">sel_cell</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">relayout_data</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span>
+</pre></div>
+</div>
+<p><strong>Parameters</strong></p>
+<ul class="simple">
+<li><p><strong>spam_var</strong> (<em>str</em>) — SPAM dataset variable name, e.g.
+<code class="docutils literal notranslate"><span class="pre">'Maize_rf_physical_area'</span></code>.</p></li>
+<li><p><strong>sel_cell</strong> (<em>int | None</em>) — Cell to highlight.</p></li>
+<li><p><strong>relayout_data</strong> (<em>dict | None</em>) — Mapbox relayout data.</p></li>
+</ul>
+<p><strong>Returns</strong></p>
+<p>Choropleth of harvested physical area (ha) using YlGn colour scale.</p>
+</section>
+<section id="build-input-ts">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">build_input_ts</a><a class="headerlink" href="#build-input-ts" title="Link to this heading"></a></h2>
+<p>Build the climate input daily time series figure.</p>
+<p><strong>Signature</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">build_input_ts</span><span class="p">(</span>
+    <span class="n">cell_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">climate_var</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">season_label</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">ts_period</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">ts_clicks</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">sel_crop_irr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span>
+</pre></div>
+</div>
+<p><strong>Parameters</strong></p>
+<ul class="simple">
+<li><p><strong>cell_id</strong> (<em>int | None</em>) — Cell to plot; <code class="docutils literal notranslate"><span class="pre">None</span></code> returns a placeholder.</p></li>
+<li><p><strong>climate_var</strong> (<em>str</em>) — Key from <code class="xref py py-data docutils literal notranslate"><span class="pre">CLIMATE_VARIABLES</span></code>.</p></li>
+<li><p><strong>season_label</strong> (<em>str</em>) — Year string or <code class="docutils literal notranslate"><span class="pre">'all'</span></code>.</p></li>
+<li><p><strong>ts_period</strong> (<em>str</em>) — <code class="docutils literal notranslate"><span class="pre">'season'</span></code> or <code class="docutils literal notranslate"><span class="pre">'full'</span></code>.</p></li>
+<li><p><strong>ts_clicks</strong> (<em>dict | None</em>) — Click state for mean ± std window.</p></li>
+<li><p><strong>sel_crop_irr</strong> (<em>str | None</em>) — Crop/irrigation string used to draw
+planting date vertical lines from the crop calendar.</p></li>
+</ul>
+<p><strong>Returns</strong></p>
+<p>Line chart with optional pre-season shading, planting date markers, and
+mean ± std band.</p>
+</section>
+<section id="add-mean-std-band-internal">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">_add_mean_std_band <em>(internal)</em></a><a class="headerlink" href="#add-mean-std-band-internal" title="Link to this heading"></a></h2>
+<p>Add a mean ± std shaded band to an existing time series figure.</p>
+<p><strong>Signature</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">_add_mean_std_band</span><span class="p">(</span>
+    <span class="n">fig</span><span class="p">:</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">,</span>
+    <span class="n">df_plot</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">var_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">color</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">year_start</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">,</span>
+    <span class="n">year_end</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">,</span>
+    <span class="n">ts_clicks</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span>
+</pre></div>
+</div>
+<p>Reads a two-click window from <code class="docutils literal notranslate"><span class="pre">ts_clicks</span></code> and overlays:</p>
+<ul class="simple">
+<li><p>Filled band between mean − std and mean + std.</p></li>
+<li><p>Dashed mean line.</p></li>
+<li><p>Two vertical boundary markers.</p></li>
+<li><p>Annotation box with mean and std values.</p></li>
+</ul>
+<p>When fewer than two clicks have been recorded, instructional annotations
+are added instead.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="helpers.html" class="btn btn-neutral float-left" title="Helper Functions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="export.html" class="btn btn-neutral float-right" title="Export Functions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, GIST Lab, Aalto University.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
