@@ -1,0 +1,305 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>App Layout &mdash; GeoAquaCrop Visualizer 2.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=60dbed4a"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Dash Callbacks" href="callbacks.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            GeoAquaCrop Visualizer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="helpers.html">Helper Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="figures.html">Figure Builders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="export.html">Export Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="callbacks.html">Dash Callbacks</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">App Layout</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#left-sidebar">Left sidebar</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#title">Title</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tab-bar">Tab bar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data-configuration-section">Data Configuration section</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#output-controls-output-controls">Output controls (<code class="docutils literal notranslate"><span class="pre">output-controls</span></code>)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#input-controls-input-controls">Input controls (<code class="docutils literal notranslate"><span class="pre">input-controls</span></code>)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#export-button">Export button</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#right-canvas">Right canvas</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#output-panel-output-panel">Output panel (<code class="docutils literal notranslate"><span class="pre">output-panel</span></code>)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#input-panel-input-panel">Input panel (<code class="docutils literal notranslate"><span class="pre">input-panel</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#export-modal">Export modal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#style-constants">Style constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#layout-helper-functions">Layout helper functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sec-hdr-text">_sec_hdr(text)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ctrl-label-text">_ctrl_label(text)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#map-dd-opts-keys">_map_dd_opts(keys)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#daily-dd-opts-keys">_daily_dd_opts(keys)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">GeoAquaCrop Visualizer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">API Reference</a></li>
+      <li class="breadcrumb-item active">App Layout</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/layout.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="app-layout">
+<h1>App Layout<a class="headerlink" href="#app-layout" title="Link to this heading"></a></h1>
+<p>The Dash application layout is defined as a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">dash_bootstrap_components.Container</span></code> (<code class="docutils literal notranslate"><span class="pre">fluid=True</span></code>) containing
+one main row split into a left sidebar (3 columns) and a right canvas
+(9 columns).</p>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#left-sidebar" id="id1">Left sidebar</a></p></li>
+<li><p><a class="reference internal" href="#right-canvas" id="id2">Right canvas</a></p></li>
+<li><p><a class="reference internal" href="#export-modal" id="id3">Export modal</a></p></li>
+<li><p><a class="reference internal" href="#style-constants" id="id4">Style constants</a></p></li>
+<li><p><a class="reference internal" href="#layout-helper-functions" id="id5">Layout helper functions</a></p></li>
+</ul>
+</nav>
+<section id="left-sidebar">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Left sidebar</a><a class="headerlink" href="#left-sidebar" title="Link to this heading"></a></h2>
+<p>The sidebar carries all user controls.  It is divided into the following
+sections:</p>
+<section id="title">
+<h3>Title<a class="headerlink" href="#title" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">html.H5</span></code> with the application title <em>GeoAquaCrop Explorer</em>.</p>
+</section>
+<section id="tab-bar">
+<h3>Tab bar<a class="headerlink" href="#tab-bar" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">dcc.Tabs</span></code> with two tabs:</p>
+<ul class="simple">
+<li><p><strong>Simulation Outputs</strong> — shows the output panel and output controls.</p></li>
+<li><p><strong>Inputs</strong> — shows the input panel and input controls.</p></li>
+</ul>
+</section>
+<section id="data-configuration-section">
+<h3>Data Configuration section<a class="headerlink" href="#data-configuration-section" title="Link to this heading"></a></h3>
+<p>Two dropdowns shared between both tabs:</p>
+<ul class="simple">
+<li><p><strong>Crop &amp; Irrigation</strong> (<code class="docutils literal notranslate"><span class="pre">crop-dropdown</span></code>) — lists all unique
+crop/irrigation combinations found in the summary data.</p></li>
+<li><p><strong>Season</strong> (<code class="docutils literal notranslate"><span class="pre">season-dropdown</span></code>) — lists all harvest years plus an
+<em>All years</em> option.</p></li>
+<li><p><strong>Aggregation row</strong> (<code class="docutils literal notranslate"><span class="pre">agg-row</span></code>) — mean/sum toggle, shown only when
+<em>All years</em> is selected on the Outputs tab.</p></li>
+</ul>
+</section>
+<section id="output-controls-output-controls">
+<h3>Output controls (<code class="docutils literal notranslate"><span class="pre">output-controls</span></code>)<a class="headerlink" href="#output-controls-output-controls" title="Link to this heading"></a></h3>
+<p>Visible only on the <em>Simulation Outputs</em> tab.</p>
+<p><strong>Map Variable</strong> — Accordion with three groups:</p>
+<ul class="simple">
+<li><p><em>Yield &amp; Production</em> → <code class="docutils literal notranslate"><span class="pre">mapvar-yield-dd</span></code></p></li>
+<li><p><em>Water Balance</em> → <code class="docutils literal notranslate"><span class="pre">mapvar-water-dd</span></code></p></li>
+<li><p><em>Water Productivity</em> → <code class="docutils literal notranslate"><span class="pre">mapvar-wp-dd</span></code></p></li>
+</ul>
+<p><strong>Daily Variable</strong> — Accordion with three groups:</p>
+<ul class="simple">
+<li><p><em>Water Fluxes</em> → <code class="docutils literal notranslate"><span class="pre">dailyvar-flux-dd</span></code></p></li>
+<li><p><em>Soil Water</em> → <code class="docutils literal notranslate"><span class="pre">dailyvar-soil-dd</span></code></p></li>
+<li><p><em>Crop Development</em> → <code class="docutils literal notranslate"><span class="pre">dailyvar-crop-dd</span></code></p></li>
+</ul>
+</section>
+<section id="input-controls-input-controls">
+<h3>Input controls (<code class="docutils literal notranslate"><span class="pre">input-controls</span></code>)<a class="headerlink" href="#input-controls-input-controls" title="Link to this heading"></a></h3>
+<p>Visible only on the <em>Inputs</em> tab.</p>
+<ul class="simple">
+<li><p><strong>Climate Variable</strong> (<code class="docutils literal notranslate"><span class="pre">climvar-dd</span></code>) — four options from
+<code class="xref py py-data docutils literal notranslate"><span class="pre">CLIMATE_VARIABLES</span></code>.</p></li>
+<li><p><strong>Crop Area (SPAM)</strong> (<code class="docutils literal notranslate"><span class="pre">spam-btn-container</span></code>) — dynamically generated
+buttons for matching SPAM variables.</p></li>
+</ul>
+</section>
+<section id="export-button">
+<h3>Export button<a class="headerlink" href="#export-button" title="Link to this heading"></a></h3>
+<p>Pinned to the bottom of the sidebar (absolute positioning).  Opens the
+export modal.</p>
+</section>
+</section>
+<section id="right-canvas">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Right canvas</a><a class="headerlink" href="#right-canvas" title="Link to this heading"></a></h2>
+<section id="output-panel-output-panel">
+<h3>Output panel (<code class="docutils literal notranslate"><span class="pre">output-panel</span></code>)<a class="headerlink" href="#output-panel-output-panel" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">output-map</span></code> — simulation output choropleth (
+<code class="xref py py-func docutils literal notranslate"><span class="pre">build_output_map()</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">output-ts-container</span></code> — collapsible ribbon + line chart
+(<code class="xref py py-func docutils literal notranslate"><span class="pre">build_output_ts()</span></code>), shown after a cell is clicked.</p></li>
+</ul>
+</section>
+<section id="input-panel-input-panel">
+<h3>Input panel (<code class="docutils literal notranslate"><span class="pre">input-panel</span></code>)<a class="headerlink" href="#input-panel-input-panel" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Crop-calendar info bar (<code class="docutils literal notranslate"><span class="pre">cropcal-info-text</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">input-map</span></code> — climate / SPAM choropleth (<code class="xref py py-func docutils literal notranslate"><span class="pre">build_input_map()</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">input-ts-container</span></code> — collapsible ribbon + line chart
+(<code class="xref py py-func docutils literal notranslate"><span class="pre">build_input_ts()</span></code>), shown after a cell is clicked.</p></li>
+</ul>
+</section>
+</section>
+<section id="export-modal">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Export modal</a><a class="headerlink" href="#export-modal" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">dbc.Modal</span></code> (id <code class="docutils literal notranslate"><span class="pre">export-modal</span></code>, large size) contains:</p>
+<ul class="simple">
+<li><p>Variable checklists grouped by Water Fluxes / Soil Water / Crop
+Development.</p></li>
+<li><p>Period row: <em>Whole simulation</em> checkbox + year/month/day dropdowns for
+start and end.</p></li>
+<li><p>Cells row: <em>Whole area</em> checkbox + lasso cell count label.</p></li>
+<li><p>Format checklist: NetCDF, GeoTIFF, CSV.</p></li>
+<li><p>Footer: status text + <em>Export</em> button + <em>Close</em> button.</p></li>
+</ul>
+</section>
+<section id="style-constants">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Style constants</a><a class="headerlink" href="#style-constants" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Value / Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FONT_STACK</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'Arial,</span> <span class="pre">system-ui,</span> <span class="pre">-apple-system,</span> <span class="pre">sans-serif'</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ACCENT</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'#a6c1eb'</span></code> — blue used for tab highlights and the export button.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SIDEBAR_BG</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'#f8f9fa'</span></code> — light grey sidebar background.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SIDEBAR_STYLE</span></code></p></td>
+<td><p>Full CSS dict for the sidebar column.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RIBBON_STYLE</span></code></p></td>
+<td><p>CSS dict for the info ribbon strip above time series panels.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DD_CTRL_STYLE</span></code></p></td>
+<td><p>Minimal CSS for in-sidebar dropdown components.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="layout-helper-functions">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Layout helper functions</a><a class="headerlink" href="#layout-helper-functions" title="Link to this heading"></a></h2>
+<section id="sec-hdr-text">
+<h3>_sec_hdr(text)<a class="headerlink" href="#sec-hdr-text" title="Link to this heading"></a></h3>
+<p>Returns a styled <code class="docutils literal notranslate"><span class="pre">html.Div</span></code> used as a section header in the sidebar
+(uppercase, bold, black).</p>
+</section>
+<section id="ctrl-label-text">
+<h3>_ctrl_label(text)<a class="headerlink" href="#ctrl-label-text" title="Link to this heading"></a></h3>
+<p>Returns a styled <code class="docutils literal notranslate"><span class="pre">html.Label</span></code> displayed above a dropdown control.</p>
+</section>
+<section id="map-dd-opts-keys">
+<h3>_map_dd_opts(keys)<a class="headerlink" href="#map-dd-opts-keys" title="Link to this heading"></a></h3>
+<p>Builds <code class="docutils literal notranslate"><span class="pre">[{'label':</span> <span class="pre">...,</span> <span class="pre">'value':</span> <span class="pre">...}]</span></code> option dicts for a subset of
+<code class="xref py py-data docutils literal notranslate"><span class="pre">MAP_VARIABLES</span></code> keys.</p>
+</section>
+<section id="daily-dd-opts-keys">
+<h3>_daily_dd_opts(keys)<a class="headerlink" href="#daily-dd-opts-keys" title="Link to this heading"></a></h3>
+<p>Same as <code class="docutils literal notranslate"><span class="pre">_map_dd_opts</span></code> but for <code class="xref py py-data docutils literal notranslate"><span class="pre">DAILY_VARIABLES</span></code> keys.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="callbacks.html" class="btn btn-neutral float-left" title="Dash Callbacks" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, GIST Lab, Aalto University.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
