@@ -104,7 +104,6 @@ for item in summary_raw:
 summary = pd.concat(frames, ignore_index=True)
 summary.columns = summary.columns.str.strip()
 summary['harvest_year'] = pd.to_datetime(summary['Harvest Date (YYYY/MM/DD)']).dt.year
-#summary['season_label'] = summary['harvest_year'].astype(str)
 summary = summary.dropna(subset=['harvest_year'])
 summary['season_label'] = summary['harvest_year'].astype(int).astype(str)
 summary['crop_irr']     = summary['crop'] + ' | ' + summary['irrigation']
@@ -390,7 +389,6 @@ min_lat  = min(m['y'] for m in cell_meta.values()) - half
 max_lat  = max(m['y'] for m in cell_meta.values()) + half
 MAP_ZOOM = get_auto_zoom(min_lon, max_lon, min_lat, max_lat)
 print(f"Auto zoom: {MAP_ZOOM}")
-
 
 
 crop_var_range = {}
@@ -740,7 +738,7 @@ def export_data(selected_cells, export_vars, start_date, end_date, formats):
             ds[var].attrs['long_name'] = var_info['label']
             ds[var].attrs['units']     = var_info['label'].split('(')[-1].replace(')', '') \
                                          if '(' in var_info['label'] else ''
-            ds.attrs['description'] = f'AquaCrop gridded output: {var}'
+            ds.attrs['description'] = f'GeoAquaCrop output: {var}'
             nc_path = os.path.join(EXPORT_DIR, base_name + '.nc')
             ds.to_netcdf(nc_path)
             exported.append(os.path.basename(nc_path))
@@ -1969,16 +1967,6 @@ app.layout = dbc.Container(fluid=True, style={'fontFamily': FONT_STACK, 'padding
                                   children='Select a cell on the map to view time series',
                                   style={'flexGrow': '1', 'fontFamily': FONT_STACK,
                                          'fontSize': '12px', 'color': '#4a5568'}),
-                        # html.Div([
-                        #     html.Button(
-                        #         'Selected season',
-                        #         id={'type': 'out-period-btn', 'index': 'season'},
-                        #         n_clicks=0, style=btn_style(True, 'blue')),
-                        #     html.Button(
-                        #         'Full simulation',
-                        #         id={'type': 'out-period-btn', 'index': 'full'},
-                        #         n_clicks=0, style=btn_style(False, 'blue')),
-                        # ], style={'flexShrink': '0', 'paddingLeft': '12px'}),
                     ]),
 
                     dcc.Graph(
@@ -2023,16 +2011,6 @@ app.layout = dbc.Container(fluid=True, style={'fontFamily': FONT_STACK, 'padding
                                   children='Select a cell on the map to view time series',
                                   style={'flexGrow': '1', 'fontFamily': FONT_STACK,
                                          'fontSize': '12px', 'color': '#4a5568'}),
-                        # html.Div([
-                        #     html.Button(
-                        #         'Selected season',
-                        #         id={'type': 'in-period-btn', 'index': 'season'},
-                        #         n_clicks=0, style=btn_style(True, 'blue')),
-                        #     html.Button(
-                        #         'Full simulation',
-                        #         id={'type': 'in-period-btn', 'index': 'full'},
-                        #         n_clicks=0, style=btn_style(False, 'blue')),
-                        # ], style={'flexShrink': '0', 'paddingLeft': '12px'}),
                     ]),
 
                     dcc.Graph(
@@ -2213,8 +2191,6 @@ app.layout = dbc.Container(fluid=True, style={'fontFamily': FONT_STACK, 'padding
     dcc.Store(id='sel-daily-var',  data=daily_var_keys[0]),
     dcc.Store(id='sel-clim-var',   data=climate_var_keys[0]),
     dcc.Store(id='sel-agg',        data='mean'),
-    # dcc.Store(id='sel-out-period', data='season'),
-    # dcc.Store(id='sel-in-period',  data='season'),
     dcc.Store(id='sel-out-cell',   data=None),
     dcc.Store(id='sel-in-cell',    data=None),
     dcc.Store(id='out-ts-clicks',  data={'count': 0, 'start': None, 'end': None}),
