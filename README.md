@@ -1,4 +1,4 @@
-# AquaCropGrid Explorer
+# GeoAquaCrop Visualizer
 
 An interactive web-based visualisation toolkit for gridded [AquaCrop](https://www.fao.org/aquacrop/en/) simulations. Built with Python, Dash, and Plotly, it provides spatial and temporal exploration of simulation outputs and climate inputs across large multi-cell grids.
 
