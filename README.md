@@ -63,11 +63,11 @@ conda activate geoaquacrop-visualizer
 Edit the `USER CONFIGURATION` block at the top of `geoaquacrop_plots.py`:
 
 ```python
-SUMMARY_PKL   = '../outputs/summary_results_*.pkl'
-DAILY_PKL     = '../outputs/daily_results_*.pkl'
-GEOJSON_PATH  = '../inputdata/*.geojson'
-PROCESSED_DIR = '../processed'
-EXPORT_DIR    = '../outputs/exports'
+SUMMARY_PKL   = '../geoaquacrop-simulate/outputs/summary_results_*.pkl'
+DAILY_PKL     = '../geoaquacrop-simulate/outputs/daily_results_*.pkl'
+GEOJSON_PATH  = '../geoaquacrop-preproc/inputdata/*.geojson'
+PROCESSED_DIR = '../geoaquacrop-preproc/processed'
+EXPORT_DIR    = '/outputs/exports'
 CELL_RES      = 0.05   # grid resolution in degrees — must match preprocessing
 PORT          = 8050
 MAP_HEIGHT    = 550
