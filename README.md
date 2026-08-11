@@ -2,7 +2,6 @@
 
 An interactive web-based visualisation toolkit for gridded [AquaCrop](https://www.fao.org/aquacrop/en/) simulations. Built with Python, Dash, and Plotly, it provides spatial and temporal exploration of simulation outputs and climate inputs across large multi-cell grids.
 
-Developed at the [GIST Lab](https://gistlab.science), Aalto University, Department of Built Environment.
 
 ---
 
@@ -44,7 +43,7 @@ Install all dependencies via conda:
 
 ```bash
 conda env create -f environment.yml
-conda activate aquacropgrid-preproc
+conda activate geoaquacrop-visualizer
 ```
 
 ---
@@ -52,24 +51,23 @@ conda activate aquacropgrid-preproc
 ## Installation
 
 ```bash
-git clone https://github.com/<your-org>/aquacropgrid-run-main.git
-cd aquacropgrid-run-main
+git clone https://github.com/aquacropos/geoaquacrop-visualizer.git
 conda env create -f environment.yml
-conda activate aquacropgrid-preproc
+conda activate geoaquacrop-visualizer
 ```
 
 ---
 
 ## Configuration
 
-Edit the `USER CONFIGURATION` block at the top of `aquacropgrid-plots.py`:
+Edit the `USER CONFIGURATION` block at the top of `geoaquacrop_plots.py`:
 
 ```python
-SUMMARY_PKL   = '../high_plains_package/outputs/summary_results_*.pkl'
-DAILY_PKL     = '../high_plains_package/outputs/daily_results_*.pkl'
-GEOJSON_PATH  = '../high_plains_package/inputdata/high_plains/high_plains.geojson'
-PROCESSED_DIR = '../high_plains_package/processed'
-EXPORT_DIR    = '../high_plains_package/outputs/exports'
+SUMMARY_PKL   = '../outputs/summary_results_*.pkl'
+DAILY_PKL     = '../outputs/daily_results_*.pkl'
+GEOJSON_PATH  = '../inputdata/*.geojson'
+PROCESSED_DIR = '../processed'
+EXPORT_DIR    = '../outputs/exports'
 CELL_RES      = 0.05   # grid resolution in degrees — must match preprocessing
 PORT          = 8050
 MAP_HEIGHT    = 550
@@ -83,8 +81,7 @@ All paths are resolved relative to the script location, so the app can be launch
 ## Usage
 
 ```bash
-cd aquacropgrid-run-main
-/opt/anaconda3/envs/aquacropgrid-preproc/bin/python aquacropgrid-plots.py
+/opt/anaconda3/envs/geoaquacrop-visualizer/bin/python geoaquacrop_plots.py
 ```
 
 Then open [http://localhost:8050](http://localhost:8050) in your browser.
@@ -143,8 +140,7 @@ Simulation outputs are loaded from two pickle files:
 Unit tests cover configuration constants, helper functions, data structures, figure builder logic, callback state machines, and export routines. They run without any data files using synthetic fixtures.
 
 ```bash
-cd aquacropgrid-run-main
-/opt/anaconda3/envs/aquacropgrid-preproc/bin/pytest test_aquacropgrid.py -v
+/opt/anaconda3/envs/geoaquacrop-visualizer/bin/pytest test.py -v
 ```
 
 Tests are organised into 14 classes (~120 tests total). They are designed to run in CI on every commit without requiring the actual simulation data.
@@ -154,31 +150,13 @@ Tests are organised into 14 classes (~120 tests total). They are designed to run
 ## Project Structure
 
 ```
-aquacropgrid-run-main/
+geoaquacrop-visualizer/
 ├── aquacropgrid-plots.py     # Main application
-├── test_aquacropgrid.py      # Automated test suite
+├── testd.py                  # Automated test suite
 ├── README.md                 # This file
 ├── environment.yml           # Conda environment
+├── docs		      # Documentation
 └── ...
 ```
 
 ---
-
-## Known Limitations
-
-- The app loads all simulation data into memory at startup. Very large grids (>5000 cells, multi-decade runs) may require significant RAM.
-- GeoTIFF export requires `rasterio`. If not installed, GeoTIFF export is skipped and a warning is shown.
-- SPAM crop area matching uses case-insensitive lookup. Crops with compound names (e.g. `PaddyRice1`) are matched via fallback scan of available variables.
-
-
----
-
-## License
-
-MIT License. See `LICENSE` for details.
-
----
-
-## Acknowledgements
-
-This tool was developed as part of the DIWA doctoral programme at Aalto University. AquaCrop is a crop water productivity model developed by the Land and Water Division of FAO.
