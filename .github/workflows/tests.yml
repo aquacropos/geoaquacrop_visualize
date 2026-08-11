@@ -25,4 +25,4 @@ jobs:
 
       - name: Run tests
         run: |
-          pytest test_aquacropgrid.py -v
+          pytest tests.py -v
