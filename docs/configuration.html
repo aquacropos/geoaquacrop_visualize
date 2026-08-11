@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Configuration &mdash; GeoAquaCrop Visualizer 2.0 documentation</title>
+  <title>Configuration &mdash; GeoAquaCrop Visualizer documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
@@ -94,14 +94,14 @@
   <section id="configuration">
 <h1>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h1>
 <p>All user-facing settings live in the <strong>USER CONFIGURATION</strong> block at the
-top of <code class="docutils literal notranslate"><span class="pre">aquacropgrid_plots_v2.py</span></code>.</p>
+top of <code class="docutils literal notranslate"><span class="pre">geoaquacrop_plots.py</span></code>.</p>
 <section id="path-constants">
 <h2>Path constants<a class="headerlink" href="#path-constants" title="Link to this heading"></a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">SUMMARY_PKL</span>   <span class="o">=</span> <span class="s1">&#39;../high_plains_package/outputs/summary_results_*.pkl&#39;</span>
-<span class="n">DAILY_PKL</span>     <span class="o">=</span> <span class="s1">&#39;../high_plains_package/outputs/daily_results_*.pkl&#39;</span>
-<span class="n">GEOJSON_PATH</span>  <span class="o">=</span> <span class="s1">&#39;../high_plains_package/inputdata/high_plains/high_plains.geojson&#39;</span>
-<span class="n">PROCESSED_DIR</span> <span class="o">=</span> <span class="s1">&#39;../high_plains_package/processed&#39;</span>
-<span class="n">EXPORT_DIR</span>    <span class="o">=</span> <span class="s1">&#39;../high_plains_package/outputs/exports&#39;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">SUMMARY_PKL</span>   <span class="o">=</span> <span class="s1">&#39;../geoaquacrop-simulate/outputs/summary_results_*.pkl&#39;</span>
+<span class="n">DAILY_PKL</span>     <span class="o">=</span> <span class="s1">&#39;../geoaquacrop-simulate/outputs/daily_results_*.pkl&#39;</span>
+<span class="n">GEOJSON_PATH</span>  <span class="o">=</span> <span class="s1">&#39;../geoaquacrop-preproc/inputdata/*.geojson&#39;</span>
+<span class="n">PROCESSED_DIR</span> <span class="o">=</span> <span class="s1">&#39;../geoaquacrop-preproc/processed&#39;</span>
+<span class="n">EXPORT_DIR</span>    <span class="o">=</span> <span class="s1">&#39;outputs/exports&#39;</span>
 </pre></div>
 </div>
 <p>All paths are resolved relative to the script location using
