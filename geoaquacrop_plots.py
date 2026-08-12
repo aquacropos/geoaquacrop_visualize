@@ -529,9 +529,10 @@ def get_climate_map_values(var, season_label):
         return None
     ds = climate_ds[var]
     if season_label == 'all':
-        return ds[var].mean(dim='time')
+        return ds[var].sum(dim='time') if var == 'Precipitation' else ds[var].mean(dim='time')
     yr = int(season_label)
-    return ds[var].sel(time=ds.time.dt.year == yr).mean(dim='time')
+    sel = ds[var].sel(time=ds.time.dt.year == yr)
+    return sel.sum(dim='time') if var == 'Precipitation' else sel.mean(dim='time')
 
 def get_cropcal_values(var_name, x, y):
     """
@@ -1666,7 +1667,7 @@ app.index_string = '''
 <html>
     <head>
         {%metas%}
-        <title>AquaCrop Gridded Explorer</title>
+        <title>GeoAquaCrop Visualizer</title>
         {%favicon%}
         {%css%}
         <style>
@@ -1748,7 +1749,7 @@ app.layout = dbc.Container(fluid=True, style={'fontFamily': FONT_STACK, 'padding
         # ══════════════════════════════════════════════════════════════════════
         dbc.Col(width=3, style=SIDEBAR_STYLE, children=[
 
-            html.H5('GeoAquaCrop Explorer', style={
+            html.H5('GeoAquaCrop Visualizer', style={
                 'fontFamily': FONT_STACK, 'fontWeight': '700',
                 'color': "#000000", 'marginBottom': '15px', 'fontSize': '19px',
             }),
@@ -1819,7 +1820,7 @@ app.layout = dbc.Container(fluid=True, style={'fontFamily': FONT_STACK, 'padding
                                      'border': '1px solid #e2e8f0',
                                      'borderRadius': '6px', 'overflow': 'hidden'},
                               children=[
-                    dbc.AccordionItem(title='Yeild & Production', item_id='yield',
+                    dbc.AccordionItem(title='Yield & Production', item_id='yield',
                                       style={'padding': '2px 0'}, children=[
                         dcc.Dropdown(
                             id='mapvar-yield-dd',
@@ -2649,19 +2650,29 @@ def update_spam_buttons(sel_crop, spam_clicks, clim_val, current_spam_var):
     relevant     = spam_vars_for_crop(sel_crop)
     default_spam = relevant[0] if relevant else ''
 
-    if triggered and isinstance(triggered, dict):
-        if triggered.get('type') == 'spamvar-btn':
-            active_spam = triggered['index']
-            mode = 'spam'
-        elif triggered == 'climvar-dd':
-            active_spam = current_spam_var or default_spam
-            mode = 'climate'
-        else:
-            active_spam = default_spam
-            mode = 'climate'
+    if triggered and isinstance(triggered, dict) and triggered.get('type') == 'spamvar-btn':
+        active_spam = triggered['index']
+        mode = 'spam'
+    elif triggered == 'climvar-dd':
+        active_spam = current_spam_var or default_spam
+        mode = 'climate'
     else:
         active_spam = default_spam
         mode = 'climate'
+
+    # if triggered and isinstance(triggered, dict):
+    #     if triggered.get('type') == 'spamvar-btn':
+    #         active_spam = triggered['index']
+    #         mode = 'spam'
+    #     elif triggered == 'climvar-dd':
+    #         active_spam = current_spam_var or default_spam
+    #         mode = 'climate'
+    #     else:
+    #         active_spam = default_spam
+    #         mode = 'climate'
+    # else:
+    #     active_spam = default_spam
+    #     mode = 'climate'
 
     if not relevant:
         buttons = [html.Span('No SPAM data for this crop.',
@@ -2724,7 +2735,13 @@ def patch_input_map_data(sel_clim_var, sel_spam_var, input_mode, sel_season):
         z_vals     = arr.sel(x=_x_da, y=_y_da, method='nearest').values.tolist()
         locs       = [str(int(c)) for c in _cell_ids_arr]
         vmin, vmax = float(min(z_vals)), float(max(z_vals))
-        period_label = 'All years (daily mean)' if sel_season == 'all' else f'{sel_season} (daily mean)'
+
+        if sel_clim_var == 'Precipitation':
+            period_label = 'All years (total mm)' if sel_season == 'all' else f'{sel_season} (total mm)'
+        else:
+            period_label = 'All years (daily mean)' if sel_season == 'all' else f'{sel_season} (daily mean)'
+        
+        # period_label = 'All years (daily mean)' if sel_season == 'all' else f'{sel_season} (daily mean)'
         texts = [
             f"<b>Cell {cid}</b><br>Lon: {cell_meta[cid]['x']:.3f} | Lat: {cell_meta[cid]['y']:.3f}<br>{var_info['map_label']}: {val:.3f} {var_info['unit']}<br><i>Click to view time series</i>"
             for cid, val in zip(_cell_ids_arr.tolist(), z_vals)
@@ -3044,3 +3061,6 @@ def constrain_end_date(sy, sm, sd, ey, em, ed):
 
 if __name__ == '__main__':
     app.run(debug=False, port=PORT)
+
+
+
