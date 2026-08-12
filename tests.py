@@ -1,7 +1,7 @@
 """
-test_aquacropgrid.py
-Automated tests for aquacropgrid-plots v2.
-Run with: pytest test_aquacropgrid.py -v
+tests.py
+Automated tests for geoaquacropgrid-plots
+Run with: pytest tests.py -v
 
 These tests are designed to run WITHOUT the actual data files.
 They mock all file I/O and test logic, helpers, and figure builders in isolation.
