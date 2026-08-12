@@ -152,7 +152,7 @@ Tests are organised into 14 classes (~120 tests total). They are designed to run
 ```
 geoaquacrop-visualizer/
 ├── aquacropgrid-plots.py     # Main application
-├── testd.py                  # Automated test suite
+├── tests.py                  # Automated test suite
 ├── README.md                 # This file
 ├── environment.yml           # Conda environment
 ├── docs		      # Documentation
