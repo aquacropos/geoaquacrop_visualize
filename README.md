@@ -140,7 +140,7 @@ Simulation outputs are loaded from two pickle files:
 Unit tests cover configuration constants, helper functions, data structures, figure builder logic, callback state machines, and export routines. They run without any data files using synthetic fixtures.
 
 ```bash
-/opt/anaconda3/envs/geoaquacrop-visualizer/bin/pytest test.py -v
+/opt/anaconda3/envs/geoaquacrop-visualizer/bin/pytest tests.py -v
 ```
 
 Tests are organised into 14 classes (~120 tests total). They are designed to run in CI on every commit without requiring the actual simulation data.
