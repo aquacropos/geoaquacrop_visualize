@@ -507,7 +507,7 @@ def get_climate_map_values(var, season_label):
     """
     Compute spatially aggregated climate values for choropleth map display.
 
-    Averages (or sums for precipitation) the climate variable over the
+    Averages (or sums for precipitation and reference ET) the climate variable over the
     selected time period. Uses xarray's vectorised selection for efficiency.
 
     Parameters
@@ -524,15 +524,15 @@ def get_climate_map_values(var, season_label):
         2D spatial array of aggregated values with dimensions ``(y, x)``.
         Returns ``None`` if the variable is not loaded in ``climate_ds``.
     """
-
+    _SUM_VARS = ('Precipitation', 'ReferenceET')
     if var not in climate_ds:
         return None
     ds = climate_ds[var]
     if season_label == 'all':
-        return ds[var].sum(dim='time') if var == 'Precipitation' else ds[var].mean(dim='time')
+        return ds[var].sum(dim='time') if var in _SUM_VARS else ds[var].mean(dim='time')
     yr = int(season_label)
     sel = ds[var].sel(time=ds.time.dt.year == yr)
-    return sel.sum(dim='time') if var == 'Precipitation' else sel.mean(dim='time')
+    return sel.sum(dim='time') if var in _SUM_VARS else sel.mean(dim='time')
 
 def get_cropcal_values(var_name, x, y):
     """
@@ -2736,7 +2736,7 @@ def patch_input_map_data(sel_clim_var, sel_spam_var, input_mode, sel_season):
         locs       = [str(int(c)) for c in _cell_ids_arr]
         vmin, vmax = float(min(z_vals)), float(max(z_vals))
 
-        if sel_clim_var == 'Precipitation':
+        if sel_clim_var in ('Precipitation', 'ReferenceET'):
             period_label = 'All years (total mm)' if sel_season == 'all' else f'{sel_season} (total mm)'
         else:
             period_label = 'All years (daily mean)' if sel_season == 'all' else f'{sel_season} (daily mean)'
