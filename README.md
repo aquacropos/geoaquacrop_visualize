@@ -8,7 +8,7 @@ select.
 
 ## Screenshot
 
-![GeoAquaCrop Visualiser](docs/images/image.png)
+![GeoAquaCrop Visualiser](docs/images/image.jpeg)
 
 - [Requirements](#requirements)
 - [Installation](#installation)
