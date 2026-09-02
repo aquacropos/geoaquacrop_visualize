@@ -6,6 +6,9 @@ region, a variable picker, and a click-through to per-cell daily time series —
 plus the inputs those runs were driven by, and a gridded export of anything you
 select.
 
+## Screenshot
+
+![GeoAquaCrop Visualiser](docs/images/image.png)
 
 - [Requirements](#requirements)
 - [Installation](#installation)
