@@ -1,0 +1,572 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configuration &mdash; GeoAquaCrop Visualizer 0.1.0</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Architecture" href="architecture.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GeoAquaCrop Visualizer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#features">Features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#simulation-outputs-tab">Simulation Outputs tab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#inputs-tab">Inputs tab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#export">Export</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#package-layout">Package layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#quick-start">Quick start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#input-data-structure">Input data structure</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#getting-the-source">Getting the source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installing-the-package">Installing the package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#extras">Extras</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#running-the-application">Running the application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#embedding-in-another-server">Embedding in another server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#running-the-tests">Running the tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#building-the-documentation">Building the documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#how-the-data-paths-are-found">How the data paths are found</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#path-constants">Path constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#display-constants">Display constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#variable-registries">Variable registries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#map-variables">MAP_VARIABLES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#daily-variables">DAILY_VARIABLES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#climate-variables">CLIMATE_VARIABLES</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#everything-happens-at-import">Everything happens at import</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#dependency-order">Dependency order</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#what-data-derives">What <code class="docutils literal notranslate"><span class="pre">data</span></code> derives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#pre-computation-instead-of-per-interaction-work">Pre-computation instead of per-interaction work</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#caching-in-queries">Caching in <code class="docutils literal notranslate"><span class="pre">queries</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#keeping-the-map-fast">Keeping the map fast</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#patch-based-updates">Patch-based updates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#hover-text-via-customdata">Hover text via <code class="docutils literal notranslate"><span class="pre">customdata</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#region-boundary">Region boundary</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#state-flows-through-stores">State flows through stores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#invariants-the-test-suite-enforces">Invariants the test suite enforces</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/entrypoint.html">Entry Point and Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/entrypoint.html#module-geoaquacrop_plots">geoaquacrop_plots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/entrypoint.html#module-geoaquacrop_plotting">geoaquacrop_plotting</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/helpers.html">Configuration and Helpers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/helpers.html#module-geoaquacrop_plotting.config">Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/helpers.html#module-geoaquacrop_plotting.utils">Stateless helpers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/helpers.html#module-geoaquacrop_plotting.queries">Dataset accessors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/helpers.html#module-geoaquacrop_plotting.styles">Styles</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/data.html">Data, Grid, Aggregates, and Boundary</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/data.html#module-geoaquacrop_plotting.data">Data loading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/data.html#module-geoaquacrop_plotting.grid">Grid geometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/data.html#module-geoaquacrop_plotting.aggregates">Pre-computed aggregations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/data.html#module-geoaquacrop_plotting.boundary">Region boundary</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/figures.html">Figure Builders</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/figures.html#module-geoaquacrop_plotting.figures_maps">Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/figures.html#module-geoaquacrop_plotting.figures_timeseries">Time series</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/export.html">Export</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/export.html#geoaquacrop_plotting.export.export_data"><code class="docutils literal notranslate"><span class="pre">export_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/callbacks.html">Dash Callbacks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/callbacks.html#the-state-bus">The state bus</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/callbacks.html#module-geoaquacrop_plotting.callbacks_controls">Sidebar controls</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/callbacks.html#module-geoaquacrop_plotting.callbacks_selection">Selection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/callbacks.html#module-geoaquacrop_plotting.callbacks_maps">Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/callbacks.html#module-geoaquacrop_plotting.callbacks_timeseries">Time series</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/callbacks.html#module-geoaquacrop_plotting.callbacks_export">Export modal</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/layout.html">App Layout</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/layout.html#module-geoaquacrop_plotting.app_shell">Application shell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/layout.html#module-geoaquacrop_plotting.layout_sidebar">Sidebar column</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/layout.html#module-geoaquacrop_plotting.layout_panels">Main canvas column</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/layout.html#module-geoaquacrop_plotting.layout_export">Export modal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/layout.html#module-geoaquacrop_plotting.layout">Assembly</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GeoAquaCrop Visualizer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Configuration</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/configuration.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="configuration">
+<h1>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h1>
+<p>All user-facing settings live in the <strong>USER CONFIGURATION</strong> block of
+<code class="docutils literal notranslate"><span class="pre">geoaquacrop_plotting/config.py</span></code>. It is the only module in the package
+with no internal dependencies, so editing it cannot break an import cycle.</p>
+<p>The full generated reference for every constant on this page is in
+<a class="reference internal" href="api/index.html"><span class="doc">API Reference</span></a>.</p>
+<section id="how-the-data-paths-are-found">
+<span id="workspace-discovery"></span><h2>How the data paths are found<a class="headerlink" href="#how-the-data-paths-are-found" title="Link to this heading"></a></h2>
+<p>The simulation and preprocessing outputs live in checkouts that sit beside
+this project:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&lt;workspace&gt;/
+├── geoaquacrop-preproc/       # climate, crop calendar, SPAM grids
+├── geoaquacrop-simulate/      # summary and daily result pickles
+└── Geoaquacrop-visualizer/   # this project
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">config.py</span></code> resolves <code class="docutils literal notranslate"><span class="pre">&lt;workspace&gt;</span></code> at import time:</p>
+<ol class="arabic simple">
+<li><p>If the <code class="docutils literal notranslate"><span class="pre">GEOAQUACROP_ROOT</span></code> environment variable is set, it is expanded,
+made absolute, and used as-is.</p></li>
+<li><p>Otherwise <code class="docutils literal notranslate"><span class="pre">_find_workspace()</span></code> walks up from <code class="docutils literal notranslate"><span class="pre">config.py</span></code>’s own
+directory, and then up from the current working directory, returning the
+first ancestor that contains a <code class="docutils literal notranslate"><span class="pre">geoaquacrop-preproc</span></code> folder.</p></li>
+<li><p>If neither search finds it, the conventional
+sibling-of-the-project-root location is assumed so the error message can
+name it.</p></li>
+</ol>
+<p>That covers a source checkout, an editable install, and a plain
+<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">.</span></code> into <code class="docutils literal notranslate"><span class="pre">site-packages</span></code>. To point the app at data somewhere
+else, either set the environment variable:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">GEOAQUACROP_ROOT</span><span class="o">=</span>/path/to/folder/holding/geoaquacrop-preproc
+</pre></div>
+</div>
+<p>or replace the four input paths below with absolute ones.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">geoaquacrop-preproc</span></code> is not found under the resolved workspace,
+importing <code class="docutils literal notranslate"><span class="pre">config</span></code> raises <code class="xref py py-exc docutils literal notranslate"><span class="pre">FileNotFoundError</span></code> immediately,
+naming the path it looked for and every directory it searched from.
+Startup fails at import, before Dash is constructed — there is no
+half-initialised state to diagnose.</p>
+</div>
+</section>
+<section id="path-constants">
+<h2>Path constants<a class="headerlink" href="#path-constants" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">SUMMARY_PKL</span>   <span class="o">=</span> <span class="o">&lt;</span><span class="n">workspace</span><span class="o">&gt;/</span><span class="n">geoaquacrop</span><span class="o">-</span><span class="n">simulate</span><span class="o">/</span><span class="n">outputs</span><span class="o">/</span><span class="n">summary_results_</span><span class="o">&lt;</span><span class="n">stamp</span><span class="o">&gt;.</span><span class="n">pkl</span>
+<span class="n">DAILY_PKL</span>     <span class="o">=</span> <span class="o">&lt;</span><span class="n">workspace</span><span class="o">&gt;/</span><span class="n">geoaquacrop</span><span class="o">-</span><span class="n">simulate</span><span class="o">/</span><span class="n">outputs</span><span class="o">/</span><span class="n">daily_results_</span><span class="o">&lt;</span><span class="n">stamp</span><span class="o">&gt;.</span><span class="n">pkl</span>
+<span class="n">GEOJSON_PATH</span>  <span class="o">=</span> <span class="o">&lt;</span><span class="n">workspace</span><span class="o">&gt;/</span><span class="n">geoaquacrop</span><span class="o">-</span><span class="n">preproc</span><span class="o">/</span><span class="n">inputdata</span><span class="o">/</span><span class="n">region_boundary</span><span class="o">.</span><span class="n">geojson</span>
+<span class="n">PROCESSED_DIR</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">workspace</span><span class="o">&gt;/</span><span class="n">geoaquacrop</span><span class="o">-</span><span class="n">preproc</span><span class="o">/</span><span class="n">processed</span>
+<span class="n">EXPORT_DIR</span>    <span class="o">=</span> <span class="o">&lt;</span><span class="n">base</span><span class="o">&gt;/</span><span class="n">outputs</span><span class="o">/</span><span class="n">exports</span>
+</pre></div>
+</div>
+<p>The pickle filenames carry the timestamp of the simulation run that produced
+them, so point <code class="docutils literal notranslate"><span class="pre">SUMMARY_PKL</span></code> and <code class="docutils literal notranslate"><span class="pre">DAILY_PKL</span></code> at a different run by
+editing the stamp.</p>
+<p><code class="docutils literal notranslate"><span class="pre">GEOJSON_PATH</span></code> is the only source of the region outline. Nothing is copied
+into the package: the file is read once at import and thinned in memory, so
+changing it changes what the maps draw on the next start.</p>
+<p><code class="docutils literal notranslate"><span class="pre">EXPORT_DIR</span></code> is resolved separately from the input paths, and does not
+follow <code class="docutils literal notranslate"><span class="pre">GEOAQUACROP_ROOT</span></code>. Its <code class="docutils literal notranslate"><span class="pre">&lt;base&gt;</span></code> is the directory holding the
+<code class="docutils literal notranslate"><span class="pre">geoaquacrop_plotting</span></code> package — the project root in the flat layout,
+<code class="docutils literal notranslate"><span class="pre">src/</span></code> in the src layout — except when that directory is
+<code class="docutils literal notranslate"><span class="pre">site-packages</span></code> or <code class="docutils literal notranslate"><span class="pre">dist-packages</span></code>, in which case the current working
+directory is used so exports never land inside an installed environment.
+The directory is created on import of <code class="docutils literal notranslate"><span class="pre">data</span></code> if it does not exist.</p>
+</section>
+<section id="display-constants">
+<h2>Display constants<a class="headerlink" href="#display-constants" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Constant</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">CELL_RES</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0.05</span></code></p></td>
+<td><p>Grid cell resolution in decimal degrees. Must match the
+preprocessing step — <code class="docutils literal notranslate"><span class="pre">grid</span></code> draws each cell as a square of this
+size centred on the cell coordinates, so a mismatch produces
+overlapping or gapped polygons.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PORT</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">8050</span></code></p></td>
+<td><p>TCP port for the Dash development server.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MAP_HEIGHT</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">550</span></code></p></td>
+<td><p>Height in pixels of the choropleth map panels. Also the default
+canvas height used by <a class="reference internal" href="api/helpers.html#geoaquacrop_plotting.utils.get_auto_zoom" title="geoaquacrop_plotting.utils.get_auto_zoom"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_auto_zoom()</span></code></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">TS_HEIGHT</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">400</span></code></p></td>
+<td><p>Height in pixels of the time series panels.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">BOUNDARY_SIMPLIFY_EPS</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0.004</span></code></p></td>
+<td><p>Ramer–Douglas–Peucker tolerance in decimal degrees (~400 m) applied to
+the region outline at startup. Raise it for a coarser, lighter
+outline; lower it for a crisper, heavier one. See
+<a class="reference internal" href="architecture.html#boundary-simplification"><span class="std std-ref">Region boundary</span></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">BOUNDARY_URL</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'/region-boundary.geojson'</span></code></p></td>
+<td><p>Path the thinned outline is served from on the Dash server. Both
+<a class="reference internal" href="api/data.html#module-geoaquacrop_plotting.boundary" title="geoaquacrop_plotting.boundary"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boundary</span></code></a>, which registers the route, and
+<a class="reference internal" href="api/helpers.html#geoaquacrop_plotting.queries.mapbox_layers" title="geoaquacrop_plotting.queries.mapbox_layers"><code class="xref py py-func docutils literal notranslate"><span class="pre">mapbox_layers()</span></code></a>, which points the
+map layer at it, read this one constant.</p></td>
+</tr>
+</tbody>
+</table>
+<p><code class="docutils literal notranslate"><span class="pre">IRR_MAP</span></code> maps the irrigation names used in the simulation output
+(<code class="docutils literal notranslate"><span class="pre">'rainfed'</span></code>, <code class="docutils literal notranslate"><span class="pre">'irrigated'</span></code>) to the two-letter codes used in the crop
+calendar and SPAM variable names (<code class="docutils literal notranslate"><span class="pre">'rf'</span></code>, <code class="docutils literal notranslate"><span class="pre">'ir'</span></code>). It is shared by
+<a class="reference internal" href="api/helpers.html#geoaquacrop_plotting.queries.spam_vars_for_crop" title="geoaquacrop_plotting.queries.spam_vars_for_crop"><code class="xref py py-func docutils literal notranslate"><span class="pre">spam_vars_for_crop()</span></code></a>, <a class="reference internal" href="api/helpers.html#geoaquacrop_plotting.queries.get_cropcal_summary" title="geoaquacrop_plotting.queries.get_cropcal_summary"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_cropcal_summary()</span></code></a>, and
+<a class="reference internal" href="api/figures.html#geoaquacrop_plotting.figures_timeseries.build_input_ts" title="geoaquacrop_plotting.figures_timeseries.build_input_ts"><code class="xref py py-func docutils literal notranslate"><span class="pre">build_input_ts()</span></code></a>.</p>
+</section>
+<section id="variable-registries">
+<h2>Variable registries<a class="headerlink" href="#variable-registries" title="Link to this heading"></a></h2>
+<p>Three module-level dictionaries define which variables are available in the
+UI and how they are displayed. Adding an entry is enough to make a variable
+appear — but a map or daily variable must also be listed in one of the group
+constants in <code class="docutils literal notranslate"><span class="pre">styles.py</span></code> (<code class="docutils literal notranslate"><span class="pre">_YIELD_VARS</span></code>, <code class="docutils literal notranslate"><span class="pre">_WATER_VARS</span></code>, <code class="docutils literal notranslate"><span class="pre">_WP_VARS</span></code>,
+<code class="docutils literal notranslate"><span class="pre">_FLUX_VARS</span></code>, <code class="docutils literal notranslate"><span class="pre">_SOIL_VARS</span></code>, <code class="docutils literal notranslate"><span class="pre">_CROP_VARS</span></code>) to be reachable from a
+sidebar accordion.</p>
+<section id="map-variables">
+<h3>MAP_VARIABLES<a class="headerlink" href="#map-variables" title="Link to this heading"></a></h3>
+<p>Controls the simulation output choropleth map. Each key is a column name in
+the summary pickle. Each value is a dict with:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">label</span></code> — display name used in the colour bar and dropdowns.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">colorscale</span></code> — Plotly colour scale for mean aggregation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sum_colorscale</span></code> — Plotly colour scale for sum aggregation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">default_agg</span></code> — aggregation used when <em>All years</em> is selected and no
+explicit override is set (<code class="docutils literal notranslate"><span class="pre">'mean'</span></code> or <code class="docutils literal notranslate"><span class="pre">'sum'</span></code>).</p></li>
+</ul>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 26.0%" />
+<col style="width: 17.0%" />
+<col style="width: 17.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Label</p></th>
+<th class="head"><p>Colour scales</p></th>
+<th class="head"><p>Default agg</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Dry</span> <span class="pre">yield</span> <span class="pre">(tonne/ha)</span></code></p></td>
+<td><p>Dry Yield (t/ha)</p></td>
+<td><p>YlOrRd / OrRd</p></td>
+<td><p>mean</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Fresh</span> <span class="pre">yield</span> <span class="pre">(tonne/ha)</span></code></p></td>
+<td><p>Fresh Yield (t/ha)</p></td>
+<td><p>YlOrRd / OrRd</p></td>
+<td><p>mean</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Yield</span> <span class="pre">potential</span> <span class="pre">(tonne/ha)</span></code></p></td>
+<td><p>Yield Potential (t/ha)</p></td>
+<td><p>YlOrRd / OrRd</p></td>
+<td><p>mean</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">production_tonnes</span></code></p></td>
+<td><p>Production (tonnes)</p></td>
+<td><p>YlOrBr / OrRd</p></td>
+<td><p>sum</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Seasonal</span> <span class="pre">irrigation</span> <span class="pre">(mm)</span></code></p></td>
+<td><p>Seasonal Irrigation (mm)</p></td>
+<td><p>Blues / PuBuGn</p></td>
+<td><p>sum</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">seasonal_precip_mm</span></code></p></td>
+<td><p>Seasonal Precip (mm)</p></td>
+<td><p>Blues / PuBuGn</p></td>
+<td><p>mean</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">seasonal_et_mm</span></code></p></td>
+<td><p>Seasonal ET (mm)</p></td>
+<td><p>YlGnBu / PuBuGn</p></td>
+<td><p>mean</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">seasonal_transpiration_mm</span></code></p></td>
+<td><p>Seasonal Transpiration (mm)</p></td>
+<td><p>YlGnBu / PuBuGn</p></td>
+<td><p>mean</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">total_water_input_mm</span></code></p></td>
+<td><p>Total Water Input (mm)</p></td>
+<td><p>Blues / PuBuGn</p></td>
+<td><p>mean</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">wp_et_kg_per_m3</span></code></p></td>
+<td><p>WP-ET (kg/m³)</p></td>
+<td><p>RdYlGn / YlGn</p></td>
+<td><p>mean</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rainfall_use_efficiency_kg_per_m3</span></code></p></td>
+<td><p>Rainfall Use Efficiency (kg/m³)</p></td>
+<td><p>RdYlGn / YlGn</p></td>
+<td><p>mean</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">Seasonal</span> <span class="pre">irrigation</span> <span class="pre">(mm)</span></code> is special-cased in <code class="docutils literal notranslate"><span class="pre">aggregates</span></code>: its
+colour-bar range is pinned to start at zero (and to end at 1 when the
+maximum is zero), so a fully rainfed crop still renders instead of
+collapsing to a degenerate scale. Every other variable uses its observed
+minimum and maximum.</p>
+</div>
+</section>
+<section id="daily-variables">
+<h3>DAILY_VARIABLES<a class="headerlink" href="#daily-variables" title="Link to this heading"></a></h3>
+<p>Controls the daily time series panel and the export modal. Each key is a
+column name in one of the daily pickle tables. Each value is a dict with:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">label</span></code> — display name, also used as the y-axis title and as the
+NetCDF <code class="docutils literal notranslate"><span class="pre">long_name</span></code>; the parenthesised trailing part becomes the NetCDF
+<code class="docutils literal notranslate"><span class="pre">units</span></code> attribute on export.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">table</span></code> — source table, either <code class="docutils literal notranslate"><span class="pre">'water_flux'</span></code> or <code class="docutils literal notranslate"><span class="pre">'crop_growth'</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">color</span></code> — hex colour for the line trace and the mean ± std band.</p></li>
+</ul>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 22.0%" />
+<col style="width: 48.0%" />
+<col style="width: 30.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Label</p></th>
+<th class="head"><p>Table</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Es</span></code></p></td>
+<td><p>Soil Evaporation (mm/day)</p></td>
+<td><p>water_flux</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">EsPot</span></code></p></td>
+<td><p>Potential Soil Evaporation (mm/day)</p></td>
+<td><p>water_flux</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Tr</span></code></p></td>
+<td><p>Crop Transpiration (mm/day)</p></td>
+<td><p>water_flux</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">TrPot</span></code></p></td>
+<td><p>Potential Transpiration (mm/day)</p></td>
+<td><p>water_flux</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Infl</span></code></p></td>
+<td><p>Infiltration (mm/day)</p></td>
+<td><p>water_flux</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Runoff</span></code></p></td>
+<td><p>Runoff (mm/day)</p></td>
+<td><p>water_flux</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DeepPerc</span></code></p></td>
+<td><p>Deep Percolation (mm/day)</p></td>
+<td><p>water_flux</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Wr</span></code></p></td>
+<td><p>Water in Root Zone (mm)</p></td>
+<td><p>water_flux</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">biomass</span></code></p></td>
+<td><p>Biomass (tonne/ha)</p></td>
+<td><p>crop_growth</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">canopy_cover</span></code></p></td>
+<td><p>Canopy Cover (-)</p></td>
+<td><p>crop_growth</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">gdd_cum</span></code></p></td>
+<td><p>Cumulative GDD (°C·day)</p></td>
+<td><p>crop_growth</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">z_root</span></code></p></td>
+<td><p>Root Depth (m)</p></td>
+<td><p>crop_growth</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DryYield</span></code></p></td>
+<td><p>Dry Yield (t/ha)</p></td>
+<td><p>crop_growth</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="climate-variables">
+<h3>CLIMATE_VARIABLES<a class="headerlink" href="#climate-variables" title="Link to this heading"></a></h3>
+<p>Controls the climate input choropleth and time series. Each key matches
+both a NetCDF variable name and the <code class="docutils literal notranslate"><span class="pre">&lt;Variable&gt;</span></code> part of the filename in
+<code class="docutils literal notranslate"><span class="pre">PROCESSED_DIR</span></code>. Each value is a dict with:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">label</span></code> — daily y-axis label (e.g. <code class="docutils literal notranslate"><span class="pre">'Precipitation</span> <span class="pre">(mm/day)'</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">map_label</span></code> — choropleth hover label (e.g.
+<code class="docutils literal notranslate"><span class="pre">'Precipitation</span> <span class="pre">(mm/year)'</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unit</span></code> — colour bar unit string.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">color</span></code> — hex colour for the time series line.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">colorscale</span></code> — Plotly colour scale for the choropleth.</p></li>
+</ul>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 30.0%" />
+<col style="width: 30.0%" />
+<col style="width: 20.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Daily label</p></th>
+<th class="head"><p>Map label</p></th>
+<th class="head"><p>Colour scale</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MaxTemp</span></code></p></td>
+<td><p>Max Temperature (°C)</p></td>
+<td><p>Max Temperature (°C)</p></td>
+<td><p>RdYlBu_r</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MinTemp</span></code></p></td>
+<td><p>Min Temperature (°C)</p></td>
+<td><p>Min Temperature (°C)</p></td>
+<td><p>RdYlBu_r</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Precipitation</span></code></p></td>
+<td><p>Precipitation (mm/day)</p></td>
+<td><p>Precipitation (mm/year)</p></td>
+<td><p>Blues</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ReferenceET</span></code></p></td>
+<td><p>Reference ET (mm/day)</p></td>
+<td><p>Reference ET (mm/year)</p></td>
+<td><p>YlOrBr</p></td>
+</tr>
+</tbody>
+</table>
+<p>The two labels differ because the two views aggregate differently. The time
+series always plots daily values; the map reduces over the selected period,
+and <a class="reference internal" href="api/helpers.html#geoaquacrop_plotting.queries.get_climate_map_values" title="geoaquacrop_plotting.queries.get_climate_map_values"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_climate_map_values()</span></code></a> <strong>sums</strong> <code class="docutils literal notranslate"><span class="pre">Precipitation</span></code> and
+<code class="docutils literal notranslate"><span class="pre">ReferenceET</span></code> while it <strong>averages</strong> the two temperature variables. Adding
+a new accumulating variable therefore means adding its key to the
+<code class="docutils literal notranslate"><span class="pre">_SUM_VARS</span></code> tuple in <code class="docutils literal notranslate"><span class="pre">queries.py</span></code> as well, and to the matching branch in
+<a class="reference internal" href="api/callbacks.html#geoaquacrop_plotting.callbacks_maps.patch_input_map_data" title="geoaquacrop_plotting.callbacks_maps.patch_input_map_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">patch_input_map_data()</span></code></a> that picks the <code class="docutils literal notranslate"><span class="pre">(total</span> <span class="pre">mm)</span></code> rather than the
+<code class="docutils literal notranslate"><span class="pre">(daily</span> <span class="pre">mean)</span></code> colour-bar caption.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="architecture.html" class="btn btn-neutral float-right" title="Architecture" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, GIST Lab, Aalto University.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

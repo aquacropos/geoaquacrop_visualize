@@ -1,0 +1,291 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>App Layout &mdash; GeoAquaCrop Visualizer 0.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Dash Callbacks" href="callbacks.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            GeoAquaCrop Visualizer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../overview.html#features">Features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../overview.html#simulation-outputs-tab">Simulation Outputs tab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview.html#inputs-tab">Inputs tab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview.html#export">Export</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../overview.html#package-layout">Package layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview.html#quick-start">Quick start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview.html#input-data-structure">Input data structure</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#getting-the-source">Getting the source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#installing-the-package">Installing the package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#extras">Extras</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#running-the-application">Running the application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#embedding-in-another-server">Embedding in another server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#running-the-tests">Running the tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#building-the-documentation">Building the documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../configuration.html#how-the-data-paths-are-found">How the data paths are found</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration.html#path-constants">Path constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration.html#display-constants">Display constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration.html#variable-registries">Variable registries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../configuration.html#map-variables">MAP_VARIABLES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../configuration.html#daily-variables">DAILY_VARIABLES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../configuration.html#climate-variables">CLIMATE_VARIABLES</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../architecture.html#everything-happens-at-import">Everything happens at import</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../architecture.html#dependency-order">Dependency order</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../architecture.html#what-data-derives">What <code class="docutils literal notranslate"><span class="pre">data</span></code> derives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../architecture.html#pre-computation-instead-of-per-interaction-work">Pre-computation instead of per-interaction work</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../architecture.html#caching-in-queries">Caching in <code class="docutils literal notranslate"><span class="pre">queries</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../architecture.html#keeping-the-map-fast">Keeping the map fast</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../architecture.html#patch-based-updates">Patch-based updates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../architecture.html#hover-text-via-customdata">Hover text via <code class="docutils literal notranslate"><span class="pre">customdata</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../architecture.html#region-boundary">Region boundary</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../architecture.html#state-flows-through-stores">State flows through stores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../architecture.html#invariants-the-test-suite-enforces">Invariants the test suite enforces</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="entrypoint.html">Entry Point and Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="entrypoint.html#module-geoaquacrop_plots">geoaquacrop_plots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="entrypoint.html#module-geoaquacrop_plotting">geoaquacrop_plotting</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="helpers.html">Configuration and Helpers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="helpers.html#module-geoaquacrop_plotting.config">Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="helpers.html#module-geoaquacrop_plotting.utils">Stateless helpers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="helpers.html#module-geoaquacrop_plotting.queries">Dataset accessors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="helpers.html#module-geoaquacrop_plotting.styles">Styles</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="data.html">Data, Grid, Aggregates, and Boundary</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="data.html#module-geoaquacrop_plotting.data">Data loading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data.html#module-geoaquacrop_plotting.grid">Grid geometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data.html#module-geoaquacrop_plotting.aggregates">Pre-computed aggregations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data.html#module-geoaquacrop_plotting.boundary">Region boundary</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="figures.html">Figure Builders</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="figures.html#module-geoaquacrop_plotting.figures_maps">Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="figures.html#module-geoaquacrop_plotting.figures_timeseries">Time series</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="export.html">Export</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="export.html#geoaquacrop_plotting.export.export_data"><code class="docutils literal notranslate"><span class="pre">export_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="callbacks.html">Dash Callbacks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="callbacks.html#the-state-bus">The state bus</a></li>
+<li class="toctree-l3"><a class="reference internal" href="callbacks.html#module-geoaquacrop_plotting.callbacks_controls">Sidebar controls</a></li>
+<li class="toctree-l3"><a class="reference internal" href="callbacks.html#module-geoaquacrop_plotting.callbacks_selection">Selection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="callbacks.html#module-geoaquacrop_plotting.callbacks_maps">Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="callbacks.html#module-geoaquacrop_plotting.callbacks_timeseries">Time series</a></li>
+<li class="toctree-l3"><a class="reference internal" href="callbacks.html#module-geoaquacrop_plotting.callbacks_export">Export modal</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">App Layout</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-geoaquacrop_plotting.app_shell">Application shell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-geoaquacrop_plotting.layout_sidebar">Sidebar column</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-geoaquacrop_plotting.layout_panels">Main canvas column</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-geoaquacrop_plotting.layout_export">Export modal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-geoaquacrop_plotting.layout">Assembly</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">GeoAquaCrop Visualizer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">API Reference</a></li>
+      <li class="breadcrumb-item active">App Layout</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/layout.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="app-layout">
+<h1>App Layout<a class="headerlink" href="#app-layout" title="Link to this heading"></a></h1>
+<p>The layout is assembled in <code class="docutils literal notranslate"><span class="pre">layout.py</span></code> as a <code class="docutils literal notranslate"><span class="pre">dash_bootstrap_components</span></code>
+row holding the sidebar column, the main canvas column, the export modal, and
+the stores that carry state between callbacks. Each piece is a module-level
+constant built at import, so <code class="docutils literal notranslate"><span class="pre">app.layout</span></code> is complete before any callback is
+registered.</p>
+<p>These constants are Dash component trees. Their structure is the layout
+itself and is best read in the source, which every <code class="docutils literal notranslate"><span class="pre">[source]</span></code> link opens.</p>
+<section id="module-geoaquacrop_plotting.app_shell">
+<span id="application-shell"></span><h2>Application shell<a class="headerlink" href="#module-geoaquacrop_plotting.app_shell" title="Link to this heading"></a></h2>
+<p>The Dash application object and its HTML index template.</p>
+<p>Kept in its own module so the layout and every callback module can import
+<code class="docutils literal notranslate"><span class="pre">app</span></code> without importing each other.</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.app_shell.geoaquacrop_plotting.app_shell.app">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.app_shell.</span></span><span class="sig-name descname"><span class="pre">app</span></span><a class="headerlink" href="#geoaquacrop_plotting.app_shell.geoaquacrop_plotting.app_shell.app" title="Link to this definition"></a></dt>
+<dd><p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">dash.Dash</span></code> instance. Created with the Bootstrap stylesheet and
+a custom <code class="docutils literal notranslate"><span class="pre">index_string</span></code> that carries the sidebar CSS. It lives in its own
+module so the layout modules and every callback module can import <code class="docutils literal notranslate"><span class="pre">app</span></code>
+without importing each other — which is what keeps the callback graph
+acyclic. <a class="reference internal" href="data.html#module-geoaquacrop_plotting.boundary" title="geoaquacrop_plotting.boundary"><code class="xref py py-mod docutils literal notranslate"><span class="pre">boundary</span></code></a> also reaches for
+<code class="docutils literal notranslate"><span class="pre">app.server</span></code> to register the region-boundary route.</p>
+</dd></dl>
+
+</section>
+<section id="module-geoaquacrop_plotting.layout_sidebar">
+<span id="sidebar-column"></span><h2>Sidebar column<a class="headerlink" href="#module-geoaquacrop_plotting.layout_sidebar" title="Link to this heading"></a></h2>
+<p>Left sidebar column: tab bar, data configuration, and variable pickers.</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.layout_sidebar.geoaquacrop_plotting.layout_sidebar.SIDEBAR_COL">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.layout_sidebar.</span></span><span class="sig-name descname"><span class="pre">SIDEBAR_COL</span></span><a class="headerlink" href="#geoaquacrop_plotting.layout_sidebar.geoaquacrop_plotting.layout_sidebar.SIDEBAR_COL" title="Link to this definition"></a></dt>
+<dd><p>The left column: the tab bar, the <em>Data Configuration</em> dropdowns, the map
+and daily variable accordions, the climate and SPAM controls, and the
+export button pinned to the bottom. Which controls are visible is driven by
+the callbacks in <a class="reference internal" href="callbacks.html#module-geoaquacrop_plotting.callbacks_controls" title="geoaquacrop_plotting.callbacks_controls"><code class="xref py py-mod docutils literal notranslate"><span class="pre">callbacks_controls</span></code></a>.</p>
+</dd></dl>
+
+</section>
+<section id="module-geoaquacrop_plotting.layout_panels">
+<span id="main-canvas-column"></span><h2>Main canvas column<a class="headerlink" href="#module-geoaquacrop_plotting.layout_panels" title="Link to this heading"></a></h2>
+<p>Right canvas column: the output and input map/time-series panels.</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.layout_panels.geoaquacrop_plotting.layout_panels.MAIN_COL">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.layout_panels.</span></span><span class="sig-name descname"><span class="pre">MAIN_COL</span></span><a class="headerlink" href="#geoaquacrop_plotting.layout_panels.geoaquacrop_plotting.layout_panels.MAIN_COL" title="Link to this definition"></a></dt>
+<dd><p>The right column: the output map and its time-series panel, and the input
+map and its time-series panel. One panel is shown at a time, following
+<code class="docutils literal notranslate"><span class="pre">sel-tab</span></code>.</p>
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The time-series containers are hidden with <code class="docutils literal notranslate"><span class="pre">visibility:</span> <span class="pre">hidden;</span>
+<span class="pre">height:</span> <span class="pre">0</span></code> rather than <code class="docutils literal notranslate"><span class="pre">display:</span> <span class="pre">none</span></code>. A <code class="docutils literal notranslate"><span class="pre">display:</span> <span class="pre">none</span></code> container
+has no layout box, and Plotly cannot size a graph inside one — the chart
+would render at the wrong width the first time a cell is clicked.</p>
+</div>
+</section>
+<section id="module-geoaquacrop_plotting.layout_export">
+<span id="export-modal"></span><h2>Export modal<a class="headerlink" href="#module-geoaquacrop_plotting.layout_export" title="Link to this heading"></a></h2>
+<p>The export modal: variable checklists, date range, extent, and formats.</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.layout_export.geoaquacrop_plotting.layout_export.EXPORT_MODAL">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.layout_export.</span></span><span class="sig-name descname"><span class="pre">EXPORT_MODAL</span></span><a class="headerlink" href="#geoaquacrop_plotting.layout_export.geoaquacrop_plotting.layout_export.EXPORT_MODAL" title="Link to this definition"></a></dt>
+<dd><p>The export dialog: variable checklists grouped as in the sidebar, the
+period controls, the whole-area/selection choice, and the format
+checklist. Driven by
+<a class="reference internal" href="callbacks.html#module-geoaquacrop_plotting.callbacks_export" title="geoaquacrop_plotting.callbacks_export"><code class="xref py py-mod docutils literal notranslate"><span class="pre">callbacks_export</span></code></a>.</p>
+</dd></dl>
+
+</section>
+<section id="module-geoaquacrop_plotting.layout">
+<span id="assembly"></span><h2>Assembly<a class="headerlink" href="#module-geoaquacrop_plotting.layout" title="Link to this heading"></a></h2>
+<p>Assembles the sidebar, canvas, export modal, and stores into app.layout.</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.layout.geoaquacrop_plotting.layout.STORES">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.layout.</span></span><span class="sig-name descname"><span class="pre">STORES</span></span><a class="headerlink" href="#geoaquacrop_plotting.layout.geoaquacrop_plotting.layout.STORES" title="Link to this definition"></a></dt>
+<dd><p>The fourteen <code class="xref py py-class docutils literal notranslate"><span class="pre">dash.dcc.Store</span></code> components that make up the state bus.
+They are listed with their initial values and meanings in
+<a class="reference internal" href="callbacks.html"><span class="doc">Dash Callbacks</span></a>.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="callbacks.html" class="btn btn-neutral float-left" title="Dash Callbacks" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, GIST Lab, Aalto University.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,244 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Export &mdash; GeoAquaCrop Visualizer 0.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Dash Callbacks" href="callbacks.html" />
+    <link rel="prev" title="Figure Builders" href="figures.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            GeoAquaCrop Visualizer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../overview.html#features">Features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../overview.html#simulation-outputs-tab">Simulation Outputs tab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview.html#inputs-tab">Inputs tab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview.html#export">Export</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../overview.html#package-layout">Package layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview.html#quick-start">Quick start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview.html#input-data-structure">Input data structure</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#getting-the-source">Getting the source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#installing-the-package">Installing the package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#extras">Extras</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#running-the-application">Running the application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#embedding-in-another-server">Embedding in another server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#running-the-tests">Running the tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#building-the-documentation">Building the documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../configuration.html#how-the-data-paths-are-found">How the data paths are found</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration.html#path-constants">Path constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration.html#display-constants">Display constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration.html#variable-registries">Variable registries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../configuration.html#map-variables">MAP_VARIABLES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../configuration.html#daily-variables">DAILY_VARIABLES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../configuration.html#climate-variables">CLIMATE_VARIABLES</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../architecture.html#everything-happens-at-import">Everything happens at import</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../architecture.html#dependency-order">Dependency order</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../architecture.html#what-data-derives">What <code class="docutils literal notranslate"><span class="pre">data</span></code> derives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../architecture.html#pre-computation-instead-of-per-interaction-work">Pre-computation instead of per-interaction work</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../architecture.html#caching-in-queries">Caching in <code class="docutils literal notranslate"><span class="pre">queries</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../architecture.html#keeping-the-map-fast">Keeping the map fast</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../architecture.html#patch-based-updates">Patch-based updates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../architecture.html#hover-text-via-customdata">Hover text via <code class="docutils literal notranslate"><span class="pre">customdata</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../architecture.html#region-boundary">Region boundary</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../architecture.html#state-flows-through-stores">State flows through stores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../architecture.html#invariants-the-test-suite-enforces">Invariants the test suite enforces</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="entrypoint.html">Entry Point and Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="entrypoint.html#module-geoaquacrop_plots">geoaquacrop_plots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="entrypoint.html#module-geoaquacrop_plotting">geoaquacrop_plotting</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="helpers.html">Configuration and Helpers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="helpers.html#module-geoaquacrop_plotting.config">Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="helpers.html#module-geoaquacrop_plotting.utils">Stateless helpers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="helpers.html#module-geoaquacrop_plotting.queries">Dataset accessors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="helpers.html#module-geoaquacrop_plotting.styles">Styles</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="data.html">Data, Grid, Aggregates, and Boundary</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="data.html#module-geoaquacrop_plotting.data">Data loading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data.html#module-geoaquacrop_plotting.grid">Grid geometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data.html#module-geoaquacrop_plotting.aggregates">Pre-computed aggregations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data.html#module-geoaquacrop_plotting.boundary">Region boundary</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="figures.html">Figure Builders</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="figures.html#module-geoaquacrop_plotting.figures_maps">Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="figures.html#module-geoaquacrop_plotting.figures_timeseries">Time series</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Export</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#geoaquacrop_plotting.export.export_data"><code class="docutils literal notranslate"><span class="pre">export_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="callbacks.html">Dash Callbacks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="callbacks.html#the-state-bus">The state bus</a></li>
+<li class="toctree-l3"><a class="reference internal" href="callbacks.html#module-geoaquacrop_plotting.callbacks_controls">Sidebar controls</a></li>
+<li class="toctree-l3"><a class="reference internal" href="callbacks.html#module-geoaquacrop_plotting.callbacks_selection">Selection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="callbacks.html#module-geoaquacrop_plotting.callbacks_maps">Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="callbacks.html#module-geoaquacrop_plotting.callbacks_timeseries">Time series</a></li>
+<li class="toctree-l3"><a class="reference internal" href="callbacks.html#module-geoaquacrop_plotting.callbacks_export">Export modal</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="layout.html">App Layout</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="layout.html#module-geoaquacrop_plotting.app_shell">Application shell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="layout.html#module-geoaquacrop_plotting.layout_sidebar">Sidebar column</a></li>
+<li class="toctree-l3"><a class="reference internal" href="layout.html#module-geoaquacrop_plotting.layout_panels">Main canvas column</a></li>
+<li class="toctree-l3"><a class="reference internal" href="layout.html#module-geoaquacrop_plotting.layout_export">Export modal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="layout.html#module-geoaquacrop_plotting.layout">Assembly</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">GeoAquaCrop Visualizer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">API Reference</a></li>
+      <li class="breadcrumb-item active">Export</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/export.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-geoaquacrop_plotting.export">
+<span id="export"></span><h1>Export<a class="headerlink" href="#module-geoaquacrop_plotting.export" title="Link to this heading"></a></h1>
+<p>Gridded export of daily output to NetCDF, GeoTIFF, and CSV.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.export.export_data">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.export.</span></span><span class="sig-name descname"><span class="pre">export_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">selected_cells</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">export_vars</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formats</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geoaquacrop_plotting/export.html#export_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geoaquacrop_plotting.export.export_data" title="Link to this definition"></a></dt>
+<dd><p>Export daily gridded simulation output to NetCDF, GeoTIFF, and/or CSV.</p>
+<p>Assembles a 3D array (time × y × x) for each requested variable by
+iterating over selected cells and reading their daily tables. Writes
+output files to <code class="docutils literal notranslate"><span class="pre">EXPORT_DIR</span></code> and returns a status message.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>selected_cells</strong> (<em>list</em><em> of </em><em>int</em>) – Cell IDs to include. Pass <code class="docutils literal notranslate"><span class="pre">list(cell_meta.keys())</span></code> for the whole area.</p></li>
+<li><p><strong>export_vars</strong> (<em>list</em><em> of </em><em>str</em>) – Variable names matching keys in <code class="docutils literal notranslate"><span class="pre">DAILY_VARIABLES</span></code>,
+e.g. <code class="docutils literal notranslate"><span class="pre">['Es',</span> <span class="pre">'Tr',</span> <span class="pre">'biomass']</span></code>.</p></li>
+<li><p><strong>start_date</strong> (<em>str</em>) – ISO date string for the start of the export period, e.g. <code class="docutils literal notranslate"><span class="pre">'2008-01-01'</span></code>.</p></li>
+<li><p><strong>end_date</strong> (<em>str</em>) – ISO date string for the end of the export period, e.g. <code class="docutils literal notranslate"><span class="pre">'2010-12-31'</span></code>.</p></li>
+<li><p><strong>formats</strong> (<em>list</em><em> of </em><em>str</em>) – Output format codes. Any combination of <code class="docutils literal notranslate"><span class="pre">'nc'</span></code> (NetCDF),
+<code class="docutils literal notranslate"><span class="pre">'tif'</span></code> (GeoTIFF, requires rasterio), <code class="docutils literal notranslate"><span class="pre">'csv'</span></code> (CSV).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>str</em> – Human-readable status message listing saved filenames and the output
+directory, or an error message if the date range is empty or no
+variables were exported.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>GeoTIFF export requires the <code class="docutils literal notranslate"><span class="pre">rasterio</span></code> package. If not installed, a
+warning is appended to the exported file list and GeoTIFF is skipped.
+The coordinate reference system is always EPSG:4326.</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="figures.html" class="btn btn-neutral float-left" title="Figure Builders" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="callbacks.html" class="btn btn-neutral float-right" title="Dash Callbacks" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, GIST Lab, Aalto University.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

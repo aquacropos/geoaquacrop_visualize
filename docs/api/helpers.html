@@ -1,0 +1,811 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configuration and Helpers &mdash; GeoAquaCrop Visualizer 0.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Data, Grid, Aggregates, and Boundary" href="data.html" />
+    <link rel="prev" title="Entry Point and Package" href="entrypoint.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            GeoAquaCrop Visualizer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../overview.html#features">Features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../overview.html#simulation-outputs-tab">Simulation Outputs tab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview.html#inputs-tab">Inputs tab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../overview.html#export">Export</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../overview.html#package-layout">Package layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview.html#quick-start">Quick start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../overview.html#input-data-structure">Input data structure</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#getting-the-source">Getting the source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#installing-the-package">Installing the package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#extras">Extras</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#running-the-application">Running the application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#embedding-in-another-server">Embedding in another server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#running-the-tests">Running the tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#building-the-documentation">Building the documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../configuration.html#how-the-data-paths-are-found">How the data paths are found</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration.html#path-constants">Path constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration.html#display-constants">Display constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration.html#variable-registries">Variable registries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../configuration.html#map-variables">MAP_VARIABLES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../configuration.html#daily-variables">DAILY_VARIABLES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../configuration.html#climate-variables">CLIMATE_VARIABLES</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../architecture.html#everything-happens-at-import">Everything happens at import</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../architecture.html#dependency-order">Dependency order</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../architecture.html#what-data-derives">What <code class="docutils literal notranslate"><span class="pre">data</span></code> derives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../architecture.html#pre-computation-instead-of-per-interaction-work">Pre-computation instead of per-interaction work</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../architecture.html#caching-in-queries">Caching in <code class="docutils literal notranslate"><span class="pre">queries</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../architecture.html#keeping-the-map-fast">Keeping the map fast</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../architecture.html#patch-based-updates">Patch-based updates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../architecture.html#hover-text-via-customdata">Hover text via <code class="docutils literal notranslate"><span class="pre">customdata</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../architecture.html#region-boundary">Region boundary</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../architecture.html#state-flows-through-stores">State flows through stores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../architecture.html#invariants-the-test-suite-enforces">Invariants the test suite enforces</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="entrypoint.html">Entry Point and Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="entrypoint.html#module-geoaquacrop_plots">geoaquacrop_plots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="entrypoint.html#module-geoaquacrop_plotting">geoaquacrop_plotting</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Configuration and Helpers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-geoaquacrop_plotting.config">Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-geoaquacrop_plotting.utils">Stateless helpers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-geoaquacrop_plotting.queries">Dataset accessors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-geoaquacrop_plotting.styles">Styles</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="data.html">Data, Grid, Aggregates, and Boundary</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="data.html#module-geoaquacrop_plotting.data">Data loading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data.html#module-geoaquacrop_plotting.grid">Grid geometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data.html#module-geoaquacrop_plotting.aggregates">Pre-computed aggregations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data.html#module-geoaquacrop_plotting.boundary">Region boundary</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="figures.html">Figure Builders</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="figures.html#module-geoaquacrop_plotting.figures_maps">Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="figures.html#module-geoaquacrop_plotting.figures_timeseries">Time series</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="export.html">Export</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="export.html#geoaquacrop_plotting.export.export_data"><code class="docutils literal notranslate"><span class="pre">export_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="callbacks.html">Dash Callbacks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="callbacks.html#the-state-bus">The state bus</a></li>
+<li class="toctree-l3"><a class="reference internal" href="callbacks.html#module-geoaquacrop_plotting.callbacks_controls">Sidebar controls</a></li>
+<li class="toctree-l3"><a class="reference internal" href="callbacks.html#module-geoaquacrop_plotting.callbacks_selection">Selection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="callbacks.html#module-geoaquacrop_plotting.callbacks_maps">Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="callbacks.html#module-geoaquacrop_plotting.callbacks_timeseries">Time series</a></li>
+<li class="toctree-l3"><a class="reference internal" href="callbacks.html#module-geoaquacrop_plotting.callbacks_export">Export modal</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="layout.html">App Layout</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="layout.html#module-geoaquacrop_plotting.app_shell">Application shell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="layout.html#module-geoaquacrop_plotting.layout_sidebar">Sidebar column</a></li>
+<li class="toctree-l3"><a class="reference internal" href="layout.html#module-geoaquacrop_plotting.layout_panels">Main canvas column</a></li>
+<li class="toctree-l3"><a class="reference internal" href="layout.html#module-geoaquacrop_plotting.layout_export">Export modal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="layout.html#module-geoaquacrop_plotting.layout">Assembly</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">GeoAquaCrop Visualizer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">API Reference</a></li>
+      <li class="breadcrumb-item active">Configuration and Helpers</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/helpers.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="configuration-and-helpers">
+<h1>Configuration and Helpers<a class="headerlink" href="#configuration-and-helpers" title="Link to this heading"></a></h1>
+<p>The data-free layer: the settings module, the stateless helpers, the
+read-only accessors over the loaded datasets, and the style factories.
+<code class="docutils literal notranslate"><span class="pre">config</span></code>, <code class="docutils literal notranslate"><span class="pre">utils</span></code>, and <code class="docutils literal notranslate"><span class="pre">styles</span></code> import nothing from the package that
+touches a dataset, which is why the test suite can import all three for real
+with no simulation data present.</p>
+<section id="module-geoaquacrop_plotting.config">
+<span id="configuration"></span><h2>Configuration<a class="headerlink" href="#module-geoaquacrop_plotting.config" title="Link to this heading"></a></h2>
+<p>User configuration: file paths, canvas sizes, and variable catalogues.</p>
+<p>Edit the values in this module to point the app at a different simulation
+run or to change the map/time-series canvas dimensions.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.config._ascend">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.config.</span></span><span class="sig-name descname"><span class="pre">_ascend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geoaquacrop_plotting/config.html#_ascend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geoaquacrop_plotting.config._ascend" title="Link to this definition"></a></dt>
+<dd><p>Yield <code class="docutils literal notranslate"><span class="pre">start</span></code> and each of its parent directories, up to the filesystem root.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.config._find_workspace">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.config.</span></span><span class="sig-name descname"><span class="pre">_find_workspace</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geoaquacrop_plotting/config.html#_find_workspace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geoaquacrop_plotting.config._find_workspace" title="Link to this definition"></a></dt>
+<dd><p>Locate the directory that holds the geoaquacrop-preproc/-simulate trees.</p>
+</dd></dl>
+
+<section id="path-constants">
+<h3>Path constants<a class="headerlink" href="#path-constants" title="Link to this heading"></a></h3>
+<dl class="py data">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.config.SUMMARY_PKL">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.config.</span></span><span class="sig-name descname"><span class="pre">SUMMARY_PKL</span></span><a class="headerlink" href="#geoaquacrop_plotting.config.SUMMARY_PKL" title="Link to this definition"></a></dt>
+<dd><p>Seasonal per-cell results, as a pickled list of DataFrames. The filename
+carries the timestamp of the simulation run, so edit it to switch runs.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.config.DAILY_PKL">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.config.</span></span><span class="sig-name descname"><span class="pre">DAILY_PKL</span></span><a class="headerlink" href="#geoaquacrop_plotting.config.DAILY_PKL" title="Link to this definition"></a></dt>
+<dd><p>Daily per-cell results, as a pickled list of dicts, each holding a
+<code class="docutils literal notranslate"><span class="pre">water_flux</span></code> and a <code class="docutils literal notranslate"><span class="pre">crop_growth</span></code> table. Must come from the same run as
+<a class="reference internal" href="#geoaquacrop_plotting.config.SUMMARY_PKL" title="geoaquacrop_plotting.config.SUMMARY_PKL"><code class="xref py py-data docutils literal notranslate"><span class="pre">SUMMARY_PKL</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.config.GEOJSON_PATH">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.config.</span></span><span class="sig-name descname"><span class="pre">GEOJSON_PATH</span></span><a class="headerlink" href="#geoaquacrop_plotting.config.GEOJSON_PATH" title="Link to this definition"></a></dt>
+<dd><p>The region outline, at full resolution. Read once into
+<code class="docutils literal notranslate"><span class="pre">data.region_geojson</span></code> and thinned in memory by <code class="docutils literal notranslate"><span class="pre">boundary</span></code>; no copy of it
+is bundled with the package.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.config.PROCESSED_DIR">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.config.</span></span><span class="sig-name descname"><span class="pre">PROCESSED_DIR</span></span><a class="headerlink" href="#geoaquacrop_plotting.config.PROCESSED_DIR" title="Link to this definition"></a></dt>
+<dd><p>Directory holding the preprocessed climate, crop-calendar, and SPAM grids.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.config.EXPORT_DIR">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.config.</span></span><span class="sig-name descname"><span class="pre">EXPORT_DIR</span></span><a class="headerlink" href="#geoaquacrop_plotting.config.EXPORT_DIR" title="Link to this definition"></a></dt>
+<dd><p>Where exports are written. Resolved separately from the input paths and
+unaffected by <code class="docutils literal notranslate"><span class="pre">GEOAQUACROP_ROOT</span></code>: it sits beside the package, except when
+the package is installed into <code class="docutils literal notranslate"><span class="pre">site-packages</span></code>, in which case the working
+directory is used so exports never land inside an installed environment.</p>
+</dd></dl>
+
+</section>
+<section id="display-constants">
+<h3>Display constants<a class="headerlink" href="#display-constants" title="Link to this heading"></a></h3>
+<dl class="py data">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.config.CELL_RES">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.config.</span></span><span class="sig-name descname"><span class="pre">CELL_RES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.05</span></em><a class="headerlink" href="#geoaquacrop_plotting.config.CELL_RES" title="Link to this definition"></a></dt>
+<dd><p>Grid cell resolution in decimal degrees. Must match the preprocessing grid:
+<code class="docutils literal notranslate"><span class="pre">grid</span></code> draws each cell as a square of this size centred on the cell
+coordinates, so a mismatch produces overlapping or gapped polygons.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.config.PORT">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.config.</span></span><span class="sig-name descname"><span class="pre">PORT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">8050</span></em><a class="headerlink" href="#geoaquacrop_plotting.config.PORT" title="Link to this definition"></a></dt>
+<dd><p>TCP port the Dash server listens on.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.config.MAP_HEIGHT">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.config.</span></span><span class="sig-name descname"><span class="pre">MAP_HEIGHT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">550</span></em><a class="headerlink" href="#geoaquacrop_plotting.config.MAP_HEIGHT" title="Link to this definition"></a></dt>
+<dd><p>Height in pixels of the two choropleth map panels. Also the default canvas
+height used by <a class="reference internal" href="#geoaquacrop_plotting.utils.get_auto_zoom" title="geoaquacrop_plotting.utils.get_auto_zoom"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_auto_zoom()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.config.TS_HEIGHT">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.config.</span></span><span class="sig-name descname"><span class="pre">TS_HEIGHT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">400</span></em><a class="headerlink" href="#geoaquacrop_plotting.config.TS_HEIGHT" title="Link to this definition"></a></dt>
+<dd><p>Height in pixels of the two time-series panels.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.config.BOUNDARY_SIMPLIFY_EPS">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.config.</span></span><span class="sig-name descname"><span class="pre">BOUNDARY_SIMPLIFY_EPS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.004</span></em><a class="headerlink" href="#geoaquacrop_plotting.config.BOUNDARY_SIMPLIFY_EPS" title="Link to this definition"></a></dt>
+<dd><p>Ramer-Douglas-Peucker tolerance in decimal degrees (~400 m at these
+latitudes, invisible at basin zoom) applied to the outline at startup.
+Raise it for a coarser, lighter outline; lower it for a crisper, heavier one.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.config.BOUNDARY_URL">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.config.</span></span><span class="sig-name descname"><span class="pre">BOUNDARY_URL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'/region-boundary.geojson'</span></em><a class="headerlink" href="#geoaquacrop_plotting.config.BOUNDARY_URL" title="Link to this definition"></a></dt>
+<dd><p>Path the thinned outline is served from on the Dash server. <code class="docutils literal notranslate"><span class="pre">boundary</span></code>
+registers the route here and
+<a class="reference internal" href="#geoaquacrop_plotting.queries.mapbox_layers" title="geoaquacrop_plotting.queries.mapbox_layers"><code class="xref py py-func docutils literal notranslate"><span class="pre">mapbox_layers()</span></code></a> points the map layer at
+it, so the two stay in step through this one constant.</p>
+</dd></dl>
+
+</section>
+<section id="variable-catalogues">
+<h3>Variable catalogues<a class="headerlink" href="#variable-catalogues" title="Link to this heading"></a></h3>
+<p>Full tables of every entry are in <a class="reference internal" href="../configuration.html"><span class="doc">Configuration</span></a>.</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.config.MAP_VARIABLES">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.config.</span></span><span class="sig-name descname"><span class="pre">MAP_VARIABLES</span></span><a class="headerlink" href="#geoaquacrop_plotting.config.MAP_VARIABLES" title="Link to this definition"></a></dt>
+<dd><p>Catalogue of the simulation-output variables the choropleth map can draw.
+Each key is a column in the summary pickle; each value carries <code class="docutils literal notranslate"><span class="pre">label</span></code>,
+<code class="docutils literal notranslate"><span class="pre">colorscale</span></code> (used for mean aggregation), <code class="docutils literal notranslate"><span class="pre">sum_colorscale</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">default_agg</span></code>. Adding an entry here also requires listing the key in one
+of the group constants in <code class="docutils literal notranslate"><span class="pre">styles.py</span></code> for it to reach a sidebar accordion.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.config.DAILY_VARIABLES">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.config.</span></span><span class="sig-name descname"><span class="pre">DAILY_VARIABLES</span></span><a class="headerlink" href="#geoaquacrop_plotting.config.DAILY_VARIABLES" title="Link to this definition"></a></dt>
+<dd><p>Catalogue of the daily variables the time-series panel and the export dialog
+offer. Each key is a column in one of the daily tables; each value carries
+<code class="docutils literal notranslate"><span class="pre">label</span></code>, <code class="docutils literal notranslate"><span class="pre">table</span></code> (<code class="docutils literal notranslate"><span class="pre">'water_flux'</span></code> or <code class="docutils literal notranslate"><span class="pre">'crop_growth'</span></code>), and <code class="docutils literal notranslate"><span class="pre">color</span></code>.
+On export the parenthesised tail of <code class="docutils literal notranslate"><span class="pre">label</span></code> becomes the NetCDF <code class="docutils literal notranslate"><span class="pre">units</span></code>.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.config.CLIMATE_VARIABLES">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.config.</span></span><span class="sig-name descname"><span class="pre">CLIMATE_VARIABLES</span></span><a class="headerlink" href="#geoaquacrop_plotting.config.CLIMATE_VARIABLES" title="Link to this definition"></a></dt>
+<dd><p>Catalogue of the climate forcing variables. Each key matches both a NetCDF
+variable name and the <code class="docutils literal notranslate"><span class="pre">&lt;Variable&gt;</span></code> part of the filename in
+<a class="reference internal" href="#geoaquacrop_plotting.config.PROCESSED_DIR" title="geoaquacrop_plotting.config.PROCESSED_DIR"><code class="xref py py-data docutils literal notranslate"><span class="pre">PROCESSED_DIR</span></code></a>. Each value carries <code class="docutils literal notranslate"><span class="pre">label</span></code> (daily axis),
+<code class="docutils literal notranslate"><span class="pre">map_label</span></code> (the choropleth reduces over the period, so its units differ),
+<code class="docutils literal notranslate"><span class="pre">unit</span></code>, <code class="docutils literal notranslate"><span class="pre">color</span></code>, and <code class="docutils literal notranslate"><span class="pre">colorscale</span></code>.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.config.IRR_MAP">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.config.</span></span><span class="sig-name descname"><span class="pre">IRR_MAP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'irrigated':</span> <span class="pre">'ir',</span> <span class="pre">'rainfed':</span> <span class="pre">'rf'}</span></em><a class="headerlink" href="#geoaquacrop_plotting.config.IRR_MAP" title="Link to this definition"></a></dt>
+<dd><p>Maps the irrigation names used in the simulation output to the two-letter
+codes used in the crop-calendar and SPAM variable names. Shared by
+<a class="reference internal" href="#geoaquacrop_plotting.queries.spam_vars_for_crop" title="geoaquacrop_plotting.queries.spam_vars_for_crop"><code class="xref py py-func docutils literal notranslate"><span class="pre">spam_vars_for_crop()</span></code></a>,
+<a class="reference internal" href="#geoaquacrop_plotting.queries.get_cropcal_summary" title="geoaquacrop_plotting.queries.get_cropcal_summary"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_cropcal_summary()</span></code></a>, and
+<a class="reference internal" href="figures.html#geoaquacrop_plotting.figures_timeseries.build_input_ts" title="geoaquacrop_plotting.figures_timeseries.build_input_ts"><code class="xref py py-func docutils literal notranslate"><span class="pre">build_input_ts()</span></code></a>.</p>
+</dd></dl>
+
+</section>
+</section>
+<section id="module-geoaquacrop_plotting.utils">
+<span id="stateless-helpers"></span><h2>Stateless helpers<a class="headerlink" href="#module-geoaquacrop_plotting.utils" title="Link to this heading"></a></h2>
+<p>Stateless helper functions that do not touch the loaded datasets.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.utils.get_auto_zoom">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.utils.</span></span><span class="sig-name descname"><span class="pre">get_auto_zoom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map_width_px</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map_height_px</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">MAP_HEIGHT</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geoaquacrop_plotting/utils.html#get_auto_zoom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geoaquacrop_plotting.utils.get_auto_zoom" title="Link to this definition"></a></dt>
+<dd><p>Compute an appropriate Mapbox zoom level for a given spatial extent.</p>
+<p>Uses the Web Mercator tile formula to derive a zoom level that fits the
+bounding box within the specified map canvas size. Falls back to zoom 8.5
+when the spatial extent is degenerate (zero span in either dimension).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>min_lon</strong> (<em>float</em>) – Western boundary longitude in decimal degrees.</p></li>
+<li><p><strong>max_lon</strong> (<em>float</em>) – Eastern boundary longitude in decimal degrees.</p></li>
+<li><p><strong>min_lat</strong> (<em>float</em>) – Southern boundary latitude in decimal degrees.</p></li>
+<li><p><strong>max_lat</strong> (<em>float</em>) – Northern boundary latitude in decimal degrees.</p></li>
+<li><p><strong>map_width_px</strong> (<em>int</em><em>, </em><em>optional</em>) – Canvas width in pixels used for zoom calculation. Default is 1300.</p></li>
+<li><p><strong>map_height_px</strong> (<em>int</em><em>, </em><em>optional</em>) – Canvas height in pixels used for zoom calculation. Default is MAP_HEIGHT.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>float</em> – Zoom level rounded to one decimal place, reduced by 0.5 from the
+tile-exact value to add a margin around the extent.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.utils.hex_to_rgba">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.utils.</span></span><span class="sig-name descname"><span class="pre">hex_to_rgba</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hex_color</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geoaquacrop_plotting/utils.html#hex_to_rgba"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geoaquacrop_plotting.utils.hex_to_rgba" title="Link to this definition"></a></dt>
+<dd><p>Convert a CSS hex colour string to an <code class="docutils literal notranslate"><span class="pre">rgba()</span></code> string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hex_color</strong> (<em>str</em>) – Six-character hex colour with leading <code class="docutils literal notranslate"><span class="pre">#</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">'#2980b9'</span></code>.</p></li>
+<li><p><strong>alpha</strong> (<em>float</em>) – Opacity value between 0.0 (transparent) and 1.0 (opaque).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>str</em> – CSS colour string of the form <code class="docutils literal notranslate"><span class="pre">'rgba(r,</span> <span class="pre">g,</span> <span class="pre">b,</span> <span class="pre">alpha)'</span></code>.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">hex_to_rgba</span><span class="p">(</span><span class="s1">'#ff0000'</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="go">'rgba(255,0,0,0.5)'</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.utils.safe_date">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.utils.</span></span><span class="sig-name descname"><span class="pre">safe_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">month</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">day</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geoaquacrop_plotting/utils.html#safe_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geoaquacrop_plotting.utils.safe_date" title="Link to this definition"></a></dt>
+<dd><p>Construct a Timestamp, clamping the day to the valid range for the month.</p>
+<p>Prevents <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> when a day value such as 31 is passed for a month
+with fewer days (e.g. February, April). Used in the export date pickers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>year</strong> (<em>int</em>) – Four-digit calendar year.</p></li>
+<li><p><strong>month</strong> (<em>int</em>) – Month number between 1 and 12.</p></li>
+<li><p><strong>day</strong> (<em>int</em>) – Requested day number. Clamped to the maximum valid day if too large.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>pandas.Timestamp</em> – Valid timestamp for the given year and month, with day clamped.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">safe_date</span><span class="p">(</span><span class="mi">2008</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">31</span><span class="p">)</span>
+<span class="go">Timestamp('2008-02-29 00:00:00')</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.utils.rdp_keep_mask">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.utils.</span></span><span class="sig-name descname"><span class="pre">rdp_keep_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geoaquacrop_plotting/utils.html#rdp_keep_mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geoaquacrop_plotting.utils.rdp_keep_mask" title="Link to this definition"></a></dt>
+<dd><p>Mark the points an RDP simplification of a polyline would keep.</p>
+<p>Iterative Ramer-Douglas-Peucker: the segment furthest from the straight
+line joining the endpoints is kept if it lies more than <code class="docutils literal notranslate"><span class="pre">eps</span></code> away, and
+the two halves either side of it are then processed the same way. The loop
+carries its own stack rather than recursing, so ring length cannot exhaust
+the interpreter’s recursion limit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>points</strong> (<em>numpy.ndarray</em>) – Vertices as an <code class="docutils literal notranslate"><span class="pre">(N,</span> <span class="pre">2)</span></code> float array.</p></li>
+<li><p><strong>eps</strong> (<em>float</em>) – Tolerance in the units of <code class="docutils literal notranslate"><span class="pre">points</span></code> — degrees, for lon/lat input.
+A vertex is dropped when it lies within <code class="docutils literal notranslate"><span class="pre">eps</span></code> of the line it would
+otherwise bend.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>numpy.ndarray</em> – Boolean mask of length <code class="docutils literal notranslate"><span class="pre">N</span></code>. The first and last points are always
+kept, so the polyline keeps its endpoints.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.utils.simplify_ring">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.utils.</span></span><span class="sig-name descname"><span class="pre">simplify_ring</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ring</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">BOUNDARY_SIMPLIFY_EPS</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decimals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geoaquacrop_plotting/utils.html#simplify_ring"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geoaquacrop_plotting.utils.simplify_ring" title="Link to this definition"></a></dt>
+<dd><p>Simplify one polygon ring, keeping it closed and valid.</p>
+<p>Runs <a class="reference internal" href="#geoaquacrop_plotting.utils.rdp_keep_mask" title="geoaquacrop_plotting.utils.rdp_keep_mask"><code class="xref py py-func docutils literal notranslate"><span class="pre">rdp_keep_mask()</span></code></a> over the ring, rounds the survivors to
+<code class="docutils literal notranslate"><span class="pre">decimals</span></code> places (five is ~1 m at these latitudes, and shortens the
+serialised output considerably), and re-closes the ring if rounding or
+simplification separated its first and last point.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ring</strong> (<em>sequence</em>) – Ring vertices, as accepted by <code class="docutils literal notranslate"><span class="pre">numpy.asarray</span></code> — an <code class="docutils literal notranslate"><span class="pre">(N,</span> <span class="pre">2)</span></code>
+sequence of <code class="docutils literal notranslate"><span class="pre">[lon,</span> <span class="pre">lat]</span></code> pairs.</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – RDP tolerance in degrees. Defaults to
+<a class="reference internal" href="#geoaquacrop_plotting.config.BOUNDARY_SIMPLIFY_EPS" title="geoaquacrop_plotting.config.BOUNDARY_SIMPLIFY_EPS"><code class="xref py py-data docutils literal notranslate"><span class="pre">BOUNDARY_SIMPLIFY_EPS</span></code></a>.</p></li>
+<li><p><strong>decimals</strong> (<em>int</em><em>, </em><em>optional</em>) – Coordinate rounding precision. Default is 5.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>list or None</em> – The simplified closed ring as a list of <code class="docutils literal notranslate"><span class="pre">[lon,</span> <span class="pre">lat]</span></code> pairs, or
+<code class="docutils literal notranslate"><span class="pre">None</span></code> if it collapsed below the four points a closed ring needs —
+which is what becomes of specks smaller than the tolerance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.utils.simplify_geojson">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.utils.</span></span><span class="sig-name descname"><span class="pre">simplify_geojson</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geojson</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">BOUNDARY_SIMPLIFY_EPS</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geoaquacrop_plotting/utils.html#simplify_geojson"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geoaquacrop_plotting.utils.simplify_geojson" title="Link to this definition"></a></dt>
+<dd><p>Thin every polygon in a GeoJSON FeatureCollection for use as a line overlay.</p>
+<p>Each ring goes through <a class="reference internal" href="#geoaquacrop_plotting.utils.simplify_ring" title="geoaquacrop_plotting.utils.simplify_ring"><code class="xref py py-func docutils literal notranslate"><span class="pre">simplify_ring()</span></code></a>; rings that collapse are
+dropped, and features left with no rings at all disappear with them.
+Properties are discarded — the overlay draws an outline and never reads
+them — as is any <code class="docutils literal notranslate"><span class="pre">crs</span></code> member, since GeoJSON is WGS84 by definition.
+MultiPolygons are flattened into one Feature per polygon.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>geojson</strong> (<em>dict</em>) – A parsed GeoJSON FeatureCollection of Polygon and/or MultiPolygon
+features.</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – RDP tolerance in degrees. Defaults to
+<a class="reference internal" href="#geoaquacrop_plotting.config.BOUNDARY_SIMPLIFY_EPS" title="geoaquacrop_plotting.config.BOUNDARY_SIMPLIFY_EPS"><code class="xref py py-data docutils literal notranslate"><span class="pre">BOUNDARY_SIMPLIFY_EPS</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>dict</em> – A new FeatureCollection of property-less Polygon features. The input
+is not modified.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-geoaquacrop_plotting.queries">
+<span id="dataset-accessors"></span><h2>Dataset accessors<a class="headerlink" href="#module-geoaquacrop_plotting.queries" title="Link to this heading"></a></h2>
+<p>Read-only accessors over the loaded datasets.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.queries.spam_vars_for_crop">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.queries.</span></span><span class="sig-name descname"><span class="pre">spam_vars_for_crop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">crop_irr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geoaquacrop_plotting/queries.html#spam_vars_for_crop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geoaquacrop_plotting.queries.spam_vars_for_crop" title="Link to this definition"></a></dt>
+<dd><p>Find SPAM physical area variable names matching a crop and irrigation type.</p>
+<p>Performs an exact capitalize match first, then falls back to a
+case-insensitive scan of all available SPAM variable keys. Returns an
+empty list when no matching data exists for the crop and irrigation
+combination (e.g. rainfed data not available for an irrigated crop).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>crop_irr</strong> (<em>str</em>) – Crop and irrigation string in the format <code class="docutils literal notranslate"><span class="pre">'CropName</span> <span class="pre">|</span> <span class="pre">irrigation'</span></code>,
+e.g. <code class="docutils literal notranslate"><span class="pre">'Maize</span> <span class="pre">|</span> <span class="pre">rainfed'</span></code> or <code class="docutils literal notranslate"><span class="pre">'PaddyRice1</span> <span class="pre">|</span> <span class="pre">irrigated'</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>list of str</em> – List containing the matching SPAM variable name, or an empty list
+if no match is found. Currently returns at most one element.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">spam_vars_for_crop</span><span class="p">(</span><span class="s1">'Maize | rainfed'</span><span class="p">)</span>
+<span class="go">['Maize_rf_physical_area']</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">spam_vars_for_crop</span><span class="p">(</span><span class="s1">'Wheat | irrigated'</span><span class="p">)</span>
+<span class="go">[]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.queries.get_cropcal_summary">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.queries.</span></span><span class="sig-name descname"><span class="pre">get_cropcal_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">crop_irr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geoaquacrop_plotting/queries.html#get_cropcal_summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geoaquacrop_plotting.queries.get_cropcal_summary" title="Link to this definition"></a></dt>
+<dd><p>Extract crop calendar information for a given crop and irrigation type.</p>
+<p>Reads planting DOY and growing season length from the preprocessed
+<code class="docutils literal notranslate"><span class="pre">cropcalendar.nc</span></code> dataset and computes an approximate harvest date.
+Returns <code class="docutils literal notranslate"><span class="pre">None</span></code> silently on any error or missing data, so callers
+do not need to handle exceptions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>crop_irr</strong> (<em>str</em>) – Crop and irrigation string in the format <code class="docutils literal notranslate"><span class="pre">'CropName</span> <span class="pre">|</span> <span class="pre">irrigation'</span></code>,
+e.g. <code class="docutils literal notranslate"><span class="pre">'Maize</span> <span class="pre">|</span> <span class="pre">rainfed'</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><em>dict or None</em> – Dictionary with keys:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'planting'</span></code> (<em>str</em>) — formatted planting date, e.g. <code class="docutils literal notranslate"><span class="pre">'May</span> <span class="pre">22'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'planting_doy'</span></code> (<em>int</em>) — day of year of planting</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'season_length'</span></code> (<em>int</em> or <em>None</em>) — growing season length in days</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'harvest'</span></code> (<em>str</em>) — approximate harvest date, e.g. <code class="docutils literal notranslate"><span class="pre">'Oct</span> <span class="pre">06'</span></code></p></li>
+</ul>
+<p>Returns <code class="docutils literal notranslate"><span class="pre">None</span></code> if the crop is not found in the crop calendar dataset
+or if all DOY values are NaN or zero.</p>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.queries._get_cropcal_summary_cached">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.queries.</span></span><span class="sig-name descname"><span class="pre">_get_cropcal_summary_cached</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">crop_irr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geoaquacrop_plotting/queries.html#_get_cropcal_summary_cached"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geoaquacrop_plotting.queries._get_cropcal_summary_cached" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.queries.get_daily">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.queries.</span></span><span class="sig-name descname"><span class="pre">get_daily</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cell_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geoaquacrop_plotting/queries.html#get_daily"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geoaquacrop_plotting.queries.get_daily" title="Link to this definition"></a></dt>
+<dd><p>Retrieve daily water flux and crop growth tables for a single cell.</p>
+<p>Looks up the cell in <code class="docutils literal notranslate"><span class="pre">cell_id_to_idx</span></code>, retrieves the corresponding
+entry from <code class="docutils literal notranslate"><span class="pre">daily_raw</span></code>, and attaches a <code class="docutils literal notranslate"><span class="pre">date</span></code> column derived from
+<code class="docutils literal notranslate"><span class="pre">sim_start</span></code> and the row index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cell_id</strong> (<em>int</em>) – Integer cell identifier as used in <code class="docutils literal notranslate"><span class="pre">cell_meta</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>wf</strong> (<em>pandas.DataFrame or None</em>) – Daily water flux table with a <code class="docutils literal notranslate"><span class="pre">date</span></code> column added. Contains columns
+Es, EsPot, Tr, TrPot, Infl, Runoff, DeepPerc, Wr, season_counter.
+Returns <code class="docutils literal notranslate"><span class="pre">None</span></code> if the cell is not found or its data is missing.</p></li>
+<li><p><strong>cg</strong> (<em>pandas.DataFrame or None</em>) – Daily crop growth table with a <code class="docutils literal notranslate"><span class="pre">date</span></code> column added. Contains columns
+biomass, canopy_cover, gdd_cum, z_root, DryYield.
+Returns <code class="docutils literal notranslate"><span class="pre">None</span></code> alongside <code class="docutils literal notranslate"><span class="pre">wf</span></code> when data is unavailable.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.queries.get_climate_series">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.queries.</span></span><span class="sig-name descname"><span class="pre">get_climate_series</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">var</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geoaquacrop_plotting/queries.html#get_climate_series"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geoaquacrop_plotting.queries.get_climate_series" title="Link to this definition"></a></dt>
+<dd><p>Extract a daily climate time series at the nearest grid point to (x, y).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>var</strong> (<em>str</em>) – Climate variable name matching a key in <code class="docutils literal notranslate"><span class="pre">CLIMATE_VARIABLES</span></code>,
+e.g. <code class="docutils literal notranslate"><span class="pre">'Precipitation'</span></code>, <code class="docutils literal notranslate"><span class="pre">'MaxTemp'</span></code>.</p></li>
+<li><p><strong>x</strong> (<em>float</em>) – Longitude of the target location in decimal degrees.</p></li>
+<li><p><strong>y</strong> (<em>float</em>) – Latitude of the target location in decimal degrees.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>pandas.DataFrame or None</em> – Two-column DataFrame with columns <code class="docutils literal notranslate"><span class="pre">['date',</span> <span class="pre">var]</span></code>.
+Returns <code class="docutils literal notranslate"><span class="pre">None</span></code> if the variable is not loaded in <code class="docutils literal notranslate"><span class="pre">climate_ds</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.queries.get_climate_map_values">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.queries.</span></span><span class="sig-name descname"><span class="pre">get_climate_map_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">var</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">season_label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geoaquacrop_plotting/queries.html#get_climate_map_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geoaquacrop_plotting.queries.get_climate_map_values" title="Link to this definition"></a></dt>
+<dd><p>Compute spatially aggregated climate values for choropleth map display.</p>
+<p>Averages (or sums for precipitation and reference ET) the climate variable over the
+selected time period. Uses xarray’s vectorised selection for efficiency.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>var</strong> (<em>str</em>) – Climate variable name matching a key in <code class="docutils literal notranslate"><span class="pre">CLIMATE_VARIABLES</span></code>.</p></li>
+<li><p><strong>season_label</strong> (<em>str</em>) – Either <code class="docutils literal notranslate"><span class="pre">'all'</span></code> for the full simulation period, or a four-digit
+year string (e.g. <code class="docutils literal notranslate"><span class="pre">'2008'</span></code>) for a single year.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>xarray.DataArray or None</em> – 2D spatial array of aggregated values with dimensions <code class="docutils literal notranslate"><span class="pre">(y,</span> <span class="pre">x)</span></code>.
+Returns <code class="docutils literal notranslate"><span class="pre">None</span></code> if the variable is not loaded in <code class="docutils literal notranslate"><span class="pre">climate_ds</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.queries.get_climate_map_z">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.queries.</span></span><span class="sig-name descname"><span class="pre">get_climate_map_z</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">var</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">season_label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geoaquacrop_plotting/queries.html#get_climate_map_z"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geoaquacrop_plotting.queries.get_climate_map_z" title="Link to this definition"></a></dt>
+<dd><p>Per-cell aggregated climate values ready for a choropleth <code class="docutils literal notranslate"><span class="pre">z</span></code> array.</p>
+<p>Wraps <a class="reference internal" href="#geoaquacrop_plotting.queries.get_climate_map_values" title="geoaquacrop_plotting.queries.get_climate_map_values"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_climate_map_values()</span></code></a> and the nearest-neighbour selection
+onto the cell centroids, then caches the result keyed by
+<code class="docutils literal notranslate"><span class="pre">(var,</span> <span class="pre">season_label)</span></code>. The first call forces the xarray reduction into
+memory; every later call for the same key is a dictionary lookup.</p>
+<p>Each cached entry is one tuple of ~19k floats (~150 KB); the full set of
+variable/season combinations totals a few megabytes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>tuple of float or None</em> – Per-cell values in <code class="docutils literal notranslate"><span class="pre">_cell_ids_arr</span></code> order, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if the
+variable is not loaded.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.queries.get_cropcal_values">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.queries.</span></span><span class="sig-name descname"><span class="pre">get_cropcal_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">var_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geoaquacrop_plotting/queries.html#get_cropcal_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geoaquacrop_plotting.queries.get_cropcal_values" title="Link to this definition"></a></dt>
+<dd><p>Extract a single scalar value from the crop calendar dataset at (x, y).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>var_name</strong> (<em>str</em>) – Variable name in <code class="docutils literal notranslate"><span class="pre">cropcal_ds</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">'Maize_rf_planting'</span></code>.</p></li>
+<li><p><strong>x</strong> (<em>float</em>) – Longitude in decimal degrees.</p></li>
+<li><p><strong>y</strong> (<em>float</em>) – Latitude in decimal degrees.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>float or None</em> – Nearest-neighbour interpolated value, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if the variable
+is not present in <code class="docutils literal notranslate"><span class="pre">cropcal_ds</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.queries.mapbox_layers">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.queries.</span></span><span class="sig-name descname"><span class="pre">mapbox_layers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geoaquacrop_plotting/queries.html#mapbox_layers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geoaquacrop_plotting.queries.mapbox_layers" title="Link to this definition"></a></dt>
+<dd><p>Return the shared Mapbox layer stack used by all map figures.</p>
+<p>A raster tile layer (ESRI World Topo Map) plus a GeoJSON line layer tracing
+the region boundary, the latter loaded by URL from the route
+<a class="reference internal" href="data.html#geoaquacrop_plotting.boundary.serve_region_boundary" title="geoaquacrop_plotting.boundary.serve_region_boundary"><code class="xref py py-func docutils literal notranslate"><span class="pre">serve_region_boundary()</span></code></a> so the geometry
+is fetched once and browser-cached instead of embedded in each figure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>list of dict</em> – Map layer specification dicts compatible with
+<code class="docutils literal notranslate"><span class="pre">go.Layout(map=dict(layers=...))</span></code> (MapLibre).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.queries.geoaquacrop_plotting.queries.MAPBOX_LAYERS">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.queries.</span></span><span class="sig-name descname"><span class="pre">MAPBOX_LAYERS</span></span><a class="headerlink" href="#geoaquacrop_plotting.queries.geoaquacrop_plotting.queries.MAPBOX_LAYERS" title="Link to this definition"></a></dt>
+<dd><p>The shared map layer stack, built once at import: an ESRI World Topo raster
+tile layer below the traces, and a GeoJSON line layer pointing at
+<a class="reference internal" href="#geoaquacrop_plotting.config.BOUNDARY_URL" title="geoaquacrop_plotting.config.BOUNDARY_URL"><code class="xref py py-data docutils literal notranslate"><span class="pre">BOUNDARY_URL</span></code></a>. Returned by
+<a class="reference internal" href="#geoaquacrop_plotting.queries.mapbox_layers" title="geoaquacrop_plotting.queries.mapbox_layers"><code class="xref py py-func docutils literal notranslate"><span class="pre">mapbox_layers()</span></code></a>.</p>
+</dd></dl>
+
+</section>
+<section id="module-geoaquacrop_plotting.styles">
+<span id="styles"></span><h2>Styles<a class="headerlink" href="#module-geoaquacrop_plotting.styles" title="Link to this heading"></a></h2>
+<p>Style constants, button/dropdown style factories, and sidebar widgets.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.styles.btn_style">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.styles.</span></span><span class="sig-name descname"><span class="pre">btn_style</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">active</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geoaquacrop_plotting/styles.html#btn_style"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geoaquacrop_plotting.styles.btn_style" title="Link to this definition"></a></dt>
+<dd><p>Generate an inline style dict for a toggle button.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>active</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the button is rendered with a filled background using
+the palette’s border colour and white text. If <code class="docutils literal notranslate"><span class="pre">False</span></code>, it uses
+the light background colour with dark text.</p></li>
+<li><p><strong>color</strong> (<em>str</em>) – Named palette key. One of <code class="docutils literal notranslate"><span class="pre">'blue'</span></code>, <code class="docutils literal notranslate"><span class="pre">'green'</span></code>, <code class="docutils literal notranslate"><span class="pre">'orange'</span></code>,
+<code class="docutils literal notranslate"><span class="pre">'purple'</span></code>, <code class="docutils literal notranslate"><span class="pre">'teal'</span></code>, <code class="docutils literal notranslate"><span class="pre">'red'</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>dict</em> – CSS property dict suitable for use as a Dash component <code class="docutils literal notranslate"><span class="pre">style</span></code>
+argument.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.styles.dd_style">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.styles.</span></span><span class="sig-name descname"><span class="pre">dd_style</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'80px'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geoaquacrop_plotting/styles.html#dd_style"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geoaquacrop_plotting.styles.dd_style" title="Link to this definition"></a></dt>
+<dd><p>Generate an inline style dict for an inline dropdown component.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>w</strong> (<em>str</em><em>, </em><em>optional</em>) – CSS width string for the dropdown. Default is <code class="docutils literal notranslate"><span class="pre">'80px'</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>dict</em> – CSS property dict for use as a Dash <code class="docutils literal notranslate"><span class="pre">dcc.Dropdown</span></code> style argument.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.styles._sec_hdr">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.styles.</span></span><span class="sig-name descname"><span class="pre">_sec_hdr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geoaquacrop_plotting/styles.html#_sec_hdr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geoaquacrop_plotting.styles._sec_hdr" title="Link to this definition"></a></dt>
+<dd><p>Create a styled section header <code class="docutils literal notranslate"><span class="pre">html.Div</span></code> for the sidebar.</p>
+<p>Renders text in uppercase with increased letter spacing, bold weight,
+and black colour matching the sidebar design system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>text</strong> (<em>str</em>) – Header label text, e.g. <code class="docutils literal notranslate"><span class="pre">'Map</span> <span class="pre">Variable'</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>dash.html.Div</em> – Styled div element for use in the sidebar layout.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.styles._ctrl_label">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.styles.</span></span><span class="sig-name descname"><span class="pre">_ctrl_label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geoaquacrop_plotting/styles.html#_ctrl_label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geoaquacrop_plotting.styles._ctrl_label" title="Link to this definition"></a></dt>
+<dd><p>Create a styled control label element for the sidebar.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>text</strong> (<em>str</em>) – Label text, e.g. <code class="docutils literal notranslate"><span class="pre">'Crop</span> <span class="pre">&amp;</span> <span class="pre">Irrigation'</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>dash.html.Label</em> – Styled label element displayed as a block above a dropdown control.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.styles._map_dd_opts">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.styles.</span></span><span class="sig-name descname"><span class="pre">_map_dd_opts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keys</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geoaquacrop_plotting/styles.html#_map_dd_opts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geoaquacrop_plotting.styles._map_dd_opts" title="Link to this definition"></a></dt>
+<dd><p>Build dropdown option dicts for map variable keys.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>keys</strong> (<em>list</em><em> of </em><em>str</em>) – Subset of <code class="docutils literal notranslate"><span class="pre">MAP_VARIABLES</span></code> keys to include.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>list of dict</em> – List of <code class="docutils literal notranslate"><span class="pre">{'label':</span> <span class="pre">...,</span> <span class="pre">'value':</span> <span class="pre">...}</span></code> dicts using the variable’s
+<code class="docutils literal notranslate"><span class="pre">label</span></code> field as the display text.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="geoaquacrop_plotting.styles._daily_dd_opts">
+<span class="sig-prename descclassname"><span class="pre">geoaquacrop_plotting.styles.</span></span><span class="sig-name descname"><span class="pre">_daily_dd_opts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keys</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geoaquacrop_plotting/styles.html#_daily_dd_opts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geoaquacrop_plotting.styles._daily_dd_opts" title="Link to this definition"></a></dt>
+<dd><p>Build dropdown option dicts for daily variable keys.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>keys</strong> (<em>list</em><em> of </em><em>str</em>) – Subset of <code class="docutils literal notranslate"><span class="pre">DAILY_VARIABLES</span></code> keys to include.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>list of dict</em> – List of <code class="docutils literal notranslate"><span class="pre">{'label':</span> <span class="pre">...,</span> <span class="pre">'value':</span> <span class="pre">...}</span></code> dicts using the variable’s
+<code class="docutils literal notranslate"><span class="pre">label</span></code> field as the display text.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="entrypoint.html" class="btn btn-neutral float-left" title="Entry Point and Package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="data.html" class="btn btn-neutral float-right" title="Data, Grid, Aggregates, and Boundary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, GIST Lab, Aalto University.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
