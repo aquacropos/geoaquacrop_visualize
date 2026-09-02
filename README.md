@@ -79,7 +79,7 @@ The app expects three sibling directories under one workspace folder:
 <workspace>/
 ├── geoaquacrop-preproc/            # preprocessed model inputs
 │   ├── inputdata/
-│   │   └── <region_boundary>.geojson     # region outline
+│   │   └── region_boundary.geojson     # region outline
 │   └── processed/
 │       ├── MaxTemp*.nc  MinTemp*.nc  Precipitation*.nc  ReferenceET*.nc
 │       ├── cropcalendar.nc
