@@ -1,0 +1,21 @@
+Figure Builders
+===============
+
+These functions construct complete Plotly figures. They are called once to
+build the initial layout; afterwards the callbacks in ``callbacks_maps``
+patch individual trace properties rather than calling them again. See
+:doc:`../architecture` for the trace-order contract that makes those patches
+safe.
+
+Maps
+----
+
+.. automodule:: geoaquacrop_plotting.figures_maps
+   :members:
+
+Time series
+-----------
+
+.. automodule:: geoaquacrop_plotting.figures_timeseries
+   :members:
+   :private-members: _add_mean_std_band

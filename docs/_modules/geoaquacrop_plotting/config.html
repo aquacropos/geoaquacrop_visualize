@@ -1,0 +1,402 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>geoaquacrop_plotting.config &mdash; GeoAquaCrop Visualizer 0.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            GeoAquaCrop Visualizer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../overview.html#features">Features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../overview.html#simulation-outputs-tab">Simulation Outputs tab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../overview.html#inputs-tab">Inputs tab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../overview.html#export">Export</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview.html#package-layout">Package layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview.html#quick-start">Quick start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview.html#input-data-structure">Input data structure</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#getting-the-source">Getting the source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#installing-the-package">Installing the package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../installation.html#extras">Extras</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#running-the-application">Running the application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#embedding-in-another-server">Embedding in another server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#running-the-tests">Running the tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#building-the-documentation">Building the documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../configuration.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../configuration.html#how-the-data-paths-are-found">How the data paths are found</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configuration.html#path-constants">Path constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configuration.html#display-constants">Display constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configuration.html#variable-registries">Variable registries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../configuration.html#map-variables">MAP_VARIABLES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../configuration.html#daily-variables">DAILY_VARIABLES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../configuration.html#climate-variables">CLIMATE_VARIABLES</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../architecture.html#everything-happens-at-import">Everything happens at import</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../architecture.html#dependency-order">Dependency order</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../architecture.html#what-data-derives">What <code class="docutils literal notranslate"><span class="pre">data</span></code> derives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../architecture.html#pre-computation-instead-of-per-interaction-work">Pre-computation instead of per-interaction work</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../architecture.html#caching-in-queries">Caching in <code class="docutils literal notranslate"><span class="pre">queries</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../architecture.html#keeping-the-map-fast">Keeping the map fast</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../architecture.html#patch-based-updates">Patch-based updates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../architecture.html#hover-text-via-customdata">Hover text via <code class="docutils literal notranslate"><span class="pre">customdata</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../architecture.html#region-boundary">Region boundary</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../architecture.html#state-flows-through-stores">State flows through stores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../architecture.html#invariants-the-test-suite-enforces">Invariants the test suite enforces</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/entrypoint.html">Entry Point and Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/entrypoint.html#module-geoaquacrop_plots">geoaquacrop_plots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/entrypoint.html#module-geoaquacrop_plotting">geoaquacrop_plotting</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/helpers.html">Configuration and Helpers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/helpers.html#module-geoaquacrop_plotting.config">Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/helpers.html#module-geoaquacrop_plotting.utils">Stateless helpers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/helpers.html#module-geoaquacrop_plotting.queries">Dataset accessors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/helpers.html#module-geoaquacrop_plotting.styles">Styles</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/data.html">Data, Grid, Aggregates, and Boundary</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/data.html#module-geoaquacrop_plotting.data">Data loading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/data.html#module-geoaquacrop_plotting.grid">Grid geometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/data.html#module-geoaquacrop_plotting.aggregates">Pre-computed aggregations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/data.html#module-geoaquacrop_plotting.boundary">Region boundary</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/figures.html">Figure Builders</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/figures.html#module-geoaquacrop_plotting.figures_maps">Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/figures.html#module-geoaquacrop_plotting.figures_timeseries">Time series</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/export.html">Export</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/export.html#geoaquacrop_plotting.export.export_data"><code class="docutils literal notranslate"><span class="pre">export_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/callbacks.html">Dash Callbacks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/callbacks.html#the-state-bus">The state bus</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/callbacks.html#module-geoaquacrop_plotting.callbacks_controls">Sidebar controls</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/callbacks.html#module-geoaquacrop_plotting.callbacks_selection">Selection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/callbacks.html#module-geoaquacrop_plotting.callbacks_maps">Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/callbacks.html#module-geoaquacrop_plotting.callbacks_timeseries">Time series</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/callbacks.html#module-geoaquacrop_plotting.callbacks_export">Export modal</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/layout.html">App Layout</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/layout.html#module-geoaquacrop_plotting.app_shell">Application shell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/layout.html#module-geoaquacrop_plotting.layout_sidebar">Sidebar column</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/layout.html#module-geoaquacrop_plotting.layout_panels">Main canvas column</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/layout.html#module-geoaquacrop_plotting.layout_export">Export modal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/layout.html#module-geoaquacrop_plotting.layout">Assembly</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">GeoAquaCrop Visualizer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">geoaquacrop_plotting.config</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for geoaquacrop_plotting.config</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""User configuration: file paths, canvas sizes, and variable catalogues.</span>
+
+<span class="sd">Edit the values in this module to point the app at a different simulation</span>
+<span class="sd">run or to change the map/time-series canvas dimensions.</span>
+<span class="sd">"""</span>
+
+<span class="c1"># ╔══════════════════════════════════════════════════════════════════════════════╗</span>
+<span class="c1"># ║                        USER CONFIGURATION                                  ║</span>
+<span class="c1"># ╚══════════════════════════════════════════════════════════════════════════════╝</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="c1"># ── Where the data lives ──────────────────────────────────────────────────────</span>
+<span class="c1"># The simulation and preprocessing outputs sit in sibling checkouts:</span>
+<span class="c1">#</span>
+<span class="c1">#     &lt;workspace&gt;/geoaquacrop-preproc/</span>
+<span class="c1">#     &lt;workspace&gt;/geoaquacrop-simulate/</span>
+<span class="c1">#     &lt;workspace&gt;/Geoaquacrop-visualizer2/   ← this project</span>
+<span class="c1">#</span>
+<span class="c1"># _WORKSPACE is found by walking up from this file, and then from the working</span>
+<span class="c1"># directory, until a folder containing geoaquacrop-preproc turns up. That keeps</span>
+<span class="c1"># working from a source checkout, from an editable install, and from a plain</span>
+<span class="c1"># `pip install .` where the package is copied into site-packages.</span>
+<span class="c1">#</span>
+<span class="c1"># To point the app somewhere else, either set the GEOAQUACROP_ROOT environment</span>
+<span class="c1"># variable to the folder holding those two trees, or replace the four paths</span>
+<span class="c1"># below with absolute ones.</span>
+
+<span class="n">_MARKER</span> <span class="o">=</span> <span class="s1">'geoaquacrop-preproc'</span>
+
+
+<div class="viewcode-block" id="_ascend">
+<a class="viewcode-back" href="../../api/helpers.html#geoaquacrop_plotting.config._ascend">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">_ascend</span><span class="p">(</span><span class="n">start</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Yield ``start`` and each of its parent directories, up to the filesystem root."""</span>
+
+    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">path</span>
+        <span class="n">parent</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">parent</span> <span class="o">==</span> <span class="n">path</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">parent</span></div>
+
+
+
+<div class="viewcode-block" id="_find_workspace">
+<a class="viewcode-back" href="../../api/helpers.html#geoaquacrop_plotting.config._find_workspace">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">_find_workspace</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">"""Locate the directory that holds the geoaquacrop-preproc/-simulate trees."""</span>
+
+    <span class="n">override</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'GEOAQUACROP_ROOT'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">override</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">override</span><span class="p">))</span>
+    <span class="n">here</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">start</span> <span class="ow">in</span> <span class="p">(</span><span class="n">here</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()):</span>
+        <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">_ascend</span><span class="p">(</span><span class="n">start</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">_MARKER</span><span class="p">)):</span>
+                <span class="k">return</span> <span class="n">path</span>
+    <span class="c1"># Nothing found — fall back to the sibling-of-project-root layout so the</span>
+    <span class="c1"># error message below reports the conventional location.</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))))</span></div>
+
+
+
+<span class="n">_WORKSPACE</span> <span class="o">=</span> <span class="n">_find_workspace</span><span class="p">()</span>
+
+<span class="c1"># Exports are written next to the project when run from a checkout, and into the</span>
+<span class="c1"># working directory when the package is installed into site-packages.</span>
+<span class="n">_PKG_PARENT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)))</span>
+<span class="n">_INSTALLED</span>  <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">_PKG_PARENT</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">'site-packages'</span><span class="p">,</span> <span class="s1">'dist-packages'</span><span class="p">)</span>
+<span class="n">_BASE</span>       <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span> <span class="k">if</span> <span class="n">_INSTALLED</span> <span class="k">else</span> <span class="n">_PKG_PARENT</span>
+
+<span class="c1">#: Seasonal per-cell results, as a pickled list of DataFrames. The filename</span>
+<span class="c1">#: carries the timestamp of the simulation run, so edit it to switch runs.</span>
+<span class="n">SUMMARY_PKL</span>   <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_WORKSPACE</span><span class="p">,</span> <span class="s1">'geoaquacrop-simulate/outputs/summary_results_20260521_191549.pkl'</span><span class="p">)</span>
+
+<span class="c1">#: Daily per-cell results, as a pickled list of dicts, each holding a</span>
+<span class="c1">#: ``water_flux`` and a ``crop_growth`` table. Must come from the same run as</span>
+<span class="c1">#: :data:`SUMMARY_PKL`.</span>
+<span class="n">DAILY_PKL</span>     <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_WORKSPACE</span><span class="p">,</span> <span class="s1">'geoaquacrop-simulate/outputs/daily_results_20260521_191549.pkl'</span><span class="p">)</span>
+
+<span class="c1">#: The region outline, at full resolution. Read once into</span>
+<span class="c1">#: ``data.region_geojson`` and thinned in memory by ``boundary``; no copy of it</span>
+<span class="c1">#: is bundled with the package.</span>
+<span class="n">GEOJSON_PATH</span>  <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_WORKSPACE</span><span class="p">,</span> <span class="s1">'geoaquacrop-preproc/inputdata/high_plains.geojson'</span><span class="p">)</span>
+
+<span class="c1">#: Directory holding the preprocessed climate, crop-calendar, and SPAM grids.</span>
+<span class="n">PROCESSED_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_WORKSPACE</span><span class="p">,</span> <span class="s1">'geoaquacrop-preproc/processed'</span><span class="p">)</span>
+
+<span class="c1">#: Where exports are written. Resolved separately from the input paths and</span>
+<span class="c1">#: unaffected by ``GEOAQUACROP_ROOT``: it sits beside the package, except when</span>
+<span class="c1">#: the package is installed into ``site-packages``, in which case the working</span>
+<span class="c1">#: directory is used so exports never land inside an installed environment.</span>
+<span class="n">EXPORT_DIR</span>    <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_BASE</span><span class="p">,</span> <span class="s1">'outputs/exports'</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_WORKSPACE</span><span class="p">,</span> <span class="n">_MARKER</span><span class="p">)):</span>
+    <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s1">'Could not find the GeoAquaCrop data trees.</span><span class="se">\n</span><span class="s1">'</span>
+        <span class="sa">f</span><span class="s1">'  Looked for: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_WORKSPACE</span><span class="p">,</span><span class="w"> </span><span class="n">_MARKER</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s1">'</span>
+        <span class="sa">f</span><span class="s1">'  Searched upward from </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span><span class="si">}</span><span class="s1"> '</span>
+        <span class="sa">f</span><span class="s1">'and from </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span><span class="si">}</span><span class="se">\n</span><span class="s1">'</span>
+        <span class="sa">f</span><span class="s1">'Set GEOAQUACROP_ROOT to the folder containing geoaquacrop-preproc and '</span>
+        <span class="sa">f</span><span class="s1">'geoaquacrop-simulate, or edit the paths in </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="si">}</span><span class="s1">.'</span>
+    <span class="p">)</span>
+
+
+<span class="c1">#: Grid cell resolution in decimal degrees. Must match the preprocessing grid:</span>
+<span class="c1">#: ``grid`` draws each cell as a square of this size centred on the cell</span>
+<span class="c1">#: coordinates, so a mismatch produces overlapping or gapped polygons.</span>
+<span class="n">CELL_RES</span>      <span class="o">=</span> <span class="mf">0.05</span>
+
+<span class="c1">#: TCP port the Dash server listens on.</span>
+<span class="n">PORT</span>          <span class="o">=</span> <span class="mi">8050</span>
+
+<span class="c1">#: Height in pixels of the two choropleth map panels. Also the default canvas</span>
+<span class="c1">#: height used by :func:`~geoaquacrop_plotting.utils.get_auto_zoom`.</span>
+<span class="n">MAP_HEIGHT</span>    <span class="o">=</span> <span class="mi">550</span>
+
+<span class="c1">#: Height in pixels of the two time-series panels.</span>
+<span class="n">TS_HEIGHT</span>     <span class="o">=</span> <span class="mi">400</span>
+
+<span class="c1"># ── Region boundary overlay ───────────────────────────────────────────────────</span>
+<span class="c1"># GEOJSON_PATH is the only source of the outline. At ~6.6 MB it is far too heavy</span>
+<span class="c1"># to hand to Plotly, so boundary.py thins it in memory at startup and serves the</span>
+<span class="c1"># result from BOUNDARY_URL; nothing is written to disk. Raise the tolerance for</span>
+<span class="c1"># a coarser, lighter outline, lower it for a crisper, heavier one.</span>
+<span class="c1">#: Ramer-Douglas-Peucker tolerance in decimal degrees (~400 m at these</span>
+<span class="c1">#: latitudes, invisible at basin zoom) applied to the outline at startup.</span>
+<span class="c1">#: Raise it for a coarser, lighter outline; lower it for a crisper, heavier one.</span>
+<span class="n">BOUNDARY_SIMPLIFY_EPS</span> <span class="o">=</span> <span class="mf">0.004</span>
+
+<span class="c1">#: Path the thinned outline is served from on the Dash server. ``boundary``</span>
+<span class="c1">#: registers the route here and</span>
+<span class="c1">#: :func:`~geoaquacrop_plotting.queries.mapbox_layers` points the map layer at</span>
+<span class="c1">#: it, so the two stay in step through this one constant.</span>
+<span class="n">BOUNDARY_URL</span>          <span class="o">=</span> <span class="s1">'/region-boundary.geojson'</span>
+
+<span class="c1">#: Catalogue of the simulation-output variables the choropleth map can draw.</span>
+<span class="c1">#: Each key is a column in the summary pickle; each value carries ``label``,</span>
+<span class="c1">#: ``colorscale`` (used for mean aggregation), ``sum_colorscale``, and</span>
+<span class="c1">#: ``default_agg``. Adding an entry here also requires listing the key in one</span>
+<span class="c1">#: of the group constants in ``styles.py`` for it to reach a sidebar accordion.</span>
+<span class="n">MAP_VARIABLES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1"># ── Yield ──────────────────────────────────────────────────────────────────</span>
+    <span class="s1">'Dry yield (tonne/ha)'</span><span class="p">:</span>                    <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'Dry Yield (t/ha)'</span><span class="p">,</span>              <span class="s1">'colorscale'</span><span class="p">:</span> <span class="s1">'YlOrRd'</span><span class="p">,</span>  <span class="s1">'sum_colorscale'</span><span class="p">:</span> <span class="s1">'OrRd'</span><span class="p">,</span>   <span class="s1">'default_agg'</span><span class="p">:</span> <span class="s1">'mean'</span><span class="p">},</span>
+    <span class="s1">'Fresh yield (tonne/ha)'</span><span class="p">:</span>                  <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'Fresh Yield (t/ha)'</span><span class="p">,</span>            <span class="s1">'colorscale'</span><span class="p">:</span> <span class="s1">'YlOrRd'</span><span class="p">,</span>  <span class="s1">'sum_colorscale'</span><span class="p">:</span> <span class="s1">'OrRd'</span><span class="p">,</span>   <span class="s1">'default_agg'</span><span class="p">:</span> <span class="s1">'mean'</span><span class="p">},</span>
+    <span class="s1">'Yield potential (tonne/ha)'</span><span class="p">:</span>              <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'Yield Potential (t/ha)'</span><span class="p">,</span>        <span class="s1">'colorscale'</span><span class="p">:</span> <span class="s1">'YlOrRd'</span><span class="p">,</span>  <span class="s1">'sum_colorscale'</span><span class="p">:</span> <span class="s1">'OrRd'</span><span class="p">,</span>   <span class="s1">'default_agg'</span><span class="p">:</span> <span class="s1">'mean'</span><span class="p">},</span>
+    <span class="c1"># ── Production &amp; area ──────────────────────────────────────────────────────</span>
+    <span class="s1">'production_tonnes'</span><span class="p">:</span>                       <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'Production (tonnes)'</span><span class="p">,</span>           <span class="s1">'colorscale'</span><span class="p">:</span> <span class="s1">'YlOrBr'</span><span class="p">,</span>  <span class="s1">'sum_colorscale'</span><span class="p">:</span> <span class="s1">'OrRd'</span><span class="p">,</span>   <span class="s1">'default_agg'</span><span class="p">:</span> <span class="s1">'sum'</span> <span class="p">},</span>
+    <span class="c1"># ── Water ──────────────────────────────────────────────────────────────────</span>
+    <span class="s1">'Seasonal irrigation (mm)'</span><span class="p">:</span>                <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'Seasonal Irrigation (mm)'</span><span class="p">,</span>      <span class="s1">'colorscale'</span><span class="p">:</span> <span class="s1">'Blues'</span><span class="p">,</span>   <span class="s1">'sum_colorscale'</span><span class="p">:</span> <span class="s1">'PuBuGn'</span><span class="p">,</span> <span class="s1">'default_agg'</span><span class="p">:</span> <span class="s1">'sum'</span> <span class="p">},</span>
+    <span class="s1">'seasonal_precip_mm'</span><span class="p">:</span>                      <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'Seasonal Precip (mm)'</span><span class="p">,</span>          <span class="s1">'colorscale'</span><span class="p">:</span> <span class="s1">'Blues'</span><span class="p">,</span>   <span class="s1">'sum_colorscale'</span><span class="p">:</span> <span class="s1">'PuBuGn'</span><span class="p">,</span> <span class="s1">'default_agg'</span><span class="p">:</span> <span class="s1">'mean'</span><span class="p">},</span>
+    <span class="s1">'seasonal_et_mm'</span><span class="p">:</span>                          <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'Seasonal ET (mm)'</span><span class="p">,</span>              <span class="s1">'colorscale'</span><span class="p">:</span> <span class="s1">'YlGnBu'</span><span class="p">,</span>  <span class="s1">'sum_colorscale'</span><span class="p">:</span> <span class="s1">'PuBuGn'</span><span class="p">,</span> <span class="s1">'default_agg'</span><span class="p">:</span> <span class="s1">'mean'</span><span class="p">},</span>
+    <span class="s1">'seasonal_transpiration_mm'</span><span class="p">:</span>               <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'Seasonal Transpiration (mm)'</span><span class="p">,</span>   <span class="s1">'colorscale'</span><span class="p">:</span> <span class="s1">'YlGnBu'</span><span class="p">,</span>  <span class="s1">'sum_colorscale'</span><span class="p">:</span> <span class="s1">'PuBuGn'</span><span class="p">,</span> <span class="s1">'default_agg'</span><span class="p">:</span> <span class="s1">'mean'</span><span class="p">},</span>
+    <span class="s1">'total_water_input_mm'</span><span class="p">:</span>                    <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'Total Water Input (mm)'</span><span class="p">,</span>        <span class="s1">'colorscale'</span><span class="p">:</span> <span class="s1">'Blues'</span><span class="p">,</span>   <span class="s1">'sum_colorscale'</span><span class="p">:</span> <span class="s1">'PuBuGn'</span><span class="p">,</span> <span class="s1">'default_agg'</span><span class="p">:</span> <span class="s1">'mean'</span><span class="p">},</span>
+    <span class="c1"># ── Water productivity ─────────────────────────────────────────────────────</span>
+    <span class="s1">'wp_et_kg_per_m3'</span><span class="p">:</span>                         <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'WP-ET (kg/m³)'</span><span class="p">,</span>                 <span class="s1">'colorscale'</span><span class="p">:</span> <span class="s1">'RdYlGn'</span><span class="p">,</span>  <span class="s1">'sum_colorscale'</span><span class="p">:</span> <span class="s1">'YlGn'</span><span class="p">,</span>   <span class="s1">'default_agg'</span><span class="p">:</span> <span class="s1">'mean'</span><span class="p">},</span>
+    <span class="s1">'rainfall_use_efficiency_kg_per_m3'</span><span class="p">:</span>       <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'Rainfall Use Efficiency (kg/m³)'</span><span class="p">,</span><span class="s1">'colorscale'</span><span class="p">:</span> <span class="s1">'RdYlGn'</span><span class="p">,</span> <span class="s1">'sum_colorscale'</span><span class="p">:</span> <span class="s1">'YlGn'</span><span class="p">,</span>   <span class="s1">'default_agg'</span><span class="p">:</span> <span class="s1">'mean'</span><span class="p">},</span>
+   <span class="p">}</span>
+
+<span class="c1">#: Catalogue of the daily variables the time-series panel and the export dialog</span>
+<span class="c1">#: offer. Each key is a column in one of the daily tables; each value carries</span>
+<span class="c1">#: ``label``, ``table`` (``'water_flux'`` or ``'crop_growth'``), and ``color``.</span>
+<span class="c1">#: On export the parenthesised tail of ``label`` becomes the NetCDF ``units``.</span>
+<span class="n">DAILY_VARIABLES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'Es'</span><span class="p">:</span>           <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'Soil Evaporation (mm/day)'</span><span class="p">,</span>           <span class="s1">'table'</span><span class="p">:</span> <span class="s1">'water_flux'</span><span class="p">,</span>  <span class="s1">'color'</span><span class="p">:</span> <span class="s1">'#e67e22'</span><span class="p">},</span>
+    <span class="s1">'EsPot'</span><span class="p">:</span>        <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'Potential Soil Evaporation (mm/day)'</span><span class="p">,</span> <span class="s1">'table'</span><span class="p">:</span> <span class="s1">'water_flux'</span><span class="p">,</span>  <span class="s1">'color'</span><span class="p">:</span> <span class="s1">'#f39c12'</span><span class="p">},</span>
+    <span class="s1">'Tr'</span><span class="p">:</span>           <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'Crop Transpiration (mm/day)'</span><span class="p">,</span>         <span class="s1">'table'</span><span class="p">:</span> <span class="s1">'water_flux'</span><span class="p">,</span>  <span class="s1">'color'</span><span class="p">:</span> <span class="s1">'#2980b9'</span><span class="p">},</span>
+    <span class="s1">'TrPot'</span><span class="p">:</span>        <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'Potential Transpiration (mm/day)'</span><span class="p">,</span>    <span class="s1">'table'</span><span class="p">:</span> <span class="s1">'water_flux'</span><span class="p">,</span>  <span class="s1">'color'</span><span class="p">:</span> <span class="s1">'#3498db'</span><span class="p">},</span>
+    <span class="s1">'Infl'</span><span class="p">:</span>         <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'Infiltration (mm/day)'</span><span class="p">,</span>               <span class="s1">'table'</span><span class="p">:</span> <span class="s1">'water_flux'</span><span class="p">,</span>  <span class="s1">'color'</span><span class="p">:</span> <span class="s1">'#1abc9c'</span><span class="p">},</span>
+    <span class="s1">'Runoff'</span><span class="p">:</span>       <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'Runoff (mm/day)'</span><span class="p">,</span>                     <span class="s1">'table'</span><span class="p">:</span> <span class="s1">'water_flux'</span><span class="p">,</span>  <span class="s1">'color'</span><span class="p">:</span> <span class="s1">'#e74c3c'</span><span class="p">},</span>
+    <span class="s1">'DeepPerc'</span><span class="p">:</span>     <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'Deep Percolation (mm/day)'</span><span class="p">,</span>           <span class="s1">'table'</span><span class="p">:</span> <span class="s1">'water_flux'</span><span class="p">,</span>  <span class="s1">'color'</span><span class="p">:</span> <span class="s1">'#8e44ad'</span><span class="p">},</span>
+    <span class="s1">'Wr'</span><span class="p">:</span>           <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'Water in Root Zone (mm)'</span><span class="p">,</span>             <span class="s1">'table'</span><span class="p">:</span> <span class="s1">'water_flux'</span><span class="p">,</span>  <span class="s1">'color'</span><span class="p">:</span> <span class="s1">'#2c3e50'</span><span class="p">},</span>
+    <span class="s1">'biomass'</span><span class="p">:</span>      <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'Biomass (tonne/ha)'</span><span class="p">,</span>                  <span class="s1">'table'</span><span class="p">:</span> <span class="s1">'crop_growth'</span><span class="p">,</span> <span class="s1">'color'</span><span class="p">:</span> <span class="s1">'#27ae60'</span><span class="p">},</span>
+    <span class="s1">'canopy_cover'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'Canopy Cover (-)'</span><span class="p">,</span>                    <span class="s1">'table'</span><span class="p">:</span> <span class="s1">'crop_growth'</span><span class="p">,</span> <span class="s1">'color'</span><span class="p">:</span> <span class="s1">'#2ecc71'</span><span class="p">},</span>
+    <span class="s1">'gdd_cum'</span><span class="p">:</span>      <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'Cumulative GDD (°C·day)'</span><span class="p">,</span>            <span class="s1">'table'</span><span class="p">:</span> <span class="s1">'crop_growth'</span><span class="p">,</span> <span class="s1">'color'</span><span class="p">:</span> <span class="s1">'#d35400'</span><span class="p">},</span>
+    <span class="s1">'z_root'</span><span class="p">:</span>       <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'Root Depth (m)'</span><span class="p">,</span>                     <span class="s1">'table'</span><span class="p">:</span> <span class="s1">'crop_growth'</span><span class="p">,</span> <span class="s1">'color'</span><span class="p">:</span> <span class="s1">'#795548'</span><span class="p">},</span>
+    <span class="s1">'DryYield'</span><span class="p">:</span>     <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'Dry Yield (t/ha)'</span><span class="p">,</span>                   <span class="s1">'table'</span><span class="p">:</span> <span class="s1">'crop_growth'</span><span class="p">,</span> <span class="s1">'color'</span><span class="p">:</span> <span class="s1">'#c0392b'</span><span class="p">},</span>
+<span class="p">}</span>
+
+<span class="c1">#: Catalogue of the climate forcing variables. Each key matches both a NetCDF</span>
+<span class="c1">#: variable name and the ``&lt;Variable&gt;`` part of the filename in</span>
+<span class="c1">#: :data:`PROCESSED_DIR`. Each value carries ``label`` (daily axis),</span>
+<span class="c1">#: ``map_label`` (the choropleth reduces over the period, so its units differ),</span>
+<span class="c1">#: ``unit``, ``color``, and ``colorscale``.</span>
+<span class="n">CLIMATE_VARIABLES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'MaxTemp'</span><span class="p">:</span>       <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'Max Temperature (°C)'</span><span class="p">,</span>    <span class="s1">'map_label'</span><span class="p">:</span> <span class="s1">'Max Temperature (°C)'</span><span class="p">,</span>    <span class="s1">'unit'</span><span class="p">:</span> <span class="s1">'°C'</span><span class="p">,</span>      <span class="s1">'color'</span><span class="p">:</span> <span class="s1">'#e74c3c'</span><span class="p">,</span> <span class="s1">'colorscale'</span><span class="p">:</span> <span class="s1">'RdYlBu_r'</span><span class="p">},</span>
+    <span class="s1">'MinTemp'</span><span class="p">:</span>       <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'Min Temperature (°C)'</span><span class="p">,</span>    <span class="s1">'map_label'</span><span class="p">:</span> <span class="s1">'Min Temperature (°C)'</span><span class="p">,</span>    <span class="s1">'unit'</span><span class="p">:</span> <span class="s1">'°C'</span><span class="p">,</span>      <span class="s1">'color'</span><span class="p">:</span> <span class="s1">'#3498db'</span><span class="p">,</span> <span class="s1">'colorscale'</span><span class="p">:</span> <span class="s1">'RdYlBu_r'</span><span class="p">},</span>
+    <span class="s1">'Precipitation'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'Precipitation (mm/day)'</span><span class="p">,</span> <span class="s1">'map_label'</span><span class="p">:</span> <span class="s1">'Precipitation (mm/year)'</span><span class="p">,</span> <span class="s1">'unit'</span><span class="p">:</span> <span class="s1">'mm/year'</span><span class="p">,</span> <span class="s1">'color'</span><span class="p">:</span> <span class="s1">'#2980b9'</span><span class="p">,</span> <span class="s1">'colorscale'</span><span class="p">:</span> <span class="s1">'Blues'</span>   <span class="p">},</span>
+    <span class="s1">'ReferenceET'</span><span class="p">:</span>   <span class="p">{</span><span class="s1">'label'</span><span class="p">:</span> <span class="s1">'Reference ET (mm/day)'</span><span class="p">,</span>  <span class="s1">'map_label'</span><span class="p">:</span> <span class="s1">'Reference ET (mm/year)'</span><span class="p">,</span>  <span class="s1">'unit'</span><span class="p">:</span> <span class="s1">'mm/year'</span><span class="p">,</span> <span class="s1">'color'</span><span class="p">:</span> <span class="s1">'#e67e22'</span><span class="p">,</span> <span class="s1">'colorscale'</span><span class="p">:</span> <span class="s1">'YlOrBr'</span>  <span class="p">},</span>
+<span class="p">}</span>
+
+<span class="c1">#: Maps the irrigation names used in the simulation output to the two-letter</span>
+<span class="c1">#: codes used in the crop-calendar and SPAM variable names. Shared by</span>
+<span class="c1">#: :func:`~geoaquacrop_plotting.queries.spam_vars_for_crop`,</span>
+<span class="c1">#: :func:`~geoaquacrop_plotting.queries.get_cropcal_summary`, and</span>
+<span class="c1">#: :func:`~geoaquacrop_plotting.figures_timeseries.build_input_ts`.</span>
+<span class="n">IRR_MAP</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'rainfed'</span><span class="p">:</span> <span class="s1">'rf'</span><span class="p">,</span> <span class="s1">'irrigated'</span><span class="p">:</span> <span class="s1">'ir'</span><span class="p">}</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, GIST Lab, Aalto University.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,99 @@
+Dash Callbacks
+==============
+
+Callbacks are registered by importing the five ``callbacks_*`` modules, which
+``geoaquacrop_plotting/__init__.py`` does after the layout exists — the
+callbacks reference component ids that must already be in the tree.
+
+No callback reads another callback's components. Every selection is written
+into a :class:`dash.dcc.Store`, and the figure callbacks read from those
+stores: a single state bus that keeps the callback graph shallow and acyclic.
+
+The state bus
+-------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 26 20 54
+
+   * - Store id
+     - Initial value
+     - Holds
+   * - ``sel-tab``
+     - ``'output'``
+     - Which tab is active, ``'output'`` or ``'input'``.
+   * - ``sel-crop``
+     - first crop
+     - Selected ``'<crop> | <irrigation>'`` combination.
+   * - ``sel-season``
+     - first season
+     - Selected harvest year, or ``'all'``.
+   * - ``sel-map-var``
+     - first map variable
+     - Key into ``MAP_VARIABLES``.
+   * - ``sel-daily-var``
+     - first daily variable
+     - Key into ``DAILY_VARIABLES``.
+   * - ``sel-clim-var``
+     - first climate variable
+     - Key into ``CLIMATE_VARIABLES``.
+   * - ``sel-agg``
+     - ``'mean'``
+     - Aggregation for multi-year views, ``'mean'`` or ``'sum'``.
+   * - ``sel-out-cell``
+     - ``None``
+     - Cell id clicked on the output map.
+   * - ``sel-in-cell``
+     - ``None``
+     - Cell id clicked on the input map.
+   * - ``out-ts-clicks``
+     - ``{'count': 0, …}``
+     - Mean ± std window state on the output time series.
+   * - ``in-ts-clicks``
+     - ``{'count': 0, …}``
+     - Mean ± std window state on the input time series.
+   * - ``lasso-cells``
+     - ``[]``
+     - Cell ids from the most recent lasso or box selection.
+   * - ``sel-spam-var``
+     - ``''``
+     - Active SPAM physical-area variable, empty when none.
+   * - ``input-mode``
+     - ``'climate'``
+     - Whether the input map draws climate or SPAM.
+
+.. note::
+
+   Several callbacks write the same figure property, so they declare
+   ``allow_duplicate=True`` together with ``prevent_initial_call=True``.
+
+Sidebar controls
+----------------
+
+.. automodule:: geoaquacrop_plotting.callbacks_controls
+   :members:
+
+Selection
+---------
+
+.. automodule:: geoaquacrop_plotting.callbacks_selection
+   :members:
+   :private-members: _handle_click
+
+Maps
+----
+
+.. automodule:: geoaquacrop_plotting.callbacks_maps
+   :members:
+
+Time series
+-----------
+
+.. automodule:: geoaquacrop_plotting.callbacks_timeseries
+   :members:
+
+Export modal
+------------
+
+.. automodule:: geoaquacrop_plotting.callbacks_export
+   :members:

@@ -1,0 +1,470 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>geoaquacrop_plotting.utils &mdash; GeoAquaCrop Visualizer 0.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            GeoAquaCrop Visualizer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../overview.html#features">Features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../overview.html#simulation-outputs-tab">Simulation Outputs tab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../overview.html#inputs-tab">Inputs tab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../overview.html#export">Export</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview.html#package-layout">Package layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview.html#quick-start">Quick start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview.html#input-data-structure">Input data structure</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#getting-the-source">Getting the source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#installing-the-package">Installing the package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../installation.html#extras">Extras</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#running-the-application">Running the application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#embedding-in-another-server">Embedding in another server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#running-the-tests">Running the tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#building-the-documentation">Building the documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../configuration.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../configuration.html#how-the-data-paths-are-found">How the data paths are found</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configuration.html#path-constants">Path constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configuration.html#display-constants">Display constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configuration.html#variable-registries">Variable registries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../configuration.html#map-variables">MAP_VARIABLES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../configuration.html#daily-variables">DAILY_VARIABLES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../configuration.html#climate-variables">CLIMATE_VARIABLES</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../architecture.html#everything-happens-at-import">Everything happens at import</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../architecture.html#dependency-order">Dependency order</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../architecture.html#what-data-derives">What <code class="docutils literal notranslate"><span class="pre">data</span></code> derives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../architecture.html#pre-computation-instead-of-per-interaction-work">Pre-computation instead of per-interaction work</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../architecture.html#caching-in-queries">Caching in <code class="docutils literal notranslate"><span class="pre">queries</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../architecture.html#keeping-the-map-fast">Keeping the map fast</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../architecture.html#patch-based-updates">Patch-based updates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../architecture.html#hover-text-via-customdata">Hover text via <code class="docutils literal notranslate"><span class="pre">customdata</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../architecture.html#region-boundary">Region boundary</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../architecture.html#state-flows-through-stores">State flows through stores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../architecture.html#invariants-the-test-suite-enforces">Invariants the test suite enforces</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/entrypoint.html">Entry Point and Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/entrypoint.html#module-geoaquacrop_plots">geoaquacrop_plots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/entrypoint.html#module-geoaquacrop_plotting">geoaquacrop_plotting</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/helpers.html">Configuration and Helpers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/helpers.html#module-geoaquacrop_plotting.config">Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/helpers.html#module-geoaquacrop_plotting.utils">Stateless helpers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/helpers.html#module-geoaquacrop_plotting.queries">Dataset accessors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/helpers.html#module-geoaquacrop_plotting.styles">Styles</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/data.html">Data, Grid, Aggregates, and Boundary</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/data.html#module-geoaquacrop_plotting.data">Data loading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/data.html#module-geoaquacrop_plotting.grid">Grid geometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/data.html#module-geoaquacrop_plotting.aggregates">Pre-computed aggregations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/data.html#module-geoaquacrop_plotting.boundary">Region boundary</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/figures.html">Figure Builders</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/figures.html#module-geoaquacrop_plotting.figures_maps">Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/figures.html#module-geoaquacrop_plotting.figures_timeseries">Time series</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/export.html">Export</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/export.html#geoaquacrop_plotting.export.export_data"><code class="docutils literal notranslate"><span class="pre">export_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/callbacks.html">Dash Callbacks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/callbacks.html#the-state-bus">The state bus</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/callbacks.html#module-geoaquacrop_plotting.callbacks_controls">Sidebar controls</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/callbacks.html#module-geoaquacrop_plotting.callbacks_selection">Selection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/callbacks.html#module-geoaquacrop_plotting.callbacks_maps">Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/callbacks.html#module-geoaquacrop_plotting.callbacks_timeseries">Time series</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/callbacks.html#module-geoaquacrop_plotting.callbacks_export">Export modal</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/layout.html">App Layout</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/layout.html#module-geoaquacrop_plotting.app_shell">Application shell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/layout.html#module-geoaquacrop_plotting.layout_sidebar">Sidebar column</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/layout.html#module-geoaquacrop_plotting.layout_panels">Main canvas column</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/layout.html#module-geoaquacrop_plotting.layout_export">Export modal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/layout.html#module-geoaquacrop_plotting.layout">Assembly</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">GeoAquaCrop Visualizer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">geoaquacrop_plotting.utils</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for geoaquacrop_plotting.utils</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Stateless helper functions that do not touch the loaded datasets."""</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">BOUNDARY_SIMPLIFY_EPS</span><span class="p">,</span> <span class="n">MAP_HEIGHT</span>
+
+<div class="viewcode-block" id="get_auto_zoom">
+<a class="viewcode-back" href="../../api/helpers.html#geoaquacrop_plotting.utils.get_auto_zoom">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_auto_zoom</span><span class="p">(</span><span class="n">min_lon</span><span class="p">,</span> <span class="n">max_lon</span><span class="p">,</span> <span class="n">min_lat</span><span class="p">,</span> <span class="n">max_lat</span><span class="p">,</span>
+                  <span class="n">map_width_px</span><span class="o">=</span><span class="mi">1300</span><span class="p">,</span> <span class="n">map_height_px</span><span class="o">=</span><span class="n">MAP_HEIGHT</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Compute an appropriate Mapbox zoom level for a given spatial extent.</span>
+
+<span class="sd">    Uses the Web Mercator tile formula to derive a zoom level that fits the</span>
+<span class="sd">    bounding box within the specified map canvas size. Falls back to zoom 8.5</span>
+<span class="sd">    when the spatial extent is degenerate (zero span in either dimension).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    min_lon : float</span>
+<span class="sd">        Western boundary longitude in decimal degrees.</span>
+<span class="sd">    max_lon : float</span>
+<span class="sd">        Eastern boundary longitude in decimal degrees.</span>
+<span class="sd">    min_lat : float</span>
+<span class="sd">        Southern boundary latitude in decimal degrees.</span>
+<span class="sd">    max_lat : float</span>
+<span class="sd">        Northern boundary latitude in decimal degrees.</span>
+<span class="sd">    map_width_px : int, optional</span>
+<span class="sd">        Canvas width in pixels used for zoom calculation. Default is 1300.</span>
+<span class="sd">    map_height_px : int, optional</span>
+<span class="sd">        Canvas height in pixels used for zoom calculation. Default is MAP_HEIGHT.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        Zoom level rounded to one decimal place, reduced by 0.5 from the</span>
+<span class="sd">        tile-exact value to add a margin around the extent.</span>
+<span class="sd">    """</span>
+    
+    <span class="n">lon_span</span> <span class="o">=</span> <span class="n">max_lon</span> <span class="o">-</span> <span class="n">min_lon</span>
+    <span class="n">lat_span</span> <span class="o">=</span> <span class="n">max_lat</span> <span class="o">-</span> <span class="n">min_lat</span>
+    <span class="k">if</span> <span class="n">lon_span</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">lat_span</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">8.5</span>
+    <span class="n">zoom_lon</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="mi">360</span> <span class="o">*</span> <span class="n">map_width_px</span>  <span class="o">/</span> <span class="p">(</span><span class="mi">256</span> <span class="o">*</span> <span class="n">lon_span</span><span class="p">))</span>
+    <span class="n">zoom_lat</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="mi">180</span> <span class="o">*</span> <span class="n">map_height_px</span> <span class="o">/</span> <span class="p">(</span><span class="mi">256</span> <span class="o">*</span> <span class="n">lat_span</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">zoom_lon</span><span class="p">,</span> <span class="n">zoom_lat</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="hex_to_rgba">
+<a class="viewcode-back" href="../../api/helpers.html#geoaquacrop_plotting.utils.hex_to_rgba">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">hex_to_rgba</span><span class="p">(</span><span class="n">hex_color</span><span class="p">,</span> <span class="n">alpha</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Convert a CSS hex colour string to an ``rgba()`` string.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    hex_color : str</span>
+<span class="sd">        Six-character hex colour with leading ``#``, e.g. ``'#2980b9'``.</span>
+<span class="sd">    alpha : float</span>
+<span class="sd">        Opacity value between 0.0 (transparent) and 1.0 (opaque).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        CSS colour string of the form ``'rgba(r, g, b, alpha)'``.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; hex_to_rgba('#ff0000', 0.5)</span>
+<span class="sd">    'rgba(255,0,0,0.5)'</span>
+<span class="sd">    """</span>
+
+    <span class="n">r</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">hex_color</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">hex_color</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">5</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">hex_color</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="mi">7</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s1">'rgba(</span><span class="si">{</span><span class="n">r</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">g</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">alpha</span><span class="si">}</span><span class="s1">)'</span></div>
+
+
+<div class="viewcode-block" id="safe_date">
+<a class="viewcode-back" href="../../api/helpers.html#geoaquacrop_plotting.utils.safe_date">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">safe_date</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Construct a Timestamp, clamping the day to the valid range for the month.</span>
+
+<span class="sd">    Prevents ``ValueError`` when a day value such as 31 is passed for a month</span>
+<span class="sd">    with fewer days (e.g. February, April). Used in the export date pickers.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    year : int</span>
+<span class="sd">        Four-digit calendar year.</span>
+<span class="sd">    month : int</span>
+<span class="sd">        Month number between 1 and 12.</span>
+<span class="sd">    day : int</span>
+<span class="sd">        Requested day number. Clamped to the maximum valid day if too large.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pandas.Timestamp</span>
+<span class="sd">        Valid timestamp for the given year and month, with day clamped.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; safe_date(2008, 2, 31)</span>
+<span class="sd">    Timestamp('2008-02-29 00:00:00')</span>
+<span class="sd">    """</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">calendar</span>
+    <span class="n">max_day</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="n">monthrange</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">day</span><span class="p">,</span> <span class="n">max_day</span><span class="p">))</span></div>
+
+
+
+<span class="c1"># ╔══════════════════════════════════════════════════════════════════════════════╗</span>
+<span class="c1"># ║  BOUNDARY SIMPLIFICATION                                                   ║</span>
+<span class="c1"># ╚══════════════════════════════════════════════════════════════════════════════╝</span>
+<span class="c1">#</span>
+<span class="c1"># A pure-numpy Ramer-Douglas-Peucker implementation, kept here rather than in</span>
+<span class="c1"># boundary.py so it stays importable (and testable) without the dataset. No</span>
+<span class="c1"># shapely/geopandas dependency is introduced for what is a few dozen lines.</span>
+
+<div class="viewcode-block" id="rdp_keep_mask">
+<a class="viewcode-back" href="../../api/helpers.html#geoaquacrop_plotting.utils.rdp_keep_mask">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">rdp_keep_mask</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">eps</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Mark the points an RDP simplification of a polyline would keep.</span>
+
+<span class="sd">    Iterative Ramer-Douglas-Peucker: the segment furthest from the straight</span>
+<span class="sd">    line joining the endpoints is kept if it lies more than ``eps`` away, and</span>
+<span class="sd">    the two halves either side of it are then processed the same way. The loop</span>
+<span class="sd">    carries its own stack rather than recursing, so ring length cannot exhaust</span>
+<span class="sd">    the interpreter's recursion limit.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    points : numpy.ndarray</span>
+<span class="sd">        Vertices as an ``(N, 2)`` float array.</span>
+<span class="sd">    eps : float</span>
+<span class="sd">        Tolerance in the units of ``points`` — degrees, for lon/lat input.</span>
+<span class="sd">        A vertex is dropped when it lies within ``eps`` of the line it would</span>
+<span class="sd">        otherwise bend.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        Boolean mask of length ``N``. The first and last points are always</span>
+<span class="sd">        kept, so the polyline keeps its endpoints.</span>
+<span class="sd">    """</span>
+
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+    <span class="n">keep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">keep</span>
+    <span class="n">keep</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">keep</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">stack</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span>
+    <span class="k">while</span> <span class="n">stack</span><span class="p">:</span>
+        <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>                     <span class="c1"># nothing between the endpoints</span>
+            <span class="k">continue</span>
+        <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+        <span class="n">span</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">start</span>
+        <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">length</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>                    <span class="c1"># closed sub-path: use radial distance</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">span</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">span</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>                              <span class="c1"># 2-D cross product / |line|</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">dx</span> <span class="o">*</span> <span class="n">span</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">dy</span> <span class="o">*</span> <span class="n">span</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">length</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">d</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">eps</span><span class="p">:</span>
+            <span class="n">k</span> <span class="o">+=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">keep</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
+            <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">j</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">keep</span></div>
+
+
+
+<div class="viewcode-block" id="simplify_ring">
+<a class="viewcode-back" href="../../api/helpers.html#geoaquacrop_plotting.utils.simplify_ring">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">simplify_ring</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="n">BOUNDARY_SIMPLIFY_EPS</span><span class="p">,</span> <span class="n">decimals</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Simplify one polygon ring, keeping it closed and valid.</span>
+
+<span class="sd">    Runs :func:`rdp_keep_mask` over the ring, rounds the survivors to</span>
+<span class="sd">    ``decimals`` places (five is ~1 m at these latitudes, and shortens the</span>
+<span class="sd">    serialised output considerably), and re-closes the ring if rounding or</span>
+<span class="sd">    simplification separated its first and last point.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ring : sequence</span>
+<span class="sd">        Ring vertices, as accepted by ``numpy.asarray`` — an ``(N, 2)``</span>
+<span class="sd">        sequence of ``[lon, lat]`` pairs.</span>
+<span class="sd">    eps : float, optional</span>
+<span class="sd">        RDP tolerance in degrees. Defaults to</span>
+<span class="sd">        :data:`~geoaquacrop_plotting.config.BOUNDARY_SIMPLIFY_EPS`.</span>
+<span class="sd">    decimals : int, optional</span>
+<span class="sd">        Coordinate rounding precision. Default is 5.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list or None</span>
+<span class="sd">        The simplified closed ring as a list of ``[lon, lat]`` pairs, or</span>
+<span class="sd">        ``None`` if it collapsed below the four points a closed ring needs —</span>
+<span class="sd">        which is what becomes of specks smaller than the tolerance.</span>
+<span class="sd">    """</span>
+
+    <span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">points</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">rdp_keep_mask</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">eps</span><span class="p">)],</span> <span class="n">decimals</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">out</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">out</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">out</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">4</span> <span class="k">else</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="simplify_geojson">
+<a class="viewcode-back" href="../../api/helpers.html#geoaquacrop_plotting.utils.simplify_geojson">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">simplify_geojson</span><span class="p">(</span><span class="n">geojson</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="n">BOUNDARY_SIMPLIFY_EPS</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Thin every polygon in a GeoJSON FeatureCollection for use as a line overlay.</span>
+
+<span class="sd">    Each ring goes through :func:`simplify_ring`; rings that collapse are</span>
+<span class="sd">    dropped, and features left with no rings at all disappear with them.</span>
+<span class="sd">    Properties are discarded — the overlay draws an outline and never reads</span>
+<span class="sd">    them — as is any ``crs`` member, since GeoJSON is WGS84 by definition.</span>
+<span class="sd">    MultiPolygons are flattened into one Feature per polygon.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    geojson : dict</span>
+<span class="sd">        A parsed GeoJSON FeatureCollection of Polygon and/or MultiPolygon</span>
+<span class="sd">        features.</span>
+<span class="sd">    eps : float, optional</span>
+<span class="sd">        RDP tolerance in degrees. Defaults to</span>
+<span class="sd">        :data:`~geoaquacrop_plotting.config.BOUNDARY_SIMPLIFY_EPS`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        A new FeatureCollection of property-less Polygon features. The input</span>
+<span class="sd">        is not modified.</span>
+<span class="sd">    """</span>
+
+    <span class="n">features</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">geojson</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'features'</span><span class="p">,</span> <span class="p">[]):</span>
+        <span class="n">geometry</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'geometry'</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">kind</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'type'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">'Polygon'</span><span class="p">:</span>
+            <span class="n">polygons</span> <span class="o">=</span> <span class="p">[</span><span class="n">geometry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'coordinates'</span><span class="p">,</span> <span class="p">[])]</span>
+        <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">'MultiPolygon'</span><span class="p">:</span>
+            <span class="n">polygons</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'coordinates'</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">continue</span>                       <span class="c1"># points and lines have no outline</span>
+        <span class="k">for</span> <span class="n">rings</span> <span class="ow">in</span> <span class="n">polygons</span><span class="p">:</span>
+            <span class="n">kept</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="p">(</span><span class="n">simplify_ring</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="n">eps</span><span class="p">)</span> <span class="k">for</span> <span class="n">ring</span> <span class="ow">in</span> <span class="n">rings</span><span class="p">)</span> <span class="k">if</span> <span class="n">r</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">kept</span><span class="p">:</span>
+                <span class="n">features</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                    <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'Feature'</span><span class="p">,</span>
+                    <span class="s1">'properties'</span><span class="p">:</span> <span class="p">{},</span>
+                    <span class="s1">'geometry'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'type'</span><span class="p">:</span> <span class="s1">'Polygon'</span><span class="p">,</span> <span class="s1">'coordinates'</span><span class="p">:</span> <span class="n">kept</span><span class="p">},</span>
+                <span class="p">})</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">'type'</span><span class="p">:</span> <span class="s1">'FeatureCollection'</span><span class="p">,</span> <span class="s1">'features'</span><span class="p">:</span> <span class="n">features</span><span class="p">}</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, GIST Lab, Aalto University.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

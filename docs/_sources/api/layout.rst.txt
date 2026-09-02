@@ -1,0 +1,78 @@
+App Layout
+==========
+
+The layout is assembled in ``layout.py`` as a ``dash_bootstrap_components``
+row holding the sidebar column, the main canvas column, the export modal, and
+the stores that carry state between callbacks. Each piece is a module-level
+constant built at import, so ``app.layout`` is complete before any callback is
+registered.
+
+These constants are Dash component trees. Their structure is the layout
+itself and is best read in the source, which every ``[source]`` link opens.
+
+Application shell
+-----------------
+
+.. automodule:: geoaquacrop_plotting.app_shell
+
+.. py:data:: geoaquacrop_plotting.app_shell.app
+
+   The :class:`dash.Dash` instance. Created with the Bootstrap stylesheet and
+   a custom ``index_string`` that carries the sidebar CSS. It lives in its own
+   module so the layout modules and every callback module can import ``app``
+   without importing each other — which is what keeps the callback graph
+   acyclic. :mod:`~geoaquacrop_plotting.boundary` also reaches for
+   ``app.server`` to register the region-boundary route.
+
+Sidebar column
+--------------
+
+.. automodule:: geoaquacrop_plotting.layout_sidebar
+
+.. py:data:: geoaquacrop_plotting.layout_sidebar.SIDEBAR_COL
+
+   The left column: the tab bar, the *Data Configuration* dropdowns, the map
+   and daily variable accordions, the climate and SPAM controls, and the
+   export button pinned to the bottom. Which controls are visible is driven by
+   the callbacks in :mod:`~geoaquacrop_plotting.callbacks_controls`.
+
+Main canvas column
+------------------
+
+.. automodule:: geoaquacrop_plotting.layout_panels
+
+.. py:data:: geoaquacrop_plotting.layout_panels.MAIN_COL
+
+   The right column: the output map and its time-series panel, and the input
+   map and its time-series panel. One panel is shown at a time, following
+   ``sel-tab``.
+
+.. note::
+
+   The time-series containers are hidden with ``visibility: hidden;
+   height: 0`` rather than ``display: none``. A ``display: none`` container
+   has no layout box, and Plotly cannot size a graph inside one — the chart
+   would render at the wrong width the first time a cell is clicked.
+
+Export modal
+------------
+
+.. automodule:: geoaquacrop_plotting.layout_export
+
+.. py:data:: geoaquacrop_plotting.layout_export.EXPORT_MODAL
+
+   The export dialog: variable checklists grouped as in the sidebar, the
+   period controls, the whole-area/selection choice, and the format
+   checklist. Driven by
+   :mod:`~geoaquacrop_plotting.callbacks_export`.
+
+Assembly
+--------
+
+.. automodule:: geoaquacrop_plotting.layout
+
+.. py:data:: geoaquacrop_plotting.layout.STORES
+
+   The fourteen :class:`dash.dcc.Store` components that make up the state bus.
+   They are listed with their initial values and meanings in
+   :doc:`callbacks`.

@@ -1,0 +1,370 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>geoaquacrop_plotting.export &mdash; GeoAquaCrop Visualizer 0.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            GeoAquaCrop Visualizer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../overview.html#features">Features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../overview.html#simulation-outputs-tab">Simulation Outputs tab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../overview.html#inputs-tab">Inputs tab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../overview.html#export">Export</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview.html#package-layout">Package layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview.html#quick-start">Quick start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../overview.html#input-data-structure">Input data structure</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#getting-the-source">Getting the source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#installing-the-package">Installing the package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../installation.html#extras">Extras</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#running-the-application">Running the application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#embedding-in-another-server">Embedding in another server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#running-the-tests">Running the tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#building-the-documentation">Building the documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../configuration.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../configuration.html#how-the-data-paths-are-found">How the data paths are found</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configuration.html#path-constants">Path constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configuration.html#display-constants">Display constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configuration.html#variable-registries">Variable registries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../configuration.html#map-variables">MAP_VARIABLES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../configuration.html#daily-variables">DAILY_VARIABLES</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../configuration.html#climate-variables">CLIMATE_VARIABLES</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../architecture.html#everything-happens-at-import">Everything happens at import</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../architecture.html#dependency-order">Dependency order</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../architecture.html#what-data-derives">What <code class="docutils literal notranslate"><span class="pre">data</span></code> derives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../architecture.html#pre-computation-instead-of-per-interaction-work">Pre-computation instead of per-interaction work</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../architecture.html#caching-in-queries">Caching in <code class="docutils literal notranslate"><span class="pre">queries</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../architecture.html#keeping-the-map-fast">Keeping the map fast</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../architecture.html#patch-based-updates">Patch-based updates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../architecture.html#hover-text-via-customdata">Hover text via <code class="docutils literal notranslate"><span class="pre">customdata</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../architecture.html#region-boundary">Region boundary</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../architecture.html#state-flows-through-stores">State flows through stores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../architecture.html#invariants-the-test-suite-enforces">Invariants the test suite enforces</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/entrypoint.html">Entry Point and Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/entrypoint.html#module-geoaquacrop_plots">geoaquacrop_plots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/entrypoint.html#module-geoaquacrop_plotting">geoaquacrop_plotting</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/helpers.html">Configuration and Helpers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/helpers.html#module-geoaquacrop_plotting.config">Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/helpers.html#module-geoaquacrop_plotting.utils">Stateless helpers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/helpers.html#module-geoaquacrop_plotting.queries">Dataset accessors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/helpers.html#module-geoaquacrop_plotting.styles">Styles</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/data.html">Data, Grid, Aggregates, and Boundary</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/data.html#module-geoaquacrop_plotting.data">Data loading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/data.html#module-geoaquacrop_plotting.grid">Grid geometry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/data.html#module-geoaquacrop_plotting.aggregates">Pre-computed aggregations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/data.html#module-geoaquacrop_plotting.boundary">Region boundary</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/figures.html">Figure Builders</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/figures.html#module-geoaquacrop_plotting.figures_maps">Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/figures.html#module-geoaquacrop_plotting.figures_timeseries">Time series</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/export.html">Export</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/export.html#geoaquacrop_plotting.export.export_data"><code class="docutils literal notranslate"><span class="pre">export_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/callbacks.html">Dash Callbacks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/callbacks.html#the-state-bus">The state bus</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/callbacks.html#module-geoaquacrop_plotting.callbacks_controls">Sidebar controls</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/callbacks.html#module-geoaquacrop_plotting.callbacks_selection">Selection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/callbacks.html#module-geoaquacrop_plotting.callbacks_maps">Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/callbacks.html#module-geoaquacrop_plotting.callbacks_timeseries">Time series</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/callbacks.html#module-geoaquacrop_plotting.callbacks_export">Export modal</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/layout.html">App Layout</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/layout.html#module-geoaquacrop_plotting.app_shell">Application shell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/layout.html#module-geoaquacrop_plotting.layout_sidebar">Sidebar column</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/layout.html#module-geoaquacrop_plotting.layout_panels">Main canvas column</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/layout.html#module-geoaquacrop_plotting.layout_export">Export modal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/layout.html#module-geoaquacrop_plotting.layout">Assembly</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">GeoAquaCrop Visualizer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">geoaquacrop_plotting.export</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for geoaquacrop_plotting.export</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Gridded export of daily output to NetCDF, GeoTIFF, and CSV."""</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">EXPORT_DIR</span><span class="p">,</span> <span class="n">DAILY_VARIABLES</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">cell_meta</span><span class="p">,</span> <span class="n">cell_id_to_idx</span><span class="p">,</span> <span class="n">date_index</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.grid</span><span class="w"> </span><span class="kn">import</span> <span class="n">half</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.queries</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_daily</span>
+
+<div class="viewcode-block" id="export_data">
+<a class="viewcode-back" href="../../api/export.html#geoaquacrop_plotting.export.export_data">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">export_data</span><span class="p">(</span><span class="n">selected_cells</span><span class="p">,</span> <span class="n">export_vars</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">,</span> <span class="n">formats</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Export daily gridded simulation output to NetCDF, GeoTIFF, and/or CSV.</span>
+
+<span class="sd">    Assembles a 3D array (time × y × x) for each requested variable by</span>
+<span class="sd">    iterating over selected cells and reading their daily tables. Writes</span>
+<span class="sd">    output files to ``EXPORT_DIR`` and returns a status message.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    selected_cells : list of int</span>
+<span class="sd">        Cell IDs to include. Pass ``list(cell_meta.keys())`` for the whole area.</span>
+<span class="sd">    export_vars : list of str</span>
+<span class="sd">        Variable names matching keys in ``DAILY_VARIABLES``,</span>
+<span class="sd">        e.g. ``['Es', 'Tr', 'biomass']``.</span>
+<span class="sd">    start_date : str</span>
+<span class="sd">        ISO date string for the start of the export period, e.g. ``'2008-01-01'``.</span>
+<span class="sd">    end_date : str</span>
+<span class="sd">        ISO date string for the end of the export period, e.g. ``'2010-12-31'``.</span>
+<span class="sd">    formats : list of str</span>
+<span class="sd">        Output format codes. Any combination of ``'nc'`` (NetCDF),</span>
+<span class="sd">        ``'tif'`` (GeoTIFF, requires rasterio), ``'csv'`` (CSV).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        Human-readable status message listing saved filenames and the output</span>
+<span class="sd">        directory, or an error message if the date range is empty or no</span>
+<span class="sd">        variables were exported.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    GeoTIFF export requires the ``rasterio`` package. If not installed, a</span>
+<span class="sd">    warning is appended to the exported file list and GeoTIFF is skipped.</span>
+<span class="sd">    The coordinate reference system is always EPSG:4326.</span>
+<span class="sd">    """</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">rasterio.transform</span><span class="w"> </span><span class="kn">import</span> <span class="n">from_bounds</span>
+        <span class="n">has_rasterio</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="n">has_rasterio</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="c1"># Resolve cell list</span>
+    <span class="n">cell_ids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cell_meta</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">selected_cells</span> <span class="k">else</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">selected_cells</span><span class="p">]</span>
+
+    <span class="c1"># Date range</span>
+    <span class="n">start_ts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="n">start_date</span><span class="p">)</span>
+    <span class="n">end_ts</span>   <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="n">end_date</span><span class="p">)</span>
+    <span class="n">mask</span>     <span class="o">=</span> <span class="p">(</span><span class="n">date_index</span> <span class="o">&gt;=</span> <span class="n">start_ts</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">date_index</span> <span class="o">&lt;=</span> <span class="n">end_ts</span><span class="p">)</span>
+    <span class="n">time_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">mask</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">time_idx</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">'No data in selected date range.'</span>
+
+    <span class="n">dates_sel</span> <span class="o">=</span> <span class="n">date_index</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+
+    <span class="c1"># Grid axes from all cells</span>
+    <span class="n">xs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">cell_meta</span><span class="p">[</span><span class="n">c</span><span class="p">][</span><span class="s1">'x'</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cell_ids</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cell_meta</span><span class="p">))</span>
+    <span class="n">ys</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">cell_meta</span><span class="p">[</span><span class="n">c</span><span class="p">][</span><span class="s1">'y'</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cell_ids</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cell_meta</span><span class="p">),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">exported</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">export_vars</span><span class="p">:</span>
+        <span class="n">var_info</span> <span class="o">=</span> <span class="n">DAILY_VARIABLES</span><span class="p">[</span><span class="n">var</span><span class="p">]</span>
+        <span class="c1"># 3D array: time × y × x, filled with NaN</span>
+        <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">dates_sel</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">ys</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">cid</span> <span class="ow">in</span> <span class="n">cell_ids</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">cid</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cell_id_to_idx</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">wf</span><span class="p">,</span> <span class="n">cg</span> <span class="o">=</span> <span class="n">get_daily</span><span class="p">(</span><span class="n">cid</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">wf</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">wf</span> <span class="k">if</span> <span class="n">var_info</span><span class="p">[</span><span class="s1">'table'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'water_flux'</span> <span class="k">else</span> <span class="n">cg</span>
+            <span class="n">df_sel</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">time_idx</span><span class="p">][</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+            <span class="n">xi</span> <span class="o">=</span> <span class="n">xs</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">cell_meta</span><span class="p">[</span><span class="n">cid</span><span class="p">][</span><span class="s1">'x'</span><span class="p">])</span>
+            <span class="n">yi</span> <span class="o">=</span> <span class="n">ys</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">cell_meta</span><span class="p">[</span><span class="n">cid</span><span class="p">][</span><span class="s1">'y'</span><span class="p">])</span>
+            <span class="n">arr</span><span class="p">[:,</span> <span class="n">yi</span><span class="p">,</span> <span class="n">xi</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_sel</span>
+
+        <span class="n">base_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">var</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">start_ts</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y%m</span><span class="si">%d</span><span class="s1">'</span><span class="p">)</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">end_ts</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y%m</span><span class="si">%d</span><span class="s1">'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+
+        <span class="c1"># ── NetCDF ────────────────────────────────────────────────────────────</span>
+        <span class="k">if</span> <span class="s1">'nc'</span> <span class="ow">in</span> <span class="n">formats</span><span class="p">:</span>
+            <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
+                <span class="p">{</span><span class="n">var</span><span class="p">:</span> <span class="p">([</span><span class="s1">'time'</span><span class="p">,</span> <span class="s1">'y'</span><span class="p">,</span> <span class="s1">'x'</span><span class="p">],</span> <span class="n">arr</span><span class="p">)},</span>
+                <span class="n">coords</span><span class="o">=</span><span class="p">{</span>
+                    <span class="s1">'time'</span><span class="p">:</span> <span class="n">dates_sel</span><span class="p">,</span>
+                    <span class="s1">'y'</span><span class="p">:</span>    <span class="n">ys</span><span class="p">,</span>
+                    <span class="s1">'x'</span><span class="p">:</span>    <span class="n">xs</span><span class="p">,</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'long_name'</span><span class="p">]</span> <span class="o">=</span> <span class="n">var_info</span><span class="p">[</span><span class="s1">'label'</span><span class="p">]</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'units'</span><span class="p">]</span>     <span class="o">=</span> <span class="n">var_info</span><span class="p">[</span><span class="s1">'label'</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'('</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">')'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span> \
+                                         <span class="k">if</span> <span class="s1">'('</span> <span class="ow">in</span> <span class="n">var_info</span><span class="p">[</span><span class="s1">'label'</span><span class="p">]</span> <span class="k">else</span> <span class="s1">''</span>
+            <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'description'</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'GeoAquaCrop output: </span><span class="si">{</span><span class="n">var</span><span class="si">}</span><span class="s1">'</span>
+            <span class="n">nc_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">EXPORT_DIR</span><span class="p">,</span> <span class="n">base_name</span> <span class="o">+</span> <span class="s1">'.nc'</span><span class="p">)</span>
+            <span class="n">ds</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="n">nc_path</span><span class="p">)</span>
+            <span class="n">exported</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">nc_path</span><span class="p">))</span>
+
+        <span class="c1"># ── GeoTIFF ───────────────────────────────────────────────────────────</span>
+        <span class="k">if</span> <span class="s1">'tif'</span> <span class="ow">in</span> <span class="n">formats</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">has_rasterio</span><span class="p">:</span>
+                <span class="n">exported</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'(rasterio not installed — GeoTIFF skipped)'</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">x_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span> <span class="o">-</span> <span class="n">half</span>
+                <span class="n">x_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span> <span class="o">+</span> <span class="n">half</span>
+                <span class="n">y_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span> <span class="o">-</span> <span class="n">half</span>
+                <span class="n">y_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span> <span class="o">+</span> <span class="n">half</span>
+                <span class="n">transform</span> <span class="o">=</span> <span class="n">from_bounds</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">ys</span><span class="p">))</span>
+                <span class="n">tif_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">EXPORT_DIR</span><span class="p">,</span> <span class="n">base_name</span> <span class="o">+</span> <span class="s1">'.tif'</span><span class="p">)</span>
+                <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span>
+                    <span class="n">tif_path</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">,</span>
+                    <span class="n">driver</span><span class="o">=</span><span class="s1">'GTiff'</span><span class="p">,</span>
+                    <span class="n">height</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">ys</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">),</span>
+                    <span class="n">count</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">dates_sel</span><span class="p">),</span>
+                    <span class="n">dtype</span><span class="o">=</span><span class="s1">'float32'</span><span class="p">,</span>
+                    <span class="n">crs</span><span class="o">=</span><span class="s1">'EPSG:4326'</span><span class="p">,</span>
+                    <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">,</span>
+                    <span class="n">nodata</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+                <span class="p">)</span> <span class="k">as</span> <span class="n">dst</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">t_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dates_sel</span><span class="p">)):</span>
+                        <span class="n">dst</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">t_idx</span><span class="p">],</span> <span class="n">t_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                        <span class="n">dst</span><span class="o">.</span><span class="n">update_tags</span><span class="p">(</span><span class="n">t_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">dates_sel</span><span class="p">[</span><span class="n">t_idx</span><span class="p">]</span><span class="o">.</span><span class="n">date</span><span class="p">()))</span>
+                <span class="n">exported</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">tif_path</span><span class="p">))</span>
+
+        <span class="c1"># ── CSV ───────────────────────────────────────────────────────────────</span>
+        <span class="k">if</span> <span class="s1">'csv'</span> <span class="ow">in</span> <span class="n">formats</span><span class="p">:</span>
+            <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">t_idx</span><span class="p">,</span> <span class="n">dt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dates_sel</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">cid</span> <span class="ow">in</span> <span class="n">cell_ids</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">cid</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cell_id_to_idx</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="n">xi</span> <span class="o">=</span> <span class="n">xs</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">cell_meta</span><span class="p">[</span><span class="n">cid</span><span class="p">][</span><span class="s1">'x'</span><span class="p">])</span>
+                    <span class="n">yi</span> <span class="o">=</span> <span class="n">ys</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">cell_meta</span><span class="p">[</span><span class="n">cid</span><span class="p">][</span><span class="s1">'y'</span><span class="p">])</span>
+                    <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                        <span class="s1">'date'</span><span class="p">:</span>    <span class="nb">str</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">date</span><span class="p">()),</span>
+                        <span class="s1">'cell_id'</span><span class="p">:</span> <span class="n">cid</span><span class="p">,</span>
+                        <span class="s1">'x'</span><span class="p">:</span>       <span class="n">cell_meta</span><span class="p">[</span><span class="n">cid</span><span class="p">][</span><span class="s1">'x'</span><span class="p">],</span>
+                        <span class="s1">'y'</span><span class="p">:</span>       <span class="n">cell_meta</span><span class="p">[</span><span class="n">cid</span><span class="p">][</span><span class="s1">'y'</span><span class="p">],</span>
+                        <span class="n">var</span><span class="p">:</span>       <span class="n">arr</span><span class="p">[</span><span class="n">t_idx</span><span class="p">,</span> <span class="n">yi</span><span class="p">,</span> <span class="n">xi</span><span class="p">],</span>
+                    <span class="p">})</span>
+            <span class="n">df_csv</span>  <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+            <span class="n">csv_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">EXPORT_DIR</span><span class="p">,</span> <span class="n">base_name</span> <span class="o">+</span> <span class="s1">'.csv'</span><span class="p">)</span>
+            <span class="n">df_csv</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">csv_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">exported</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">csv_path</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">exported</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"Saved </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">exported</span><span class="p">)</span><span class="si">}</span><span class="s2"> file(s) to </span><span class="si">{</span><span class="n">EXPORT_DIR</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">exported</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+    <span class="k">return</span> <span class="s1">'Nothing exported — check selections.'</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, GIST Lab, Aalto University.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

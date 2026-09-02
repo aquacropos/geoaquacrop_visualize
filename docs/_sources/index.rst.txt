@@ -1,0 +1,62 @@
+GeoAquaCrop Visualizer — Documentation
+======================================
+
+**GeoAquaCrop Visualizer** is an interactive web-based tool for exploring
+gridded `AquaCrop <https://www.fao.org/aquacrop/en/>`_ simulations.
+Built with Python, `Dash <https://dash.plotly.com>`_, and
+`Plotly <https://plotly.com>`_, it provides spatial and temporal
+exploration of simulation outputs and climate inputs across large
+multi-cell grids.
+
+Developed at the `GIST Lab <https://gistlab.science>`_, Aalto University,
+Department of Built Environment, as part of the DIWA doctoral programme.
+
+.. note::
+
+   The application is a Python package, ``geoaquacrop_plotting``, split
+   across 22 modules. Importing the package loads every dataset, pre-computes
+   the aggregations, assembles ``app.layout``, and registers every callback;
+   :doc:`architecture` explains that startup sequence and the strict one-way
+   dependency order that makes it work.
+
+Where to start
+--------------
+
+.. list-table::
+   :header-rows: 1
+   :widths: 26 74
+
+   * - Page
+     - Read it for
+   * - :doc:`overview`
+     - What the application shows, what each tab does, and which files it
+       reads.
+   * - :doc:`installation`
+     - Setting up the environment, installing the package, and running or
+       embedding the app.
+   * - :doc:`configuration`
+     - Pointing the app at a different simulation run, and the variable
+       catalogues that drive the UI.
+   * - :doc:`architecture`
+     - How startup works, why the maps stay fast, and the invariants the
+       test suite enforces.
+   * - :doc:`api/index`
+     - Every public function and module attribute, generated from the
+       source.
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents
+
+   overview
+   installation
+   configuration
+   architecture
+   api/index
+
+Indices and tables
+------------------
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`

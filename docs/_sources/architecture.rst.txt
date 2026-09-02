@@ -1,0 +1,304 @@
+Architecture
+============
+
+.. contents::
+   :local:
+   :depth: 2
+
+Everything happens at import
+----------------------------
+
+``geoaquacrop_plots.py`` contains no application logic. The work is done by
+importing the package:
+
+.. code-block:: python
+
+   from geoaquacrop_plotting import app, PORT
+
+   def main():
+       app.run(debug=False, port=PORT)
+
+``geoaquacrop_plotting/__init__.py`` imports ``config`` and ``app_shell``,
+then ``layout``, then the five ``callbacks_*`` modules. Because each of
+those pulls in its own dependencies, that single import chain:
+
+1. resolves the workspace and validates the data paths (``config``);
+2. reads the pickles, GeoJSON, climate NetCDFs, crop calendar, and SPAM
+   grids, and derives the lookup tables (``data``);
+3. builds the cell-polygon GeoJSON and computes the map centre and zoom
+   (``grid``);
+4. pre-computes every (crop, variable, aggregation) combination
+   (``aggregates``);
+5. thins the region outline and registers the route that serves it
+   (``boundary``);
+6. builds the initial figures and assembles ``app.layout`` (``layout*``);
+7. registers every callback (``callbacks_*``).
+
+By the time the import statement returns, ``app`` is ready to serve. Python
+caches modules, so the loading cost is paid exactly once per process no
+matter how many modules import ``data``.
+
+Order matters in ``__init__``: ``layout`` is imported before the callback
+modules, because the callbacks reference component ids that must already
+exist in the layout tree.
+
+Dependency order
+----------------
+
+Imports flow strictly one way, which is what guarantees there are no cycles
+and that the datasets are loaded exactly once:
+
+.. code-block:: text
+
+   config
+     └─> utils
+           └─> data
+                 └─> grid
+                       └─> aggregates
+                             └─> boundary
+                                   └─> queries
+                                         └─> figures_maps / figures_timeseries
+                                               └─> layout_sidebar / layout_panels /
+                                                   layout_export ─> layout
+                                                         └─> callbacks_*
+
+``app_shell`` sits outside this chain. It depends on nothing in the package
+and holds only the ``dash.Dash`` object and the HTML index template, so the
+layout modules and every callback module can import ``app`` without
+importing each other. ``boundary`` is the one non-callback module that
+imports it, because registering its route needs ``app.server``.
+
+What ``data`` derives
+---------------------
+
+Beyond the raw datasets, ``data`` builds the lookup tables the rest of the
+package reads:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 70
+
+   * - Name
+     - Contents
+   * - ``summary``
+     - All per-cell summary frames concatenated, with stripped column names
+       and three derived columns: ``harvest_year``, ``season_label``, and
+       ``crop_irr`` (``'<crop> | <irrigation>'``).
+   * - ``cell_meta``
+     - ``cell_id`` → ``{x, y, crop, irrigation, list_idx}``. Cells whose
+       first summary row carries an ``error`` value are excluded.
+   * - ``cell_id_to_idx``
+     - ``cell_id`` → index into the raw pickle lists, used by
+       :func:`~geoaquacrop_plotting.queries.get_daily`.
+   * - ``_cell_ids_arr``, ``_x_da``, ``_y_da``
+     - Cell ids and coordinates as arrays, plus the two ``xarray``
+       ``DataArray`` objects used for vectorised nearest-neighbour selection
+       against the climate, crop-calendar, and SPAM grids.
+   * - ``sim_start``, ``sim_end``, ``date_index``, ``n_rows``
+     - The simulation calendar. ``sim_start`` is back-calculated from the
+       first cell's harvest date and harvest step; the daily tables are
+       positional, so row *i* is ``sim_start + i days``.
+   * - ``years``, ``year_rows``
+     - Simulation years with more than five days of data, and the
+       ``(first_row, last_row)`` slice bounds for each.
+   * - ``preseason_end_row``, ``preseason_end_date``
+     - Last row where ``season_counter == -1``, i.e. the end of the model
+       spin-up. Used to draw the *Pre-season* shading on both time series.
+   * - ``crop_irr_list``, ``season_list``, ``map_var_keys``,
+       ``daily_var_keys``, ``climate_var_keys``, ``spam_var_keys``
+     - Sorted option lists that populate the sidebar dropdowns. Only SPAM
+       variables that actually contain positive data are kept.
+
+Pre-computation instead of per-interaction work
+-----------------------------------------------
+
+``aggregates`` runs one groupby per (crop, variable) pair at startup and
+stores both aggregations:
+
+- ``precomputed_agg[(crop_irr, var, agg)]`` — a DataFrame of per-cell values
+  merged with the cell coordinates.
+- ``crop_var_range_all[crop_irr]['<var>_<agg>']`` — the colour-bar range for
+  the aggregated view.
+- ``crop_var_range[crop_irr][var]`` — the colour-bar range for single-season
+  views, computed from the ungrouped values.
+
+Switching a variable, a crop, or the mean/sum toggle is then a dictionary
+lookup rather than a groupby over the whole summary frame.
+
+.. warning::
+
+   The frames in ``precomputed_agg`` are shared. Callbacks read them and
+   must not mutate them; :func:`~geoaquacrop_plotting.figures_maps.build_output_map` takes an explicit
+   ``.copy()`` before adding its ``cell_id_str`` column, while
+   :func:`~geoaquacrop_plotting.callbacks_maps.patch_output_map_data` only reads.
+
+Caching in ``queries``
+~~~~~~~~~~~~~~~~~~~~~~
+
+Three accessors are wrapped in :func:`functools.lru_cache`:
+:func:`~geoaquacrop_plotting.queries.spam_vars_for_crop`, ``_get_cropcal_summary_cached`` (behind
+:func:`~geoaquacrop_plotting.queries.get_cropcal_summary`), and :func:`~geoaquacrop_plotting.queries.get_climate_map_z`. The last is the
+significant one: it forces the xarray reduction and the nearest-neighbour
+selection onto the cell centroids into memory, keyed by
+``(var, season_label)``. Each entry is a tuple of roughly 19,000 floats
+(~150 KB), and the full set of variable/season combinations totals a few
+megabytes — paid once, then reused for every later switch.
+
+Keeping the map fast
+--------------------
+
+The cell grid is large, so the figures are built once and afterwards
+*patched* rather than rebuilt.
+
+Patch-based updates
+~~~~~~~~~~~~~~~~~~~
+
+The callbacks in ``callbacks_maps`` return :class:`dash.Patch` objects that
+address individual trace properties, so the choropleth GeoJSON never
+crosses the wire again after the first render:
+
+- :func:`~geoaquacrop_plotting.callbacks_maps.patch_output_map_data` sends ``z``, ``zmin``/``zmax``,
+  ``colorscale``, ``hovertemplate``, and the colour-bar title. It re-sends
+  ``locations`` and ``customdata`` **only** when the trigger was ``sel-crop``
+  or ``sel-season``, because those are the only changes that alter the cell
+  set. A pure variable or aggregation switch keeps the existing,
+  identically ordered locations, so ``z`` stays aligned.
+- :func:`~geoaquacrop_plotting.callbacks_maps.patch_input_map_data` never re-sends ``locations`` or
+  ``customdata`` at all — the input map covers every cell in every mode.
+- The highlight callbacks touch only the overlay traces.
+
+Trace order is therefore part of the contract between the figure builders
+and the patch callbacks:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 12 44 44
+
+   * - Index
+     - Output map
+     - Input map
+   * - 0
+     - Grey background tile (all cells)
+     - Grey background tile (all cells)
+   * - 1
+     - Data choropleth
+     - Data choropleth (climate or SPAM)
+   * - 2
+     - Clicked-cell highlight (blue)
+     - Clicked-cell highlight (blue)
+   * - 3
+     - Lasso-selection highlight (orange)
+     - —
+   * - 4
+     - Invisible centroid scatter (lasso target)
+     - —
+
+Hover text via ``customdata``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Static per-cell fields (id, longitude, latitude) are packed into
+``customdata`` once; the varying value is read from ``z`` through the
+``hovertemplate`` string. The alternative — a pre-rendered ``text`` array —
+would ship a rebuilt multi-megabyte array of hover strings on every variable
+switch. ``build_spam_map`` is the one exception and still uses a ``text``
+array.
+
+.. _boundary-simplification:
+
+Region boundary
+~~~~~~~~~~~~~~~
+
+Plotly copies whatever geometry it is handed into the figure at construction
+time, so a module-level GeoJSON dict would be serialised into every map on
+every rebuild — six figures, times ~7 MB of raw outline. Instead the outline
+is referenced **by URL**, and :mod:`~geoaquacrop_plotting.boundary` puts it
+there:
+
+.. code-block:: python
+
+   dict(sourcetype='geojson',
+        source=BOUNDARY_URL,
+        type='line', color='#1a6faf', line=dict(width=2.5))
+
+At import, ``boundary`` thins :data:`~geoaquacrop_plotting.data.region_geojson`
+with :func:`~geoaquacrop_plotting.utils.simplify_geojson` — a pure-numpy
+Ramer–Douglas–Peucker pass at ``BOUNDARY_SIMPLIFY_EPS`` (0.004°, ~400 m,
+invisible at basin zoom) — serialises the result once, and registers it as a
+single route on ``app.server`` with a long ``Cache-Control`` lifetime. The
+browser fetches it once per session and caches it; the geometry never enters
+a figure payload.
+
+On the High Plains outline that reduces 199 features and 157,118 vertices to
+104 polygons and 12,535 vertices — a 278 KB response instead of 7.19 MB —
+and costs about 0.1 s at startup. Rings that fall below the four points a
+closed ring needs are dropped, the survivors are re-closed, and coordinates
+are rounded to five decimals.
+
+.. note::
+
+   Nothing is written to disk, and no geometry ships inside the package. The
+   thinned copy lives only in memory and is rebuilt from ``GEOJSON_PATH`` at
+   every startup, so it cannot go stale when the region outline changes.
+
+The full-resolution file is still read at import into
+:data:`~geoaquacrop_plotting.data.region_geojson`, but nothing in the
+application draws it — the shared layer stack returned by
+:func:`~geoaquacrop_plotting.queries.mapbox_layers` draws the thinned copy
+over an ESRI World Topo raster tile layer. ``region_geojson`` remains
+available for code that needs the exact outline.
+
+.. warning::
+
+   The boundary layer omits ``below``, and Plotly inserts such a layer *above*
+   every existing layer — so the outline is drawn over the choropleth cells,
+   not beneath them. Adding ``below='traces'`` puts it underneath, where the
+   0.95-opacity data trace will hide it except outside the grid.
+
+State flows through stores
+--------------------------
+
+Callbacks never read each other's components directly. Every selection is
+written into a :class:`dash.dcc.Store`, and the figure callbacks read from
+those stores — a single state bus that keeps the callback graph shallow and
+acyclic. The stores are listed in :doc:`api/callbacks`.
+
+Two consequences worth knowing:
+
+- Several callbacks write the same figure property, so they declare
+  ``allow_duplicate=True`` with ``prevent_initial_call=True``.
+- The time-series containers are hidden with
+  ``visibility: hidden; height: 0`` rather than ``display: none``. A
+  ``display: none`` container has no layout box, and Plotly cannot size a
+  graph inside one — the chart would render at the wrong width the first
+  time a cell is clicked.
+
+Invariants the test suite enforces
+----------------------------------
+
+``tests/test_package_structure.py`` reads the package with :mod:`ast` rather
+than importing it, and fails the build if any of the architectural properties
+described above stops holding:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 38 62
+
+   * - Check
+     - Why it matters
+   * - Every module is at most 500 lines
+     - The split by concern stays a split, rather than drifting back into a
+       few large modules.
+   * - The sibling import graph is acyclic
+     - The one-way dependency order above is what makes a single import build
+       the whole app deterministically.
+   * - Only ``data.py`` calls ``pickle.load`` or ``open_dataset``
+     - A second reader would double both the startup cost and the memory.
+   * - ``config``, ``utils``, ``styles``, ``app_shell`` never import ``data``
+     - These four are imported directly by the tests, which run with no
+       dataset present.
+   * - Callback modules never import each other
+     - State flows through stores, not through direct component reads.
+   * - Figure and layout modules never import callbacks
+     - Keeps the layout buildable before any callback is registered.
+   * - Every module has a docstring, and every module parses
+     - The documentation build reads those docstrings.

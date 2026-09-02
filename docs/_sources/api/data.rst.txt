@@ -1,0 +1,155 @@
+Data, Grid, Aggregates, and Boundary
+====================================
+
+These four modules do their work at import rather than exposing callables:
+``data`` loads every dataset once, ``grid`` derives the cell polygons and the
+map framing from it, ``aggregates`` pre-computes every view the sidebar can
+ask for, and ``boundary`` thins the region outline and serves it.
+
+What they publish is module-level state. The tables below say what each name
+holds; the values themselves are the loaded datasets and are not reproduced
+here.
+
+Data loading
+------------
+
+.. automodule:: geoaquacrop_plotting.data
+
+Raw datasets
+~~~~~~~~~~~~
+
+.. list-table::
+   :header-rows: 1
+   :widths: 26 74
+
+   * - Name
+     - Contents
+   * - ``region_geojson``
+     - The region outline, parsed from ``GEOJSON_PATH`` at full resolution.
+       Nothing in the app draws it — see
+       :mod:`~geoaquacrop_plotting.boundary` — but it is the exact geometry
+       for code that needs it.
+   * - ``summary``
+     - All per-cell summary frames concatenated, with stripped column names
+       and three derived columns: ``harvest_year``, ``season_label``, and
+       ``crop_irr`` (``'<crop> | <irrigation>'``).
+   * - ``daily_raw``
+     - The daily pickle as loaded: one dict per cell, each holding a
+       ``water_flux`` and a ``crop_growth`` table.
+   * - ``climate_ds``
+     - ``{variable: xarray.Dataset}`` for the four climate grids.
+   * - ``cropcal_ds``
+     - The crop calendar grid: planting DOY and season length per crop.
+   * - ``spam_ds``, ``spam_var_keys``
+     - The SPAM physical-area grid, and the subset of its variables that
+       actually contain positive data. ``spam_ds`` is ``None`` when no SPAM
+       file is present.
+
+Derived lookup tables
+~~~~~~~~~~~~~~~~~~~~~
+
+.. list-table::
+   :header-rows: 1
+   :widths: 26 74
+
+   * - Name
+     - Contents
+   * - ``cell_meta``
+     - ``cell_id`` → ``{x, y, crop, irrigation, list_idx}``. Cells whose
+       first summary row carries an ``error`` value are excluded, so failed
+       cells never reach the map.
+   * - ``cell_id_to_idx``
+     - ``cell_id`` → index into the raw pickle lists, used by
+       :func:`~geoaquacrop_plotting.queries.get_daily`.
+   * - ``_cell_ids_arr``, ``_x_da``, ``_y_da``
+     - Cell ids and coordinates as arrays, plus the two ``xarray``
+       ``DataArray`` objects used for vectorised nearest-neighbour selection
+       against the climate, crop-calendar, and SPAM grids.
+   * - ``sim_start``, ``sim_end``, ``date_index``, ``n_rows``
+     - The simulation calendar. ``sim_start`` is back-calculated from the
+       first cell's harvest date and harvest step; the daily tables are
+       positional, so row *i* is ``sim_start + i days``.
+   * - ``years``, ``year_rows``
+     - Simulation years with more than five days of data, and the
+       ``(first_row, last_row)`` slice bounds for each.
+   * - ``preseason_end_row``, ``preseason_end_date``
+     - Last row where ``season_counter == -1``, i.e. the end of the model
+       spin-up. Used to draw the *Pre-season* shading on both time series.
+   * - ``crop_irr_list``, ``season_list``, ``map_var_keys``,
+       ``daily_var_keys``, ``climate_var_keys``
+     - Sorted option lists that populate the sidebar dropdowns.
+
+Grid geometry
+-------------
+
+.. automodule:: geoaquacrop_plotting.grid
+
+.. list-table::
+   :header-rows: 1
+   :widths: 26 74
+
+   * - Name
+     - Contents
+   * - ``grid_geojson``
+     - A FeatureCollection with one square Polygon per cell, its ``id`` set
+       to the cell id as a string. Every choropleth trace addresses cells
+       through these ids.
+   * - ``all_cell_ids``
+     - Every cell id as a string, in ``cell_meta`` order — the ``locations``
+       array of the background trace.
+   * - ``cells``
+     - The distinct ``(cell_id, x, y)`` rows the polygons are built from.
+
+.. autodata:: geoaquacrop_plotting.grid.half
+.. autodata:: geoaquacrop_plotting.grid.center_lat
+   :no-value:
+.. autodata:: geoaquacrop_plotting.grid.center_lon
+   :no-value:
+.. autodata:: geoaquacrop_plotting.grid.MAP_ZOOM
+   :no-value:
+
+Pre-computed aggregations
+-------------------------
+
+.. automodule:: geoaquacrop_plotting.aggregates
+
+.. list-table::
+   :header-rows: 1
+   :widths: 34 66
+
+   * - Name
+     - Contents
+   * - ``precomputed_agg``
+     - ``(crop_irr, var, agg)`` → a DataFrame of per-cell values merged with
+       the cell coordinates.
+   * - ``crop_var_range_all``
+     - ``crop_irr`` → ``{'<var>_<agg>': (vmin, vmax)}``, the colour-bar range
+       for the multi-year aggregated view.
+   * - ``crop_var_range``
+     - ``crop_irr`` → ``{var: (vmin, vmax)}``, the colour-bar range for
+       single-season views, computed from the ungrouped values.
+
+.. warning::
+
+   The frames in ``precomputed_agg`` are shared. Callbacks read them and must
+   not mutate them; :func:`~geoaquacrop_plotting.figures_maps.build_output_map`
+   takes an explicit ``.copy()`` before adding its ``cell_id_str`` column,
+   while
+   :func:`~geoaquacrop_plotting.callbacks_maps.patch_output_map_data` only
+   reads.
+
+Region boundary
+---------------
+
+.. automodule:: geoaquacrop_plotting.boundary
+
+.. autofunction:: geoaquacrop_plotting.boundary.serve_region_boundary
+
+.. py:data:: geoaquacrop_plotting.boundary.boundary_geojson
+
+   The thinned outline, as a GeoJSON FeatureCollection of property-less
+   Polygon features. Produced from
+   :data:`~geoaquacrop_plotting.data.region_geojson` by
+   :func:`~geoaquacrop_plotting.utils.simplify_geojson`. Available to any code
+   that wants the geometry itself; ``region_geojson`` remains the exact,
+   full-resolution version.
