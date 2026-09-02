@@ -32,7 +32,6 @@ version = "0.1.0"
 description = "Interactive Dash/Plotly visualisation toolkit for gridded AquaCrop simulations"
 readme = "README.md"
 requires-python = ">=3.10"
-authors = [{ name = "GIST Lab, Aalto University" }]
 keywords = [
     "aquacrop",
     "agronomy",
@@ -85,8 +84,8 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/sehohosseini/Geoaquacrop-visualizer2"
-Repository = "https://github.com/sehohosseini/Geoaquacrop-visualizer2"
+Homepage = "https://github.com/sehohosseini/Geoaquacrop-visualizer"
+Repository = "https://github.com/sehohosseini/Geoaquacrop-visualizer"
 
 [project.scripts]
 geoaquacrop-visualizer = "geoaquacrop_plots:main"
