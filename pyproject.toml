@@ -1,0 +1,117 @@
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║                        PACKAGING CONFIGURATION                             ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+#
+# This file makes the project pip-installable and records its dependencies
+# unversioned, so pip resolves whatever is current. Pin an exact set with a
+# lock file or `pip freeze` if a reproducible environment is needed.
+#
+# Install it in editable mode:
+#
+#     pip install -e .
+#
+# Editable is the right choice here because the data paths in
+# src/geoaquacrop_plotting/config.py are resolved by searching upward for the
+# sibling geoaquacrop-preproc / geoaquacrop-simulate trees. A regular
+# `pip install .` copies the package into site-packages; the search still finds
+# the data when the venv lives inside the workspace, but setting
+# GEOAQUACROP_ROOT is the reliable way to pin it.
+#
+# This copy uses a src layout: the importable code lives in src/, the suite in
+# tests/. Nothing is importable until the project is installed, which is the
+# point — the tests exercise the installed package, never a stray copy picked
+# up from the working directory.
+
+[build-system]
+requires      = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "geoaquacrop-visualizer"
+version = "0.1.0"
+description = "Interactive Dash/Plotly visualisation toolkit for gridded AquaCrop simulations"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "GIST Lab, Aalto University" }]
+keywords = [
+    "aquacrop",
+    "agronomy",
+    "crop-model",
+    "hydrology",
+    "geospatial",
+    "dash",
+    "plotly",
+    "visualization",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Web Environment",
+    "Framework :: Dash",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Atmospheric Science",
+    "Topic :: Scientific/Engineering :: Hydrology",
+    "Topic :: Scientific/Engineering :: Visualization",
+]
+
+# ── Runtime dependencies ──────────────────────────────────────────────────────
+# Unversioned: pip resolves whatever is current. See the Plotly note below.
+dependencies = [
+    # Core data
+    "pandas",
+    "numpy",
+    "xarray",
+    "netCDF4",            # xarray engine for the .nc climate/SPAM/calendar grids
+    "scipy",
+    # Visualisation
+    # Maps use the MapLibre trace API (go.Choroplethmap / go.Scattermap), which
+    # needs Plotly 6 or newer -- the old *mapbox traces were removed in 6.0, so
+    # an older Plotly resolved here will fail at import.
+    "plotly",
+    "dash",
+    "dash-bootstrap-components",
+]
+
+[project.optional-dependencies]
+# GeoTIFF export is optional: export_data() degrades gracefully without rasterio.
+geotiff = ["rasterio"]
+test = ["pytest"]
+docs = ["Sphinx", "sphinx-rtd-theme"]
+dev = [
+    "geoaquacrop-visualizer[geotiff,test,docs]",
+]
+
+[project.urls]
+Homepage = "https://github.com/sehohosseini/Geoaquacrop-visualizer2"
+Repository = "https://github.com/sehohosseini/Geoaquacrop-visualizer2"
+
+[project.scripts]
+geoaquacrop-visualizer = "geoaquacrop_plots:main"
+
+# ── Packaging (src layout) ────────────────────────────────────────────────────
+[tool.setuptools]
+# The application package plus the top-level launcher module, both under src/.
+packages = ["geoaquacrop_plotting"]
+py-modules = ["geoaquacrop_plots"]
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+# No package data: the region outline is read from GEOJSON_PATH in the
+# geoaquacrop-preproc tree and thinned in memory at startup by boundary.py, so
+# no geometry ships inside the package.
+
+# ── Test configuration ────────────────────────────────────────────────────────
+# The modular suite lives in tests/, one module per application module. The
+# original single-file tests.py is still runnable explicitly with
+# `pytest tests.py`, but is not collected by a bare `pytest`.
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-q"
+# tests/_paths.py finds the package under src/, so the suite runs whether or not
+# the project has been installed.
+pythonpath = ["src"]
