@@ -23,15 +23,18 @@
 # up from the working directory.
 
 [build-system]
-requires      = ["setuptools>=68", "wheel"]
+requires      = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "geoaquacrop-visualizer"
-version = "0.1.0"
+name = "geoaquacrop_visualize"
+version = "0.1.0b1"
 description = "Interactive Dash/Plotly visualisation toolkit for gridded AquaCrop simulations"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+license-files = ["LICENSE"]  
+authors = [{ name = "Seyed Hosseini" }]
 keywords = [
     "aquacrop",
     "agronomy",
@@ -80,21 +83,20 @@ geotiff = ["rasterio"]
 test = ["pytest"]
 docs = ["Sphinx", "sphinx-rtd-theme"]
 dev = [
-    "geoaquacrop-visualizer[geotiff,test,docs]",
+    "geoaquacrop_visualize[geotiff,test,docs]",
 ]
 
 [project.urls]
-Homepage = "https://github.com/sehohosseini/Geoaquacrop-visualizer"
-Repository = "https://github.com/sehohosseini/Geoaquacrop-visualizer"
+Homepage = "https://github.com/aquacropos/geoaquacrop_visualize"
+Repository = "https://github.com/aquacropos/geoaquacrop_visualize"
 
 [project.scripts]
-geoaquacrop-visualizer = "geoaquacrop_plots:main"
+geoaquacrop_visualize = "geoaquacrop_visualize:run"
 
 # ── Packaging (src layout) ────────────────────────────────────────────────────
 [tool.setuptools]
-# The application package plus the top-level launcher module, both under src/.
-packages = ["geoaquacrop_plotting"]
-py-modules = ["geoaquacrop_plots"]
+# The application package under src/.
+packages = ["geoaquacrop_visualize"]
 
 [tool.setuptools.package-dir]
 "" = "src"

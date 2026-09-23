@@ -1,4 +1,4 @@
-# GeoAquaCrop Visualizer
+# GeoAquaCrop Visualize
 
 An interactive Dash/Plotly application for exploring **gridded AquaCrop
 simulations**. Point it at a completed model run and it gives you a map of the
@@ -80,18 +80,18 @@ The app expects three sibling directories under one workspace folder:
 
 ```
 <workspace>/
-├── geoaquacrop-preproc/            # preprocessed model inputs
+├── geoaquacrop_preprocess/            # preprocessed model inputs
 │   ├── inputdata/
 │   │   └── region_boundary.geojson     # region outline
 │   └── processed/
 │       ├── MaxTemp*.nc  MinTemp*.nc  Precipitation*.nc  ReferenceET*.nc
 │       ├── cropcalendar.nc
 │       └── spam*_physical_area.nc
-├── geoaquacrop-simulate/
+├── geoaquacrop_simulate/
 │   └── outputs/
 │       ├── summary_results_<timestamp>.pkl    # seasonal results per cell
 │       └── daily_results_<timestamp>.pkl      # daily tables per cell
-└── geoaquacrop-visualizer/         # ← this project
+└── geoaquacrop_visualize/         # ← this project
 ```
 
 **Finding the workspace.** At import, `config.py` walks up from its own location
@@ -119,8 +119,7 @@ and are set explicitly in [`config.py`](src/geoaquacrop_plotting/config.py) as
 ## Running the app
 
 ```bash
-geoaquacrop-visualizer            # console script, installed with the package
-python src/geoaquacrop_plots.py   # or run the entry point directly
+geoaquacrop_visualize            # console script, installed with the package
 ```
 
 Then open **<http://localhost:8050>**.
@@ -219,7 +218,7 @@ sidebar, the maps, and the export dialog all read from these dictionaries.
 ## Project structure
 
 ```
-geoaquacrop-visualizer/
+geoaquacrop_visualize/
 ├── pyproject.toml                  # Packaging + pytest configuration
 ├── src/                            # Everything importable
 │   ├── geoaquacrop_plots.py        # Entry point (`main()` / console script)
