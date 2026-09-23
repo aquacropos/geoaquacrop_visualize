@@ -181,7 +181,7 @@ def simplify_ring(ring, eps=BOUNDARY_SIMPLIFY_EPS, decimals=5):
         sequence of ``[lon, lat]`` pairs.
     eps : float, optional
         RDP tolerance in degrees. Defaults to
-        :data:`~geoaquacrop_plotting.config.BOUNDARY_SIMPLIFY_EPS`.
+        :data:`~geoaquacrop_visualize.config.BOUNDARY_SIMPLIFY_EPS`.
     decimals : int, optional
         Coordinate rounding precision. Default is 5.
 
@@ -219,7 +219,7 @@ def simplify_geojson(geojson, eps=BOUNDARY_SIMPLIFY_EPS):
         features.
     eps : float, optional
         RDP tolerance in degrees. Defaults to
-        :data:`~geoaquacrop_plotting.config.BOUNDARY_SIMPLIFY_EPS`.
+        :data:`~geoaquacrop_visualize.config.BOUNDARY_SIMPLIFY_EPS`.
 
     Returns
     -------

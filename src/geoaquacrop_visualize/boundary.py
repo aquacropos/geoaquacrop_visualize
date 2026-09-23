@@ -1,6 +1,6 @@
 """The region boundary overlay: derived from GEOJSON_PATH, served by URL.
 
-The outline at :data:`~geoaquacrop_plotting.config.GEOJSON_PATH` is the single
+The outline at :data:`~geoaquacrop_visualize.config.GEOJSON_PATH` is the single
 source of truth, but at high MB of raw geometry it cannot be handed to Plotly
 directly: Plotly copies whatever geometry it is given into the figure at
 construction time, so a module-level dict would be serialised into every map on
@@ -39,7 +39,7 @@ def serve_region_boundary():
     Serve the simplified region outline to the browser.
 
     Registered on the Dash Flask server at
-    :data:`~geoaquacrop_plotting.config.BOUNDARY_URL` when this module is
+    :data:`~geoaquacrop_visualize.config.BOUNDARY_URL` when this module is
     imported, which happens before the server starts. The response body is
     pre-serialised, so a request costs no work beyond the transfer, and the
     long ``Cache-Control`` lifetime means a session fetches it once however

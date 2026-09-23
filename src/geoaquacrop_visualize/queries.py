@@ -296,7 +296,7 @@ def mapbox_layers():
 
     A raster tile layer (ESRI World Topo Map) plus a GeoJSON line layer tracing
     the region boundary, the latter loaded by URL from the route
-    :func:`~geoaquacrop_plotting.boundary.serve_region_boundary` so the geometry
+    :func:`~geoaquacrop_visualize.boundary.serve_region_boundary` so the geometry
     is fetched once and browser-cached instead of embedded in each figure.
 
     Returns
