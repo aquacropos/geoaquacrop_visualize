@@ -6,8 +6,6 @@ region, a variable picker, and a click-through to per-cell daily time series —
 plus the inputs those runs were driven by, and a gridded export of anything you
 select.
 
-
-
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Connecting your data](#connecting-your-data)
@@ -39,7 +37,7 @@ Everything loads once at startup, so interaction is instant afterwards.
 
 ## Requirements
 
-- **Python 3.10 or newer**
+- **Python 3.11 or newer**
 - **A completed AquaCrop run.** The app is a viewer, not a model — it reads the
   outputs of `geoaquacrop-simulate` and the preprocessed inputs from
   `geoaquacrop-preproc`. See [Connecting your data](#connecting-your-data).
@@ -55,14 +53,14 @@ Runtime dependencies (`pandas`, `numpy`, `xarray`, `netCDF4`, `scipy`,
 pip install -e ".[geotiff]"
 ```
 
-Editable (`-e`) is recommended: `config.py` locates your data by searching
-upward from its own location, which works most naturally from a checkout.
+The project uses a `src` layout, so the package is importable only once it is
+installed.
 
 | Extra | Adds | For |
 |---|---|---|
 | `geotiff` | `rasterio` | GeoTIFF export. Without it, that one format is skipped and the other two still work. |
 | `test` | `pytest` | The test suite. |
-| `docs` | `Sphinx`, `sphinx-rtd-theme` | Rebuilding the HTML docs. |
+| `docs` | `Sphinx`, `sphinx-rtd-theme` | Building the documentation. |
 | `dev` | all of the above | Contributing. |
 
 Dependencies are declared without version constraints, so pip resolves whatever
@@ -73,50 +71,53 @@ is current. If you need a reproducible environment, capture one with
 
 ## Connecting your data
 
-The app expects three sibling directories under one workspace folder:
+By default the app looks for its data in the folder you launch it from:
 
 ```
-<workspace>/
-├── geoaquacrop_preprocess/            # preprocessed model inputs
-│   ├── inputdata/
-│   │   └── region_boundary.geojson     # region outline
-│   └── processed/
-│       ├── MaxTemp*.nc  MinTemp*.nc  Precipitation*.nc  ReferenceET*.nc
-│       ├── cropcalendar.nc
-│       └── spam*_physical_area.nc
-├── geoaquacrop_simulate/
-│   └── outputs/
-│       ├── summary_results_<timestamp>.pkl    # seasonal results per cell
-│       └── daily_results_<timestamp>.pkl      # daily tables per cell
-└── geoaquacrop_visualize/         # ← this project
+<working directory>/                  # where you launch the app
+├── outputs/                          # $GEOAQUACROP_OUTPUTS
+│   ├── summary_results_<timestamp>.pkl    # seasonal results per cell
+│   └── daily_results_<timestamp>.pkl      # daily tables per cell
+├── processed/                        # $GEOAQUACROP_PROCESSED
+│   ├── MaxTemp*.nc  MinTemp*.nc  Precipitation*.nc  ReferenceET*.nc
+│   ├── cropcalendar.nc
+│   └── spam*_physical_area.nc
+└── region.geojson                    # $GEOAQUACROP_REGION — region outline
 ```
 
-**Finding the workspace.** At import, `config.py` walks up from its own location
-and then from your working directory, looking for a folder that contains
-`geoaquacrop-preproc`. That covers a source checkout, an editable install, and a
-plain `pip install .`.
-
-**Overriding it.** Set the environment variable — this is the reliable way, and
-the one to use if your trees live somewhere else:
+**Data somewhere else.** Set the environment variables to point at each
+location:
 
 ```bash
-export GEOAQUACROP_ROOT=/path/to/workspace
+export GEOAQUACROP_OUTPUTS=/path/to/geoaquacrop-simulate/outputs
+export GEOAQUACROP_PROCESSED=/path/to/geoaquacrop-preproc/processed
+export GEOAQUACROP_REGION=/path/to/geoaquacrop-preproc/inputdata/region.geojson
 ```
 
-**Pointing at a different run.** The two pickle filenames carry a run timestamp
-and are set explicitly in [`config.py`](src/geoaquacrop_plotting/config.py) as
-`SUMMARY_PKL` and `DAILY_PKL`. Edit those to switch runs.
+**Choosing a run.** If `outputs/` holds several runs, the newest
+`summary_results_*.pkl` and `daily_results_*.pkl` (by filename) are loaded.
+To view a different run, point `GEOAQUACROP_OUTPUTS` at a folder that holds it.
 
 > No data is bundled with this repository, and none needs to be copied into it.
 > The region outline, for instance, is read from `GEOJSON_PATH` and thinned in
-> memory at startup — see [`boundary.py`](src/geoaquacrop_plotting/boundary.py).
+> memory at startup — see [`boundary.py`](src/geoaquacrop_visualize/boundary.py).
 
 ---
 
 ## Running the app
 
+From the command line:
+
 ```bash
 geoaquacrop_visualize            # console script, installed with the package
+```
+
+From Python:
+
+```python
+import geoaquacrop_visualize as visualize
+
+visualize.run(outputs="/path/to/outputs", port=8050)
 ```
 
 Then open **<http://localhost:8050>**.
@@ -124,6 +125,15 @@ Then open **<http://localhost:8050>**.
 Startup loads every dataset, pre-computes the aggregations, and prints a couple
 of diagnostic lines (the auto-derived map zoom, and the region boundary
 statistics). Expect a few seconds, depending on the size of your run.
+
+**Deploying behind a WSGI server.** `build_app()` assembles the app without
+starting a server:
+
+```python
+from geoaquacrop_visualize import build_app
+
+server = build_app().server      # WSGI entry point for gunicorn etc.
+```
 
 ---
 
@@ -179,9 +189,9 @@ coordinates and the current variable's value.
 | **Format** | NetCDF (`.nc`), GeoTIFF (`.tif`), CSV (`.csv`) — any combination. |
 
 Output is assembled as a time × y × x grid per variable and written to
-`outputs/exports/` beside the project (or to your working directory when the
-package is installed into `site-packages`). The dialog reports the filenames it
-wrote.
+`outputs/exports/` beside the package directory (`src/outputs/exports/` in a
+checkout), or under your working directory when the package is installed into
+`site-packages`. The dialog reports the filenames it wrote.
 
 GeoTIFF needs `rasterio`. If it is missing, that format is skipped with a note
 in the status message and the others are still written.
@@ -191,13 +201,14 @@ in the status message and the others are still written.
 ## Configuration
 
 All user-facing settings live in
-[`src/geoaquacrop_plotting/config.py`](src/geoaquacrop_plotting/config.py).
+[`src/geoaquacrop_visualize/config.py`](src/geoaquacrop_visualize/config.py).
 
 | Setting | Default | What it does |
 |---|---|---|
-| `SUMMARY_PKL`, `DAILY_PKL` | run-timestamped | Which simulation run to display. |
-| `GEOJSON_PATH` | `geoaquacrop-preproc/inputdata/high_plains.geojson` | The region outline. |
-| `PROCESSED_DIR` | `geoaquacrop-preproc/processed` | Climate, crop calendar, and SPAM grids. |
+| `OUTPUTS_DIR` | `$GEOAQUACROP_OUTPUTS` or `outputs` | Folder holding the simulation result pickles. |
+| `PROCESSED_DIR` | `$GEOAQUACROP_PROCESSED` or `processed` | Climate, crop calendar, and SPAM grids. |
+| `GEOJSON_PATH` | `$GEOAQUACROP_REGION` or `region.geojson` | The region outline. |
+| `SUMMARY_PKL`, `DAILY_PKL` | newest match in `OUTPUTS_DIR` | Which simulation run to display. |
 | `EXPORT_DIR` | `outputs/exports` | Where exports are written. |
 | `CELL_RES` | `0.05` | Grid cell size in degrees. Must match the preprocessing grid. |
 | `PORT` | `8050` | Port the app serves on. |
@@ -217,9 +228,9 @@ sidebar, the maps, and the export dialog all read from these dictionaries.
 ```
 geoaquacrop_visualize/
 ├── pyproject.toml                  # Packaging + pytest configuration
-├── src/                            # Everything importable
-│   ├── geoaquacrop_plots.py        # Entry point (`main()` / console script)
-│   └── geoaquacrop_plotting/       # Application package, 22 modules
+├── src/
+│   └── geoaquacrop_visualize/      # Application package, 22 modules
+│       ├── __init__.py             #   ← run() / build_app(), console script entry
 │       ├── config.py               #   ← paths, sizes, variable catalogues
 │       ├── utils.py  data.py  grid.py  aggregates.py  queries.py
 │       ├── boundary.py             #   ← region outline, thinned and served by URL
@@ -227,68 +238,57 @@ geoaquacrop_visualize/
 │       ├── styles.py  app_shell.py
 │       ├── layout*.py              #   ← sidebar, panels, export modal, assembly
 │       └── callbacks_*.py          #   ← controls, selection, maps, ts, export
-├── tests/                          # Everything test-only
-│   ├── _paths.py                   # Finds the package (flat or src layout)
-│   ├── conftest.py                 # Fixtures + data-free import setup
-│   └── test_*.py                   # One module per application module
-└── docs/                           # Built HTML documentation
+├── tests/                          # One test module per application module
+└── docs/                           # Sphinx sources (Read the Docs)
 ```
+
+Importing the package loads no data; the datasets are read and the app is
+assembled only when `run()` or `build_app()` is called.
 
 The package is split by concern, and the split is enforced: the test suite
 checks that no module exceeds 500 lines, that the import graph stays acyclic,
 that callbacks never import each other, and that only `data.py` opens the
 pickles — so the datasets can only ever be loaded once.
 
-**Why `src/`?** Nothing is importable from the working directory.
-`import geoaquacrop_plotting` resolves only once the project is installed (or via
-the `pythonpath = ["src"]` setting `pyproject.toml` gives pytest), so the tests
-can never accidentally pass against a stray copy sitting in the checkout — they
-exercise the code the way you would receive it.
-
 ---
 
 ## Running the tests
 
 ```bash
-pytest                            # 523 tests, ~1 s
+pip install -e ".[test]"
+pytest                            # whole suite
 pytest tests/test_utils.py -v     # a single module
 pytest -k colorscale              # by keyword
 ```
 
-**No data files are required.** `tests/conftest.py` points `GEOAQUACROP_ROOT` at
-an empty stub directory and registers a stub parent package, so `config`,
-`utils`, `styles`, and `app_shell` are imported and tested for real, while the
-data-loading modules are covered by mirroring their logic against synthetic
-fixtures.
+No data files are required to run the tests.
 
 ---
 
 ## Documentation
 
-`docs/` holds the built HTML documentation — open `docs/index.html` in a browser.
-It covers the architecture, the module API, and the configuration reference in
-more depth than this README.
-
-The reStructuredText sources live in the parent project's `docs_src/`. Edit them
-there and rebuild:
+Full documentation — architecture, API reference, and configuration — is built
+with Sphinx from `docs/` and hosted on Read the Docs. To build it locally:
 
 ```bash
-sphinx-build -b html docs_src docs      # from the parent project root
+pip install -e ".[docs]"
+sphinx-build -b html docs docs/_build/html
 ```
 
 ---
 
 ## Troubleshooting
 
-**`FileNotFoundError: Could not find the GeoAquaCrop data trees`**
-`config.py` could not locate a folder containing `geoaquacrop-preproc`. The
-message reports every path it searched. Set `GEOAQUACROP_ROOT` to the folder
-holding your `geoaquacrop-preproc` and `geoaquacrop-simulate` trees.
+**`FileNotFoundError` at startup**
+A data file was not found where `config.py` expects it. The error names the
+missing path. Either launch the app from the folder holding `outputs/`,
+`processed/`, and `region.geojson`, or set `GEOAQUACROP_OUTPUTS`,
+`GEOAQUACROP_PROCESSED`, and `GEOAQUACROP_REGION`.
 
-**The app starts but a pickle fails to load**
-`SUMMARY_PKL` and `DAILY_PKL` name a specific run timestamp. Check that the
-filenames in `config.py` match the files actually in
-`geoaquacrop-simulate/outputs/`.
+**The wrong run is displayed**
+The newest `summary_results_*.pkl` and `daily_results_*.pkl` in
+`GEOAQUACROP_OUTPUTS` are loaded. Make sure both come from the same run, or
+point `GEOAQUACROP_OUTPUTS` at a folder holding only the run you want.
 
 **No region outline on the map**
 The outline is served from `/region-boundary.geojson`, derived at startup from
