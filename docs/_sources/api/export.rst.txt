@@ -1,5 +1,0 @@
-Export
-======
-
-.. automodule:: geoaquacrop_plotting.export
-   :members:
