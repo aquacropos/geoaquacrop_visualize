@@ -6,9 +6,7 @@ region, a variable picker, and a click-through to per-cell daily time series —
 plus the inputs those runs were driven by, and a gridded export of anything you
 select.
 
-## Screenshot
 
-![GeoAquaCrop Visualiser](docs/images/image.jpeg)
 
 - [Requirements](#requirements)
 - [Installation](#installation)
@@ -47,8 +45,7 @@ Everything loads once at startup, so interaction is instant afterwards.
   `geoaquacrop-preproc`. See [Connecting your data](#connecting-your-data).
 
 Runtime dependencies (`pandas`, `numpy`, `xarray`, `netCDF4`, `scipy`,
-`plotly`, `dash`, `dash-bootstrap-components`) install automatically. Note that
-the maps use the MapLibre trace API, which needs **Plotly 6 or newer**.
+`plotly`, `dash`, `dash-bootstrap-components`) install automatically.
 
 ---
 
