@@ -1,12 +1,12 @@
 """
-Tests for ``geoaquacrop_plotting.grid``.
+Tests for ``geoaquacrop_visualize.grid``.
 
 ``grid`` imports ``data``, so it cannot be imported without the real dataset.
 The GeoJSON construction is mirrored here and driven by the synthetic fixtures.
 ``CELL_RES`` is read from the real config.
 """
 
-from geoaquacrop_plotting.config import CELL_RES
+from geoaquacrop_visualize.config import CELL_RES
 
 
 def build_grid_geojson(cells_df, half):

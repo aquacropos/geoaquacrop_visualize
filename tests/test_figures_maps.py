@@ -1,5 +1,5 @@
 """
-Tests for ``geoaquacrop_plotting.figures_maps``.
+Tests for ``geoaquacrop_visualize.figures_maps``.
 
 ``figures_maps`` imports ``data``, so the hover/colourbar/highlight logic is
 mirrored here. The variable catalogues come from the real config.
@@ -7,7 +7,7 @@ mirrored here. The variable catalogues come from the real config.
 
 import numpy as np
 
-from geoaquacrop_plotting.config import CLIMATE_VARIABLES, MAP_VARIABLES
+from geoaquacrop_visualize.config import CLIMATE_VARIABLES, MAP_VARIABLES
 
 
 # ╔══════════════════════════════════════════════════════════════════════════════╗
