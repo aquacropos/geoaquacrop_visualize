@@ -1,5 +1,5 @@
 """
-Tests for ``geoaquacrop_plotting.callbacks_controls``.
+Tests for ``geoaquacrop_visualize.callbacks_controls``.
 
 Callback modules import ``app_shell`` and ``data``, so registering them needs
 the real dataset. These tests cover the pure decision logic inside those
@@ -7,7 +7,7 @@ callbacks: tab visibility, aggregation-row visibility, and the
 three-dropdown-to-one-store merge for map and daily variables.
 """
 
-from geoaquacrop_plotting.config import DAILY_VARIABLES, MAP_VARIABLES
+from geoaquacrop_visualize.config import DAILY_VARIABLES, MAP_VARIABLES
 
 
 class TestTabToggle:

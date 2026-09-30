@@ -1,11 +1,11 @@
 """
-Tests for ``geoaquacrop_plotting.config``.
+Tests for ``geoaquacrop_visualize.config``.
 
 Imports the real module: config has no data dependency beyond locating the
 workspace, which conftest stubs out.
 """
 
-from geoaquacrop_plotting import config
+from geoaquacrop_visualize import config
 
 
 # ╔══════════════════════════════════════════════════════════════════════════════╗
@@ -116,11 +116,13 @@ class TestIrrMap:
 
 class TestPathResolution:
 
-    def test_workspace_honours_env_override(self):
-        """conftest sets GEOAQUACROP_ROOT, so the stub must win."""
+    def test_env_overrides_are_honoured(self):
+        """conftest sets the GEOAQUACROP_* env vars, so the stub paths must win."""
 
         import os
-        assert config._WORKSPACE == os.environ['GEOAQUACROP_ROOT']
+        assert config.OUTPUTS_DIR == os.environ['GEOAQUACROP_OUTPUTS']
+        assert config.PROCESSED_DIR == os.environ['GEOAQUACROP_PROCESSED']
+        assert config.GEOJSON_PATH == os.environ['GEOAQUACROP_REGION']
 
     def test_data_paths_are_absolute(self):
         import os
@@ -128,10 +130,9 @@ class TestPathResolution:
                   config.GEOJSON_PATH, config.PROCESSED_DIR, config.EXPORT_DIR):
             assert os.path.isabs(p), p
 
-    def test_data_paths_sit_under_workspace(self):
-        for p in (config.SUMMARY_PKL, config.DAILY_PKL,
-                  config.GEOJSON_PATH, config.PROCESSED_DIR):
-            assert p.startswith(config._WORKSPACE), p
+    def test_summary_and_daily_sit_under_outputs_dir(self):
+        for p in (config.SUMMARY_PKL, config.DAILY_PKL):
+            assert p.startswith(config.OUTPUTS_DIR), p
 
     def test_no_parent_traversal_left_in_paths(self):
         """The '../' style paths were replaced by workspace-anchored ones."""

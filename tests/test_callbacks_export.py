@@ -1,5 +1,5 @@
 """
-Tests for ``geoaquacrop_plotting.callbacks_export``.
+Tests for ``geoaquacrop_visualize.callbacks_export``.
 
 Covers the export modal's decision logic: the variable-checklist merge, the
 date-dropdown constraint, cell-extent resolution, and validation messages.
@@ -11,9 +11,9 @@ import calendar
 import pandas as pd
 import pytest
 
-from geoaquacrop_plotting.config import DAILY_VARIABLES
-from geoaquacrop_plotting.styles import _CROP_VARS, _FLUX_VARS, _SOIL_VARS
-from geoaquacrop_plotting.utils import safe_date
+from geoaquacrop_visualize.config import DAILY_VARIABLES
+from geoaquacrop_visualize.styles import _CROP_VARS, _FLUX_VARS, _SOIL_VARS
+from geoaquacrop_visualize.utils import safe_date
 
 
 class TestExportVarMerge:

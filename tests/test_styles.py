@@ -1,5 +1,5 @@
 """
-Tests for ``geoaquacrop_plotting.styles``.
+Tests for ``geoaquacrop_visualize.styles``.
 
 Imports the real module: styles depends only on dash and config, so these
 tests exercise the shipped style factories and sidebar widgets.
@@ -7,7 +7,7 @@ tests exercise the shipped style factories and sidebar widgets.
 
 import pytest
 
-from geoaquacrop_plotting import styles
+from geoaquacrop_visualize import styles
 
 
 class TestBtnStyle:
@@ -81,7 +81,7 @@ class TestStyleConstants:
 class TestVariableGroups:
 
     def test_map_groups_partition_map_variables(self):
-        from geoaquacrop_plotting.config import MAP_VARIABLES
+        from geoaquacrop_visualize.config import MAP_VARIABLES
         grouped = styles._YIELD_VARS + styles._WATER_VARS + styles._WP_VARS
         assert set(grouped) == set(MAP_VARIABLES)
 
@@ -90,7 +90,7 @@ class TestVariableGroups:
         assert len(grouped) == len(set(grouped))
 
     def test_daily_groups_partition_daily_variables(self):
-        from geoaquacrop_plotting.config import DAILY_VARIABLES
+        from geoaquacrop_visualize.config import DAILY_VARIABLES
         grouped = styles._FLUX_VARS + styles._SOIL_VARS + styles._CROP_VARS
         assert set(grouped) == set(DAILY_VARIABLES)
 
@@ -102,13 +102,13 @@ class TestVariableGroups:
 class TestDropdownOptions:
 
     def test_map_opts_use_labels(self):
-        from geoaquacrop_plotting.config import MAP_VARIABLES
+        from geoaquacrop_visualize.config import MAP_VARIABLES
         opts = styles._map_dd_opts(styles._YIELD_VARS)
         assert opts[0]['label'] == MAP_VARIABLES[styles._YIELD_VARS[0]]['label']
         assert opts[0]['value'] == styles._YIELD_VARS[0]
 
     def test_daily_opts_use_labels(self):
-        from geoaquacrop_plotting.config import DAILY_VARIABLES
+        from geoaquacrop_visualize.config import DAILY_VARIABLES
         opts = styles._daily_dd_opts(styles._FLUX_VARS)
         assert opts[0]['label'] == DAILY_VARIABLES[styles._FLUX_VARS[0]]['label']
 

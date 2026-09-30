@@ -1,5 +1,5 @@
 """
-Tests for ``geoaquacrop_plotting.utils``.
+Tests for ``geoaquacrop_visualize.utils``.
 
 Imports the real functions — utils depends only on config, so these tests
 exercise the shipped code rather than a copy of it.
@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from geoaquacrop_plotting.utils import (
+from geoaquacrop_visualize.utils import (
     get_auto_zoom, hex_to_rgba, rdp_keep_mask, safe_date, simplify_geojson,
     simplify_ring,
 )

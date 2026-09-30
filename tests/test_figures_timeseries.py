@@ -1,5 +1,5 @@
 """
-Tests for ``geoaquacrop_plotting.figures_timeseries``.
+Tests for ``geoaquacrop_visualize.figures_timeseries``.
 
 ``figures_timeseries`` imports ``data``, so the period selection and the
 mean ± std band arithmetic are mirrored here. ``DAILY_VARIABLES`` and
@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from geoaquacrop_plotting.config import DAILY_VARIABLES, TS_HEIGHT
+from geoaquacrop_visualize.config import DAILY_VARIABLES, TS_HEIGHT
 
 
 def period_rows(season_label, year_rows, n_rows, ts_period='season'):

@@ -1,12 +1,12 @@
 """
-Tests for ``geoaquacrop_plotting.callbacks_selection``.
+Tests for ``geoaquacrop_visualize.callbacks_selection``.
 
 Covers the pure decision logic of the selection callbacks: extracting a cell id
 from a map click, lasso/box selection, the ribbon captions, and the click-state
 resets. ``CLIMATE_VARIABLES`` comes from the real config.
 """
 
-from geoaquacrop_plotting.config import CLIMATE_VARIABLES
+from geoaquacrop_visualize.config import CLIMATE_VARIABLES
 
 
 class TestCellClick:
