@@ -61,7 +61,7 @@ EXPORT_DIR    = os.path.join(_BASE, 'outputs/exports')
 #: Grid cell resolution in decimal degrees. Must match the preprocessing grid:
 #: ``grid`` draws each cell as a square of this size centred on the cell
 #: coordinates, so a mismatch produces overlapping or gapped polygons.
-CELL_RES      = 0.05
+CELL_RES      = float(os.environ.get('GEOAQUACROP_CELL_RES', 0.05))
 
 #: TCP port the Dash server listens on.
 PORT          = 8050

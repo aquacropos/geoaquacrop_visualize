@@ -3,12 +3,13 @@ Shared pytest configuration and fixtures for the GeoAquaCrop Visualizer suite.
 
 The suite runs WITHOUT the real simulation data. Three things make that work:
 
-1. A stub workspace. ``geoaquacrop_plotting.config`` locates the sibling
-   ``geoaquacrop-preproc`` / ``geoaquacrop-simulate`` trees at import time and
-   raises if it cannot find them. Pointing ``GEOAQUACROP_ROOT`` at an empty
-   stub directory satisfies that check without reading a data file.
+1. A stub workspace. ``geoaquacrop_visualize.config`` reads its data paths
+   from the ``GEOAQUACROP_OUTPUTS`` / ``GEOAQUACROP_PROCESSED`` /
+   ``GEOAQUACROP_REGION`` env vars at import time. Pointing them at an empty
+   stub directory gives every path an absolute, predictable value without
+   reading a real data file.
 
-2. A stub parent package. Importing ``geoaquacrop_plotting`` normally runs its
+2. A stub parent package. Importing ``geoaquacrop_visualize`` normally runs its
    ``__init__``, which builds the entire app — loading the pickles, assembling
    the layout, registering the callbacks. Registering a bare module object
    under that name first, carrying only ``__path__``, lets the data-free
@@ -30,22 +31,22 @@ import types
 
 from _paths import IMPORT_ROOT, PKG_DIR
 
-# ── 1. Stub workspace: set before geoaquacrop_plotting.config is imported ─────
+# ── 1. Stub workspace: set before geoaquacrop_visualize.config is imported ────
 _STUB_WORKSPACE = tempfile.mkdtemp(prefix='geoaquacrop-test-workspace-')
-pathlib.Path(_STUB_WORKSPACE, 'geoaquacrop-preproc').mkdir(exist_ok=True)
-pathlib.Path(_STUB_WORKSPACE, 'geoaquacrop-simulate').mkdir(exist_ok=True)
-os.environ['GEOAQUACROP_ROOT'] = _STUB_WORKSPACE
+os.environ['GEOAQUACROP_OUTPUTS'] = _STUB_WORKSPACE
+os.environ['GEOAQUACROP_PROCESSED'] = str(pathlib.Path(_STUB_WORKSPACE, 'processed'))
+os.environ['GEOAQUACROP_REGION'] = str(pathlib.Path(_STUB_WORKSPACE, 'region.geojson'))
 
 # ── 2. Stub parent package, so submodule imports skip the app-building init ───
 if str(IMPORT_ROOT) not in sys.path:
     sys.path.insert(0, str(IMPORT_ROOT))
 
-if 'geoaquacrop_plotting' not in sys.modules:
-    _pkg = types.ModuleType('geoaquacrop_plotting')
+if 'geoaquacrop_visualize' not in sys.modules:
+    _pkg = types.ModuleType('geoaquacrop_visualize')
     _pkg.__path__ = [str(PKG_DIR)]
     _pkg.__doc__ = ('Test stub: the real __init__ builds the whole Dash app, '
                     'which needs the dataset. See tests/conftest.py.')
-    sys.modules['geoaquacrop_plotting'] = _pkg
+    sys.modules['geoaquacrop_visualize'] = _pkg
 
 import numpy as np                                          # noqa: E402
 import pandas as pd                                         # noqa: E402

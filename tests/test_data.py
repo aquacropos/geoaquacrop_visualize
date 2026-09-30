@@ -1,5 +1,5 @@
 """
-Tests for ``geoaquacrop_plotting.data``.
+Tests for ``geoaquacrop_visualize.data``.
 
 ``data`` loads the pickles and NetCDFs at import time, so it cannot be imported
 without the real dataset. These tests exercise the same derivations against the

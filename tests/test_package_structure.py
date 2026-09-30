@@ -1,5 +1,5 @@
 """
-Structural tests for the ``geoaquacrop_plotting`` package itself.
+Structural tests for the ``geoaquacrop_visualize`` package itself.
 
 These do not need the dataset: they read the source with ``ast`` rather than
 importing the data-loading modules. They guard the properties the split was
@@ -148,21 +148,21 @@ class TestDataFreeImports:
     """The modules the test suite imports directly must stay data-free."""
 
     def test_config_importable(self):
-        from geoaquacrop_plotting import config
+        from geoaquacrop_visualize import config
         assert config.CELL_RES > 0
 
     def test_utils_importable(self):
-        from geoaquacrop_plotting import utils
+        from geoaquacrop_visualize import utils
         assert callable(utils.hex_to_rgba)
 
     def test_styles_importable(self):
-        from geoaquacrop_plotting import styles
+        from geoaquacrop_visualize import styles
         assert callable(styles.btn_style)
 
     def test_app_shell_importable(self):
-        from geoaquacrop_plotting import app_shell
+        from geoaquacrop_visualize import app_shell
         assert app_shell.app is not None
 
     def test_app_has_the_expected_title(self):
-        from geoaquacrop_plotting import app_shell
+        from geoaquacrop_visualize import app_shell
         assert '<title>GeoAquaCrop Visualizer</title>' in app_shell.app.index_string

@@ -1,5 +1,5 @@
 """
-Tests for ``geoaquacrop_plotting.aggregates``.
+Tests for ``geoaquacrop_visualize.aggregates``.
 
 ``aggregates`` imports ``data``, so the pre-computation is mirrored here and
 driven by the synthetic fixtures. The variable list comes from the real config.
@@ -7,7 +7,7 @@ driven by the synthetic fixtures. The variable list comes from the real config.
 
 import pandas as pd
 
-from geoaquacrop_plotting.config import MAP_VARIABLES
+from geoaquacrop_visualize.config import MAP_VARIABLES
 
 
 def precompute(summary, crop_irr_list, map_var_keys):

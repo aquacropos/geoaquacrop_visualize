@@ -1,5 +1,5 @@
 """
-Tests for ``geoaquacrop_plotting.callbacks_maps``.
+Tests for ``geoaquacrop_visualize.callbacks_maps``.
 
 Covers the Patch-based map update logic: which trace index each layer lives at,
 the climate/SPAM mode switch, and the SPAM button rebuild. ``CLIMATE_VARIABLES``
@@ -8,7 +8,7 @@ comes from the real config.
 
 import numpy as np
 
-from geoaquacrop_plotting.config import CLIMATE_VARIABLES
+from geoaquacrop_visualize.config import CLIMATE_VARIABLES
 
 
 class TestTraceIndices:

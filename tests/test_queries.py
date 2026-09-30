@@ -1,5 +1,5 @@
 """
-Tests for ``geoaquacrop_plotting.queries``.
+Tests for ``geoaquacrop_visualize.queries``.
 
 ``queries`` imports ``data``, so the lookups are mirrored here. ``IRR_MAP`` is
 read from the real config so a change there is caught.
@@ -8,7 +8,7 @@ read from the real config so a change there is caught.
 import numpy as np
 import pandas as pd
 
-from geoaquacrop_plotting.config import BOUNDARY_URL, IRR_MAP
+from geoaquacrop_visualize.config import BOUNDARY_URL, IRR_MAP
 
 
 def spam_vars_for_crop(crop_irr, spam_var_keys, irr_map=IRR_MAP):

@@ -1,5 +1,5 @@
 """
-Tests for ``geoaquacrop_plotting.export``.
+Tests for ``geoaquacrop_visualize.export``.
 
 ``export`` imports ``data``, so the array assembly and naming logic are
 mirrored here. ``DAILY_VARIABLES`` comes from the real config.
@@ -8,7 +8,7 @@ mirrored here. ``DAILY_VARIABLES`` comes from the real config.
 import numpy as np
 import pandas as pd
 
-from geoaquacrop_plotting.config import DAILY_VARIABLES
+from geoaquacrop_visualize.config import DAILY_VARIABLES
 
 
 class TestDateRangeSelection:

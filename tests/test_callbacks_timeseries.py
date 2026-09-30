@@ -1,5 +1,5 @@
 """
-Tests for ``geoaquacrop_plotting.callbacks_timeseries``.
+Tests for ``geoaquacrop_visualize.callbacks_timeseries``.
 
 Covers how the season selection is translated into the period arguments handed
 to the figure builders, and the container visibility toggle.

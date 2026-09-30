@@ -208,9 +208,9 @@ All user-facing settings live in
 | `OUTPUTS_DIR` | `$GEOAQUACROP_OUTPUTS` or `outputs` | Folder holding the simulation result pickles. |
 | `PROCESSED_DIR` | `$GEOAQUACROP_PROCESSED` or `processed` | Climate, crop calendar, and SPAM grids. |
 | `GEOJSON_PATH` | `$GEOAQUACROP_REGION` or `region.geojson` | The region outline. |
+| `CELL_RES` | `$GEOAQUACROP_CELL_RES` or `0.05` | Grid cell size in degrees. Must match the preprocessing grid. |
 | `SUMMARY_PKL`, `DAILY_PKL` | newest match in `OUTPUTS_DIR` | Which simulation run to display. |
 | `EXPORT_DIR` | `outputs/exports` | Where exports are written. |
-| `CELL_RES` | `0.05` | Grid cell size in degrees. Must match the preprocessing grid. |
 | `PORT` | `8050` | Port the app serves on. |
 | `MAP_HEIGHT`, `TS_HEIGHT` | `550`, `400` | Canvas heights in pixels. |
 | `BOUNDARY_SIMPLIFY_EPS` | `0.004` | Outline simplification tolerance in degrees (~400 m). Raise for a lighter outline, lower for a crisper one. |
