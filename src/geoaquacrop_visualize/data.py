@@ -1,10 +1,16 @@
-"""Loads every dataset once, at import time.
+"""Loads every dataset once, when this module is first imported.
 
 Importing this module reads the summary and daily pickles, the region
 GeoJSON, the climate NetCDFs, the crop calendar, and the SPAM physical
 area grids, then derives the shared lookup tables (``cell_meta``,
 ``date_index``, ``year_rows``, ...). Python caches modules, so the cost
 is paid exactly once per process no matter how many modules import it.
+
+That also means the workspace is fixed for the life of the process, and
+that this module must not be imported before
+:func:`geoaquacrop_visualize.build_app` has resolved the paths. Importing
+it directly bypasses the input checks and will fail on a bare traceback
+if the workspace is incomplete.
 """
 
 import pickle
@@ -16,11 +22,9 @@ import numpy as np
 import xarray as xr
 
 from .config import (
-    SUMMARY_PKL, DAILY_PKL, GEOJSON_PATH, PROCESSED_DIR, EXPORT_DIR,
+    SUMMARY_PKL, DAILY_PKL, GEOJSON_PATH, PROCESSED_DIR,
     MAP_VARIABLES, DAILY_VARIABLES, CLIMATE_VARIABLES,
 )
-
-os.makedirs(EXPORT_DIR, exist_ok=True)
 
 with open(GEOJSON_PATH) as f:
     region_geojson = json.load(f)

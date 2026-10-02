@@ -1,47 +1,55 @@
 """User configuration: file paths, canvas sizes, and variable catalogues.
 
-Edit the values in this module to point the app at a different simulation
-run or to change the map/time-series canvas dimensions.
+Every path is resolved from the workspace root, which is taken from
+``GEOAQUACROP_ROOT`` and defaults to the current working directory. Each
+individual location can be overridden on its own if it sits elsewhere.
+
+The module reads the environment once, when it is first imported, so anything
+that needs to influence the paths must set the variables before that happens.
+:func:`geoaquacrop_visualize.build_app` does exactly that, which is why it is
+the only supported way to point the app at a workspace.
 """
 
 # ╔══════════════════════════════════════════════════════════════════════════════╗
 # ║                        USER CONFIGURATION                                  ║
 # ╚══════════════════════════════════════════════════════════════════════════════╝
 
+import glob
 import os
 
-# ── Data locations ──────────────────────────────────────────────────────
+# ── Data locations ────────────────────────────────────────────────────────────
+# ROOT is the workspace produced by geoaquacrop_preprocess and
+# geoaquacrop_simulate. The three input locations and the export location all
+# sit under it unless individually overridden.
 
-OUTPUTS_DIR   = os.environ.get('GEOAQUACROP_OUTPUTS', 'outputs')
-PROCESSED_DIR = os.environ.get('GEOAQUACROP_PROCESSED', 'processed')
-GEOJSON_PATH  = os.environ.get('GEOAQUACROP_REGION', 'region.geojson')
+#: Workspace root. All other locations default to subdirectories of this.
+ROOT          = os.environ.get('GEOAQUACROP_ROOT', os.getcwd())
+
+#: Simulation results written by ``geoaquacrop_simulate``.
+OUTPUTS_DIR   = os.environ.get('GEOAQUACROP_OUTPUTS',
+                               os.path.join(ROOT, 'outputs'))
+
+#: Preprocessed NetCDF inputs written by ``geoaquacrop_preprocess``.
+PROCESSED_DIR = os.environ.get('GEOAQUACROP_PROCESSED',
+                               os.path.join(ROOT, 'processed'))
+
+#: Region boundary used for the map outline.
+GEOJSON_PATH  = os.environ.get('GEOAQUACROP_REGION',
+                               os.path.join(ROOT, 'region.geojson'))
+
+#: Where exports are written. Created by :func:`build_app`, not on import.
 EXPORT_DIR    = os.environ.get('GEOAQUACROP_EXPORTS',
-                               os.path.join(os.getcwd(), 'outputs', 'exports'))
+                               os.path.join(ROOT, 'outputs', 'exports'))
 
-def _ascend(start):
-    """Yield ``start`` and each of its parent directories, up to the filesystem root."""
-
-    path = os.path.abspath(start)
-    while True:
-        yield path
-        parent = os.path.dirname(path)
-        if parent == path:
-            return
-        path = parent
-
-# Exports are written next to the project when run from a checkout, and into the
-# working directory when the package is installed into site-packages.
-_PKG_PARENT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-_INSTALLED  = os.path.basename(_PKG_PARENT) in ('site-packages', 'dist-packages')
-_BASE       = os.getcwd() if _INSTALLED else _PKG_PARENT
 
 def _newest(pattern, fallback):
-    import glob
+    """Return the last match for ``pattern`` by name, or ``fallback`` if none."""
     matches = sorted(glob.glob(pattern))
     return matches[-1] if matches else fallback
 
+
 #: Seasonal per-cell results, as a pickled list of DataFrames. The filename
-#: carries the timestamp of the simulation run, so edit it to switch runs.
+#: carries the timestamp of the simulation run; the most recent is used.
 SUMMARY_PKL = _newest(os.path.join(OUTPUTS_DIR, 'summary_results_*.pkl'),
                       os.path.join(OUTPUTS_DIR, 'summary_results.pkl'))
 
@@ -51,12 +59,6 @@ SUMMARY_PKL = _newest(os.path.join(OUTPUTS_DIR, 'summary_results_*.pkl'),
 DAILY_PKL   = _newest(os.path.join(OUTPUTS_DIR, 'daily_results_*.pkl'),
                       os.path.join(OUTPUTS_DIR, 'daily_results.pkl'))
 
-#: Where exports are written. Resolved separately from the input paths and
-#: unaffected by ``GEOAQUACROP_ROOT``: it sits beside the package, except when
-#: the package is installed into ``site-packages``, in which case the working
-#: directory is used so exports never land inside an installed environment.
-EXPORT_DIR    = os.path.join(_BASE, 'outputs/exports')
-
 
 #: Grid cell resolution in decimal degrees. Must match the preprocessing grid:
 #: ``grid`` draws each cell as a square of this size centred on the cell
@@ -64,7 +66,7 @@ EXPORT_DIR    = os.path.join(_BASE, 'outputs/exports')
 CELL_RES      = float(os.environ.get('GEOAQUACROP_CELL_RES', 0.05))
 
 #: TCP port the Dash server listens on.
-PORT          = 8050
+PORT          = int(os.environ.get('GEOAQUACROP_PORT', 8050))
 
 #: Height in pixels of the two choropleth map panels. Also the default canvas
 #: height used by :func:`~geoaquacrop_visualize.utils.get_auto_zoom`.
@@ -76,8 +78,8 @@ TS_HEIGHT     = 400
 # ── Region boundary overlay ───────────────────────────────────────────────────
 # GEOJSON_PATH is the only source of the outline. At high MB it is far too heavy
 # to hand to Plotly, so boundary.py thins it in memory at startup and serves the
-# result from BOUNDARY_URL; nothing is written to disk. Raise the tolerance for
-# a coarser, lighter outline, lower it for a crisper, heavier one.
+# result from BOUNDARY_URL; nothing is written to disk.
+
 #: Ramer-Douglas-Peucker tolerance in decimal degrees (~400 m at these
 #: latitudes, invisible at basin zoom) applied to the outline at startup.
 #: Raise it for a coarser, lighter outline; lower it for a crisper, heavier one.
@@ -88,7 +90,6 @@ BOUNDARY_SIMPLIFY_EPS = 0.004
 #: :func:`~geoaquacrop_visualize.queries.mapbox_layers` points the map layer at
 #: it, so the two stay in step through this one constant.
 BOUNDARY_URL          = '/region-boundary.geojson'
-
 #: Catalogue of the simulation-output variables the choropleth map can draw.
 #: Each key is a column in the summary pickle; each value carries ``label``,
 #: ``colorscale`` (used for mean aggregation), ``sum_colorscale``, and

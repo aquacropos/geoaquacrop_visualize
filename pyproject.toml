@@ -2,39 +2,31 @@
 # ║                        PACKAGING CONFIGURATION                             ║
 # ╚══════════════════════════════════════════════════════════════════════════════╝
 #
-# This file makes the project pip-installable and records its dependencies
-# unversioned, so pip resolves whatever is current. Pin an exact set with a
-# lock file or `pip freeze` if a reproducible environment is needed.
+# Dependencies are unversioned except where a floor is required, so pip resolves
+# whatever is current. Pin an exact set with a lock file or `pip freeze` if a
+# reproducible environment is needed.
 #
-# Install it in editable mode:
+# Install for development with `pip install -e .`, or as a user would with
+# `pip install .`. Either works: data locations come from GEOAQUACROP_ROOT or
+# from the arguments to geoaquacrop_visualize.run(), never from searching the
+# filesystem, so the package behaves identically installed or editable.
 #
-#     pip install -e .
-#
-# Editable is the right choice here because the data paths in
-# src/geoaquacrop_plotting/config.py are resolved by searching upward for the
-# sibling geoaquacrop-preproc / geoaquacrop-simulate trees. A regular
-# `pip install .` copies the package into site-packages; the search still finds
-# the data when the venv lives inside the workspace, but setting
-# GEOAQUACROP_ROOT is the reliable way to pin it.
-#
-# This copy uses a src layout: the importable code lives in src/, the suite in
-# tests/. Nothing is importable until the project is installed, which is the
-# point — the tests exercise the installed package, never a stray copy picked
-# up from the working directory.
+# This project uses a src layout: the importable code lives in src/, the suite
+# in tests/.
 
 [build-system]
-requires      = ["setuptools>=77", "wheel"]
+requires      = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "geoaquacrop_visualize"
-version = "0.1.0b1"
+version = "0.1.0"
 description = "Interactive Dash/Plotly visualisation toolkit for gridded AquaCrop simulations"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "Apache-2.0"
 license-files = ["LICENSE"]  
-authors = [{ name = "Seyed Hosseini" }]
+authors = [{ name = "Josias Lang-Ritter, Chris Bowden, Seyed Hosseini, Henrikki Tenkanen, Tim Foster" }]
 keywords = [
     "aquacrop",
     "agronomy",
@@ -51,7 +43,6 @@ classifiers = [
     "Framework :: Dash",
     "Intended Audience :: Science/Research",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Topic :: Scientific/Engineering :: Atmospheric Science",
@@ -72,7 +63,7 @@ dependencies = [
     # Maps use the MapLibre trace API (go.Choroplethmap / go.Scattermap), which
     # needs Plotly 6 or newer -- the old *mapbox traces were removed in 6.0, so
     # an older Plotly resolved here will fail at import.
-    "plotly",
+    "plotly>=6",
     "dash",
     "dash-bootstrap-components",
 ]
@@ -91,7 +82,7 @@ Homepage = "https://github.com/aquacropos/geoaquacrop_visualize"
 Repository = "https://github.com/aquacropos/geoaquacrop_visualize"
 
 [project.scripts]
-geoaquacrop_visualize = "geoaquacrop_visualize:run"
+geoaquacrop_visualize = "geoaquacrop_visualize:main"
 
 # ── Packaging (src layout) ────────────────────────────────────────────────────
 [tool.setuptools]
