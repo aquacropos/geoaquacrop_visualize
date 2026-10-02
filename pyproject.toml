@@ -104,7 +104,7 @@ packages = ["geoaquacrop_visualize"]
 "" = "src"
 
 # No package data: the region outline is read from GEOJSON_PATH in the
-# geoaquacrop-preproc tree and thinned in memory at startup by boundary.py, so
+# geoaquacrop-preprocess tree and thinned in memory at startup by boundary.py, so
 # no geometry ships inside the package.
 
 # ── Test configuration ────────────────────────────────────────────────────────

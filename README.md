@@ -40,7 +40,7 @@ Everything loads once at startup, so interaction is instant afterwards.
 - **Python 3.11 or newer**
 - **A completed AquaCrop run.** The app is a viewer, not a model — it reads the
   outputs of `geoaquacrop-simulate` and the preprocessed inputs from
-  `geoaquacrop-preproc`. See [Connecting your data](#connecting-your-data).
+  `geoaquacrop-preprocess`. See [Connecting your data](#connecting-your-data).
 
 Runtime dependencies (`pandas`, `numpy`, `xarray`, `netCDF4`, `scipy`,
 `plotly`, `dash`, `dash-bootstrap-components`) install automatically.
@@ -90,8 +90,8 @@ location:
 
 ```bash
 export GEOAQUACROP_OUTPUTS=/path/to/geoaquacrop-simulate/outputs
-export GEOAQUACROP_PROCESSED=/path/to/geoaquacrop-preproc/processed
-export GEOAQUACROP_REGION=/path/to/geoaquacrop-preproc/inputdata/region.geojson
+export GEOAQUACROP_PROCESSED=/path/to/geoaquacrop-preprocess/processed
+export GEOAQUACROP_REGION=/path/to/geoaquacrop-preprocess/inputdata/region.geojson
 ```
 
 **Choosing a run.** If `outputs/` holds several runs, the newest
