@@ -26,7 +26,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = "Apache-2.0"
 license-files = ["LICENSE"]  
-authors = [{ name = "Josias Lang-Ritter, Chris Bowden, Seyed Hosseini, Henrikki Tenkanen, Tim Foster" }]
+authors = [{ name = "Josias Lang-Ritter, Christopher Bowden, Seyed Hosseini, Henrikki Tenkanen, Timothy Foster" }]
 keywords = [
     "aquacrop",
     "agronomy",
