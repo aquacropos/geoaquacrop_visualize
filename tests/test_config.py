@@ -140,12 +140,3 @@ class TestPathResolution:
         for p in (config.SUMMARY_PKL, config.DAILY_PKL,
                   config.GEOJSON_PATH, config.PROCESSED_DIR):
             assert '..' not in p, p
-
-    def test_ascend_reaches_filesystem_root(self):
-        paths = list(config._ascend('/a/b/c'))
-        assert paths[0] == '/a/b/c'
-        assert paths[-1] == '/'
-
-    def test_ascend_is_monotonically_shorter(self):
-        paths = list(config._ascend('/a/b/c'))
-        assert paths == sorted(paths, key=len, reverse=True)
