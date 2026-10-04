@@ -83,14 +83,16 @@ dependencies = [
 # GeoTIFF export is optional: export_data() degrades gracefully without rasterio.
 geotiff = ["rasterio"]
 test = ["pytest"]
-docs = ["Sphinx", "sphinx-rtd-theme"]
+docs = ["sphinx>=7", "furo"]
 dev = [
     "geoaquacrop_visualize[geotiff,test,docs]",
 ]
 
 [project.urls]
-Homepage = "https://github.com/aquacropos/geoaquacrop_visualize"
+Documentation = "https://geoaquacrop-visualize.readthedocs.io/en/stable/"
 Repository = "https://github.com/aquacropos/geoaquacrop_visualize"
+Preprocessing = "https://github.com/aquacropos/geoaquacrop_preprocess"
+Simulation = "https://github.com/aquacropos/geoaquacrop_simulate"
 
 [project.scripts]
 geoaquacrop_visualize = "geoaquacrop_visualize:main"
