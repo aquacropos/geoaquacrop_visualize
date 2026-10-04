@@ -2,8 +2,7 @@
 
 import numpy as np
 import plotly.graph_objects as go
-
-from .config import MAP_VARIABLES, CLIMATE_VARIABLES, MAP_HEIGHT
+from .config import MAP_VARIABLES, CLIMATE_VARIABLES, MAP_HEIGHT, BASEMAP_STYLE
 from .data import cell_meta, summary, spam_ds, _cell_ids_arr, _x_da, _y_da
 from .grid import grid_geojson, all_cell_ids, center_lat, center_lon, MAP_ZOOM
 from .aggregates import crop_var_range, crop_var_range_all, precomputed_agg
