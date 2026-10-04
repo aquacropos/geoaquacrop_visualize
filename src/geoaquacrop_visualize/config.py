@@ -151,3 +151,7 @@ CLIMATE_VARIABLES = {
 #: :func:`~geoaquacrop_visualize.queries.get_cropcal_summary`, and
 #: :func:`~geoaquacrop_visualize.figures_timeseries.build_input_ts`.
 IRR_MAP = {'rainfed': 'rf', 'irrigated': 'ir'}
+
+# Basemap: OpenFreeMap Positron. No API key, free, commercial use allowed.
+# Attribution (OpenFreeMap, OpenMapTiles, OpenStreetMap) is added automatically.
+BASEMAP_STYLE = 'https://tiles.openfreemap.org/styles/positron'
