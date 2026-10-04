@@ -24,7 +24,7 @@ select.
 
 | | |
 |---|---|
-| **Choropleth maps** | 11 seasonal output variables — yield, production, irrigation, ET, water productivity — over the simulation grid, on an ESRI topographic basemap with the region outline traced on top. |
+| **Choropleth maps** | 11 seasonal output variables (yield, production, irrigation, ET, water productivity) over the simulation grid, on an [OpenFreeMap](https://openfreemap.org) Positron basemap with the region outline traced on top. |
 | **Daily time series** | 13 daily variables (water fluxes, soil water, crop development) for any cell, read straight from the simulation's daily tables. |
 | **Model inputs** | The climate forcing (4 variables), the crop calendar, and SPAM physical crop areas, on the same grid as the outputs. |
 | **Spatial selection** | Click a cell for its time series; lasso or box-select many cells to highlight them and scope an export to just that area. |
@@ -300,5 +300,12 @@ source GeoJSON is the place to look.
 Install the optional extra: `pip install -e ".[geotiff]"`.
 
 **The map is blank but the sidebar works**
-The basemap tiles come from ESRI's public tile server, so the app needs network
+The basemap tiles come from OpenFreeMap's public tile server, so the app needs network
 access to draw them. The data layers render regardless.
+
+---
+
+## Acknowledgements
+
+The basemap uses the Positron style from [OpenFreeMap](https://openfreemap.org).
+Map data: [© OpenMapTiles](https://www.openmaptiles.org/), data from [OpenStreetMap](https://www.openstreetmap.org/copyright).
