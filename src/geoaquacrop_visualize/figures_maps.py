@@ -149,14 +149,14 @@ def build_output_map(ci, season, map_var, agg_override,
 
     if relayout_data and 'map.zoom' in relayout_data:
         map_cfg = dict(
-            style='white-bg',
+            style=BASEMAP_STYLE,
             center=relayout_data.get('map.center', dict(lat=center_lat, lon=center_lon)),
             zoom=relayout_data['map.zoom'],
             layers=mapbox_layers(),
         )
     else:
         map_cfg = dict(
-            style='white-bg',
+            style=BASEMAP_STYLE,
             center=dict(lat=center_lat, lon=center_lon),
             zoom=MAP_ZOOM, layers=mapbox_layers(),
         )
@@ -272,14 +272,14 @@ def build_input_map(climate_var, season_label, sel_cell=None, relayout_data=None
 
     if relayout_data and 'map.zoom' in relayout_data:
         map_cfg = dict(
-            style='white-bg',
+            style=BASEMAP_STYLE,
             center=relayout_data.get('map.center', dict(lat=center_lat, lon=center_lon)),
             zoom=relayout_data['map.zoom'],
             layers=mapbox_layers(),
         )
     else:
         map_cfg = dict(
-            style='white-bg',
+            style=BASEMAP_STYLE,
             center=dict(lat=center_lat, lon=center_lon),
             zoom=MAP_ZOOM, layers=mapbox_layers(),
         )
@@ -372,14 +372,14 @@ def build_spam_map(spam_var, sel_cell=None, relayout_data=None):
 
     if relayout_data and 'map.zoom' in relayout_data:
         map_cfg = dict(
-            style='white-bg',
+            style=BASEMAP_STYLE,
             center=relayout_data.get('map.center', dict(lat=center_lat, lon=center_lon)),
             zoom=relayout_data['map.zoom'],
             layers=mapbox_layers(),
         )
     else:
         map_cfg = dict(
-            style='white-bg',
+            style=BASEMAP_STYLE,
             center=dict(lat=center_lat, lon=center_lon),
             zoom=MAP_ZOOM, layers=mapbox_layers(),
         )
