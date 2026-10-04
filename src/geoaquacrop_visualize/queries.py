@@ -280,10 +280,6 @@ def get_cropcal_values(var_name, x, y):
 # module-level dict would still be serialised -- only the URL keeps the geometry
 # out of the figure payload entirely.
 MAPBOX_LAYERS = [
-    dict(sourcetype='raster',
-         source=['https://server.arcgisonline.com/ArcGIS/rest/services/'
-                 'World_Topo_Map/MapServer/tile/{z}/{y}/{x}'],
-         below='traces'),
     dict(sourcetype='geojson',
          source=BOUNDARY_URL,
          type='line', color='#1a6faf', line=dict(width=2.5)),
@@ -294,7 +290,7 @@ def mapbox_layers():
     """
     Return the shared Mapbox layer stack used by all map figures.
 
-    A raster tile layer (ESRI World Topo Map) plus a GeoJSON line layer tracing
+    A raster tile layer (OpenFreeMap) plus a GeoJSON line layer tracing
     the region boundary, the latter loaded by URL from the route
     :func:`~geoaquacrop_visualize.boundary.serve_region_boundary` so the geometry
     is fetched once and browser-cached instead of embedded in each figure.
