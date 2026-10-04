@@ -50,11 +50,11 @@ Runtime dependencies (`pandas`, `numpy`, `xarray`, `netCDF4`, `scipy`,
 ## Installation
 
 ```bash
-pip install -e ".[geotiff]"
+pip install "geoaquacrop_visualize[geotiff]"
 ```
 
-The project uses a `src` layout, so the package is importable only once it is
-installed.
+From a checkout, use `pip install -e ".[geotiff]"` instead. The project uses a
+`src` layout, so the package is importable only once it is installed.
 
 | Extra | Adds | For |
 |---|---|---|
@@ -71,10 +71,11 @@ is current. If you need a reproducible environment, capture one with
 
 ## Connecting your data
 
-By default the app looks for its data in the folder you launch it from:
+By default the app looks for its data in the folder you launch it from, or in
+the workspace root given by `--root` / `$GEOAQUACROP_ROOT`:
 
 ```
-<working directory>/                  # where you launch the app
+<working directory>/                  # or $GEOAQUACROP_ROOT
 ├── outputs/                          # $GEOAQUACROP_OUTPUTS
 │   ├── summary_results_<timestamp>.pkl    # seasonal results per cell
 │   └── daily_results_<timestamp>.pkl      # daily tables per cell
@@ -85,8 +86,9 @@ By default the app looks for its data in the folder you launch it from:
 └── region.geojson                    # $GEOAQUACROP_REGION — region outline
 ```
 
-**Data somewhere else.** Set the environment variables to point at each
-location:
+**Data somewhere else.** Pass the locations as options (`--root`, `--outputs`,
+`--processed`, `--region`, `--exports`), as the matching keyword arguments of
+`run()`, or set the environment variables:
 
 ```bash
 export GEOAQUACROP_OUTPUTS=/path/to/geoaquacrop-simulate/outputs
@@ -109,8 +111,11 @@ To view a different run, point `GEOAQUACROP_OUTPUTS` at a folder that holds it.
 From the command line:
 
 ```bash
-geoaquacrop_visualize            # console script, installed with the package
+geoaquacrop_visualize --root /path/to/workspace     # console script
 ```
+
+Run `geoaquacrop_visualize --help` for every option, including `--port` and
+`--debug`.
 
 From Python:
 
@@ -189,9 +194,7 @@ coordinates and the current variable's value.
 | **Format** | NetCDF (`.nc`), GeoTIFF (`.tif`), CSV (`.csv`) — any combination. |
 
 Output is assembled as a time × y × x grid per variable and written to
-`outputs/exports/` beside the package directory (`src/outputs/exports/` in a
-checkout), or under your working directory when the package is installed into
-`site-packages`. The dialog reports the filenames it wrote.
+`<root>/outputs/exports/` (override with `--exports` or `$GEOAQUACROP_EXPORTS`). The dialog reports the filenames it wrote.
 
 GeoTIFF needs `rasterio`. If it is missing, that format is skipped with a note
 in the status message and the others are still written.
@@ -205,13 +208,14 @@ All user-facing settings live in
 
 | Setting | Default | What it does |
 |---|---|---|
+| `ROOT` | `$GEOAQUACROP_ROOT` or the working directory | Workspace root; the locations below default to paths under it. |
 | `OUTPUTS_DIR` | `$GEOAQUACROP_OUTPUTS` or `outputs` | Folder holding the simulation result pickles. |
 | `PROCESSED_DIR` | `$GEOAQUACROP_PROCESSED` or `processed` | Climate, crop calendar, and SPAM grids. |
 | `GEOJSON_PATH` | `$GEOAQUACROP_REGION` or `region.geojson` | The region outline. |
 | `CELL_RES` | `$GEOAQUACROP_CELL_RES` or `0.05` | Grid cell size in degrees. Must match the preprocessing grid. |
 | `SUMMARY_PKL`, `DAILY_PKL` | newest match in `OUTPUTS_DIR` | Which simulation run to display. |
-| `EXPORT_DIR` | `outputs/exports` | Where exports are written. |
-| `PORT` | `8050` | Port the app serves on. |
+| `EXPORT_DIR` | `$GEOAQUACROP_EXPORTS` or `outputs/exports` | Where exports are written. |
+| `PORT` | `$GEOAQUACROP_PORT` or `8050` | Port the app serves on. |
 | `MAP_HEIGHT`, `TS_HEIGHT` | `550`, `400` | Canvas heights in pixels. |
 | `BOUNDARY_SIMPLIFY_EPS` | `0.004` | Outline simplification tolerance in degrees (~400 m). Raise for a lighter outline, lower for a crisper one. |
 | `MAP_VARIABLES` | 11 entries | Map variable catalogue: label, colourscale, default aggregation. |
@@ -282,8 +286,9 @@ sphinx-build -b html docs docs/_build/html
 **`FileNotFoundError` at startup**
 A data file was not found where `config.py` expects it. The error names the
 missing path. Either launch the app from the folder holding `outputs/`,
-`processed/`, and `region.geojson`, or set `GEOAQUACROP_OUTPUTS`,
-`GEOAQUACROP_PROCESSED`, and `GEOAQUACROP_REGION`.
+`processed/`, and `region.geojson`, pass `--root`, or point at each location
+with `--outputs`, `--processed`, and `--region` (or the matching
+`GEOAQUACROP_*` variables).
 
 **The wrong run is displayed**
 The newest `summary_results_*.pkl` and `daily_results_*.pkl` in
@@ -297,7 +302,7 @@ polygons and vertices it produced — if that line is missing or reports zero, t
 source GeoJSON is the place to look.
 
 **`(rasterio not installed — GeoTIFF skipped)` in the export status**
-Install the optional extra: `pip install -e ".[geotiff]"`.
+Install the optional extra: `pip install "geoaquacrop_visualize[geotiff]"`.
 
 **The map is blank but the sidebar works**
 The basemap tiles come from OpenFreeMap's public tile server, so the app needs network
