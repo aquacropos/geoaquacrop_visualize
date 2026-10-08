@@ -10,7 +10,7 @@
 <p align="center">
   <a href="https://pypi.org/project/geoaquacrop-visualize/"><img src="https://img.shields.io/pypi/v/geoaquacrop-visualize" alt="PyPI"></a>
   <a href="https://pypi.org/project/geoaquacrop-visualize/"><img src="https://img.shields.io/pypi/pyversions/geoaquacrop-visualize" alt="Python"></a>
-  <a href="https://geoaquacrop-visualize.readthedocs.io/en/stable/"><img src="https://img.shields.io/readthedocs/geoaquacrop-visualize" alt="Docs"></a>
+  <a href="https://geoaquacrop-visualize.readthedocs.io/en/latest/"><img src="https://img.shields.io/readthedocs/geoaquacrop-visualize" alt="Docs"></a>
   <a href="https://github.com/aquacropos/geoaquacrop_visualize/actions/workflows/tests.yml"><img src="https://github.com/aquacropos/geoaquacrop_visualize/actions/workflows/tests.yml/badge.svg" alt="Tests"></a>
   <a href="https://github.com/aquacropos/geoaquacrop_visualize/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-blue" alt="License"></a>
 </p>
@@ -257,7 +257,7 @@ dialog all read from these dictionaries.
 
 ## Documentation
 
-Full documentation: https://geoaquacrop-visualize.readthedocs.io/en/stable/
+Full documentation: https://geoaquacrop-visualize.readthedocs.io/en/latest/
 
 ## Development
 
