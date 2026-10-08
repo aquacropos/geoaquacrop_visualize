@@ -12,6 +12,7 @@
   <a href="https://pypi.org/project/geoaquacrop-visualize/"><img src="https://img.shields.io/pypi/pyversions/geoaquacrop-visualize" alt="Python"></a>
   <a href="https://geoaquacrop-visualize.readthedocs.io/en/latest/"><img src="https://img.shields.io/readthedocs/geoaquacrop-visualize" alt="Docs"></a>
   <a href="https://github.com/aquacropos/geoaquacrop_visualize/actions/workflows/tests.yml"><img src="https://github.com/aquacropos/geoaquacrop_visualize/actions/workflows/tests.yml/badge.svg" alt="Tests"></a>
+  <a href="https://pepy.tech/projects/geoaquacrop-visualize"><img src="https://static.pepy.tech/personalized-badge/geoaquacrop-visualize?period=total&units=INTERNATIONAL_SYSTEM&left_color=BLACK&right_color=GREEN&left_text=downloads" alt="PyPI Downloads"></a>
   <a href="https://github.com/aquacropos/geoaquacrop_visualize/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-blue" alt="License"></a>
 </p>
 
@@ -67,7 +68,7 @@ geoaquacrop_preprocess  ->  geoaquacrop_simulate  ->  geoaquacrop_visualize
 | Daily time series | 13 daily variables (water fluxes, soil water, crop development) for any cell, read from the simulation's daily tables |
 | Model inputs | Climate forcing (4 variables), crop calendar and SPAM physical crop areas on the same grid as the outputs |
 | Spatial selection | Click a cell for its time series; lasso or box-select many cells to highlight them and scope an export to that area |
-| Season handling | One season at a time, or all years aggregated by mean or sum, with a sensible default per variable |
+| Season handling | One season at a time, or all years aggregated by mean or sum |
 | Gridded export | Any set of cells, variables and dates to NetCDF, GeoTIFF or CSV |
 
 All data loads once at startup, so interaction is instant afterwards.
@@ -107,7 +108,8 @@ geoaquacrop_visualize --root /path/to/workspace
 Run `geoaquacrop_visualize --help` for every option, including `--port`, `--debug`
 and `--version`.
 
-Startup checks that every required input exists, loads every dataset, precomputes the
+Startup checks that the region outline, both result pickles and the `processed/`
+folder exist, loads every dataset, precomputes the
 aggregations, and prints the derived map zoom and region boundary statistics. Expect a
 few seconds, depending on the size of your run.
 
@@ -182,18 +184,19 @@ at the top of the sidebar switch the view.
 
 1. Choose a **crop**, an **irrigation type** and a **season**: a single harvest year,
    or *All years*.
-2. With *All years*, an **Aggregation** toggle appears (*Mean* or *Sum*). Each variable
-   has a default: yields average, irrigation and production sum.
+2. With *All years*, an **Aggregation** toggle appears (*Mean* or *Sum*). The default
+   is *Mean*.
 3. Pick a **map variable** from the *Yield & Production*, *Water Balance* or
    *Water Productivity* groups. The map recolors immediately.
 4. **Click a cell** to open its daily time series below the map. Choose the daily
-   variable from the *Water Fluxes*, *Soil Water* or *Crop Development* groups.
+   variable from the *Water Fluxes*, *Soil Water* or *Crop Development* groups. For a
+   single season, the series covers that calendar year.
 5. **Click two points on the time series** to mark a window. The app shades it, draws
    the mean as a dashed line, and reports the mean ± standard deviation. A third click
    clears it.
 6. **Lasso or box-select** cells with the Plotly toolbar at the top right of the map to
-   highlight them. The count appears above the map, and the export dialog can then be
-   limited to that selection.
+   highlight them. The export dialog shows the count and can then be limited to that
+   selection.
 
 ### Inputs tab
 
@@ -216,9 +219,9 @@ and the current value.
 | Cells | The whole area, or the current map selection |
 | Format | NetCDF (`.nc`), GeoTIFF (`.tif`), CSV (`.csv`), in any combination |
 
-Each variable is written as a time × y × x grid to `<workspace>/outputs/exports/`
-(override with `--exports` or `$GEOAQUACROP_EXPORTS`). The dialog lists the files it
-wrote. GeoTIFF needs the `geotiff` extra; without it, that format is skipped with a
+Each variable is written to `<workspace>/outputs/exports/` (override with `--exports`
+or `$GEOAQUACROP_EXPORTS`), as a time × y × x grid for NetCDF and GeoTIFF and as one
+row per cell and date for CSV. The dialog lists the files it wrote. GeoTIFF needs the `geotiff` extra; without it, that format is skipped with a
 note and the others are still written.
 
 ## Configuration reference
@@ -242,8 +245,9 @@ All settings live in
 | `DAILY_VARIABLES` | 13 entries | Daily variable catalog: label, source table, line color |
 | `CLIMATE_VARIABLES` | 4 entries | Climate variable catalog |
 
-To add a variable, add an entry to the relevant catalog. The sidebar, maps and export
-dialog all read from these dictionaries.
+To add a variable, add an entry to the relevant catalog. For map and daily variables,
+also list the key in its group in `styles.py`, which places it in the sidebar and the
+export dialog.
 
 ## Troubleshooting
 
